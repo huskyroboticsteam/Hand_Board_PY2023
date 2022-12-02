@@ -1,0 +1,13 @@
+Loading plugins phase: Elapsed time ==> 0s.199ms
+<CYPRESSTAG name="CyDsfit arguments...">
+cydsfit arguments: -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\CAN.cydsn\CAN.cyprj -d CY8C4248BZI-L489 -s C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\CAN.cydsn\Generated_Source\PSoC4 -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
+</CYPRESSTAG>
+<CYPRESSTAG name="Design elaboration results...">
+ADD: sdb.M0059: error: Error in component: CAN. The SYSCLK clock is undefined or was changed. For proper bit timing calculation, launch the CAN configuration dialog and select the appropriate values in the Timing tab.
+ * C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\CAN.cydsn\TopDesign\TopDesign.cysch (Instance:CAN)
+
+ADD: sdb.M0060: warning: Warning in component: CAN. The SYSCLK clock accuracy should be 1.58% or better. Please, enable WCO PLL in the Design-Wide Resource (*.cydwr) editor or use an external clock to meet the CAN accurate clocking requirements.
+ * C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\CAN.cydsn\TopDesign\TopDesign.cysch (Instance:CAN)
+
+</CYPRESSTAG>
+Elaboration phase: Elapsed time ==> 1s.611ms
