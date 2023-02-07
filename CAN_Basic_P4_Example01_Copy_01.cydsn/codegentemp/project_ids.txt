@@ -1,0 +1,7 @@
+C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\CAN_Basic_P4_Example01_Copy_01.cydsn\CAN_Basic_P4_Example01_Copy_01.cyprj|72cca242-1f0e-465a-bc32-a1e9f11939da
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|0c044fc7-6c9c-426c-8b8f-b37828612adc
+C:\Users\kratz\OneDrive\Documents\PSoC Creator\4.4\Downloads ( 4.4).cylib\Downloads ( 4.4).cyprj|0916e518-4d50-40e0-9d59-f2e307e4856e
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|fe19b806-12e5-4860-b844-eb799de54d52
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|eb916665-9266-4cd1-882d-e658286d0db5
+C:\Program Files (x86)\Cypress\PSoC Creator\4.4\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|651e0acb-8113-4f07-84ec-b502785e4c1a
+C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\HandBoard_Rev1.cyprj|0d2fe4aa-a0af-415b-9527-e9e5f6e8a677

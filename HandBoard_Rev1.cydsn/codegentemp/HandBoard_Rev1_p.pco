@@ -1,0 +1,42 @@
+dont_use_io iocell 0 4
+dont_use_io iocell 0 5
+dont_use_io iocell 3 2
+dont_use_io iocell 3 3
+set_location "Net_87" macrocell 0 2 0 0
+set_location "\Timer_1:TimerUDB:sT24:timerdp:u2\" datapathcell 1 1 2 
+set_location "\Timer_1:TimerUDB:status_tc\" macrocell 1 1 0 0
+set_location "\Status_Reg_Switches:sts_intr:sts_reg\" statusicell 1 2 4 
+set_location "Net_86" macrocell 0 2 0 1
+set_location "Net_966_1" macrocell 1 2 0 0
+set_location "\Timer_1:TimerUDB:sT24:timerdp:u0\" datapathcell 0 2 2 
+set_location "Net_88" macrocell 0 2 0 3
+set_location "Net_85" macrocell 0 2 1 3
+set_location "Net_966_0" macrocell 0 2 1 0
+set_location "\Timer_1:TimerUDB:rstSts:stsreg\" statusicell 1 1 4 
+set_location "\Timer_1:TimerUDB:sT24:timerdp:u1\" datapathcell 0 1 2 
+set_io "\UART:rx(0)\" iocell 1 0
+set_location "\ADC_SAR_Seq_1:cy_psoc4_sar\" p4sarcell -1 -1 0
+set_location "\Timer_1:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\" controlcell 1 2 6 
+set_io "RX_1(0)" iocell 4 0
+set_io "Dip_1(0)" iocell 4 5
+set_io "Pin_Encoder_A(0)" iocell 1 2
+set_io "Pin_Limit_2(0)" iocell 0 1
+set_io "Pin_Limit_1(0)" iocell 4 2
+set_location "\UART:SCB\" m0s8scbcell -1 -1 0
+set_io "Pin_Motor(0)" iocell 3 0
+set_location "\CAN:CanIP\" cancell -1 -1 0
+set_io "\UART:tx(0)\" iocell 1 1
+set_location "ClockGenBlock" m0s8clockgenblockcell -1 -1 0
+set_location "\CAN:isr\" interrupt -1 -1 28
+set_location "isr_Limit_1" interrupt -1 -1 0
+set_location "\UART:SCB_IRQ\" interrupt -1 -1 9
+set_location "\ADC_SAR_Seq_1:IRQ\" interrupt -1 -1 17
+set_io "Dip_3(0)" iocell 4 4
+set_io "TX_1(0)" iocell 4 1
+set_location "ClockBlock" m0s8clockblockcell -1 -1 0
+set_location "\PWM_Motor:cy_m0s8_tcpwm_1\" m0s8tcpwmcell -1 -1 0
+set_io "Pin_Direction(0)" iocell 1 3
+set_io "Pin_Pot(0)" iocell 2 4
+set_io "Dip_4(0)" iocell 4 7
+set_io "Dip_2(0)" iocell 4 3
+set_location "\Can_addr:sts:sts_reg\" statuscell 0 2 3 
