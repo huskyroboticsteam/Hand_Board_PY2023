@@ -9,93 +9,56 @@
  *
  * ========================================
 */
-#include "project.h" // edit this
+#include "main.h" 
 #include "Pin_Limit_1.h"
 #include "Pin_Limit_2.h"
 #include "Pin_Encoder_A.h"
 
 int main(void){
-    CyGlobalIntEnable; /* Enable global interrupts. */
+  Initialize();
+
     
-    /* Initialize the limit switches */
-   // LimitSwitch_1_Start();
-   // LimitSwitch_2_Start();
-    // DO WE NEED TO INITIALIZE THIS?? 
-
-    /* Initialize the encoder/potentiometer */
-  //  Encoder_Start();
-
-    /* Initialize the DC motor */
-    DCMotor_Start();
-
-    /* Initialize the servos */
-    Servo_1_Start();
-    Servo_2_Start();
-    Servo_3_Start();
-    Servo_4_Start();
-    Servo_5_Start();
-    Servo_6_Start();
-
-    for(;;)
-    {
-        /* Check the state of the first limit switch */
-        if (Pin_Limit_1_Read() == 0) {
-            /* The first limit switch is pressed */
-            /* Perform some action */
-        }
-        else {
-            /* The first limit switch is not pressed */
-            /* Perform some other action */
-        }
-
-        /* Check the state of the second limit switch */
-        if (Pin_Limit_2_Read() == 0) {
-            /* The second limit switch is pressed */
-            /* Perform some action */
-        }
-        else {
-            /* The second limit switch is not pressed */
-            /* Perform some other action */
-        }
-
-        /* Read the value of the encoder/potentiometer */
-        int value = Pin_Encoder_A_Read();
-        /* The value will be in the range 0-1023, depending on the position of the encoder/potentiometer */
-
-        /* Perform some action based on the value of the encoder/potentiometer */
-        if (value < 100) {
-            /* The encoder/potentiometer is in the lower range */
-            /* Perform some action */
-        }
-        else if (value > 900) {
-            /* The encoder/potentiometer is in the upper range */
-            /* Perform some action */
-        }
-        else {
-            /* The encoder/potentiometer is in the middle range */
-            /* Perform some action */
-        }
-
-        /* Control the DC motor */
-        if (value < 500) {
-            /* Set the DC motor to run forward */
-            DCMotor_Write(1);
-        }
-        else {
-            /* Set the DC motor to run backward */
-            DCMotor_Write(0);
-        }
-
-        /* Control the servos */
-        Servo_1_Write(value);
-        Servo_2_Write(value);
-        Servo_3_Write(value);
-        Servo_4_Write(value);
-        Servo_5_Write(value);
-        Servo_6_Write(value);
-    }
+  
 }
 
+void Initialize(void) {
+     // Enable global interrupts. LED arrays need this first
+    CyGlobalIntEnable;
+    
+    #ifdef RGB_LED_ARRAY
+    initalize_LEDs(LOW_LED_POWER);
+    #endif
+    
+    Status_Reg_Switches_InterruptEnable();
+    
+    address = Can_addr_Read();
+    
+    #ifdef ENABLE_DEBUG_UART
+    UART_Start();
+    sprintf(txData, "Dip Addr: %x \r\n", address);
+    UART_UartPutString(txData);
+    #endif
+    
+    #ifdef ERROR_LED
+    ERROR_LED_Write(~(address >> 3 & 1));
+    #endif
+    #ifdef DEBUG_LED2
+    Debug_2_Write(~(address >> 2) & 1);
+    #endif
+    #ifdef DEBUG_LED1
+    Debug_1_Write(~(address >> 1) & 1);
+    #endif 
+    #ifdef CAN_LED
+    CAN_LED_Write(~address & 1);
+    #endif
+    
+    InitCAN(0x4, (int)address);
+    Timer_PWM_Start();
+    QuadDec_Start();
+    PWM_Motor_Start();  
 
+    isr_Limit_1_StartEx(Pin_Limit_Handler);
+    isr_period_PWM_StartEx(Period_Reset_Handler);
+}
 
 /* [] END OF FILE */
