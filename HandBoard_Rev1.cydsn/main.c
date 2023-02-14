@@ -1,10 +1,60 @@
 // Main c file for HandBoard 2023
 
 #include "main.h" 
+#include "PID.h" //FIXME: do we need this and PID.c?
+#include "cyapicallbacks.h"
+
 
 
 int main(void){
   Initialize();
+  
+  for(;;)
+    {
+        switch(GetState()) {
+            case(UNINIT):
+                //idle animation
+                SetStateTo(CHECK_CAN);
+                break;
+            case(SET_PWM):
+                set_PWM(nextPWM, ignoreLimSw, Status_Reg_Switches_Read());
+                SetStateTo(CHECK_CAN);
+                break;
+            case(CALC_PID):
+                SetPosition(millidegreeTarget);   
+                SetStateTo(CHECK_CAN);
+                break;
+            case(QUEUE_ERROR):
+                SetStateTo(CHECK_CAN);
+                break;
+            case(CHECK_CAN):
+                NextStateFromCAN(&can_recieve, &can_send);
+                #ifdef PRINT_CAN_PACKET
+                PrintCanPacket(can_recieve);
+                #endif
+                break;
+            default:
+                //Should Never Get Here
+                //TODO: ERROR
+                GotoUninitState();
+                break;
+
+        }
+        #ifdef PRINT_FSM_STATE_MODE
+        sprintf(txData, "Mode: %x State:%x \r\n", GetMode(), GetState());
+        UART_UartPutString(txData);
+        #endif
+        #ifdef PRINT_SET_PID_CONST
+        sprintf(txData, "P: %d I: %d D: %d PPJ: %d Ready: %d \r\n", GetkPosition(), GetkIntegral() 
+        ,GetkDerivative(), GetkPPJR(), PIDconstsSet());
+        UART_UartPutString(txData);
+        #endif
+        #ifdef PRINT_ENCODER_VALUE
+        sprintf(txData, "Encoder Value: %d  \r\n", QuadDec_GetCounter());
+        UART_UartPutString(txData);
+        #endif
+    }
+
 
     
   
@@ -13,10 +63,6 @@ int main(void){
 void Initialize(void) {
      // Enable global interrupts. LED arrays need this first
     CyGlobalIntEnable;
-    
-    #ifdef RGB_LED_ARRAY
-    initalize_LEDs(LOW_LED_POWER);
-    #endif
     
     Status_Reg_Switches_InterruptEnable();
     
@@ -28,16 +74,12 @@ void Initialize(void) {
     UART_UartPutString(txData);
     #endif
     
-    #ifdef ERROR_LED
-    ERROR_LED_Write(~(address >> 3 & 1));
-    #endif
-    #ifdef DEBUG_LED2
-    Debug_2_Write(~(address >> 2) & 1);
-    #endif
-    #ifdef DEBUG_LED1
-    Debug_1_Write(~(address >> 1) & 1);
-    #endif 
-    #ifdef CAN_LED
+   // #ifdef ERROR_LED
+    //ERROR_LED_Write(~(address >> 3 & 1));
+    //#endif
+    
+    // FIXME: is this necessary?
+    #ifdef CAN_LED 
     CAN_LED_Write(~address & 1);
     #endif
     
@@ -102,5 +144,29 @@ CY_ISR(Period_Reset_Handler) {
         CAN_LED_Write(LED_OFF);
         #endif
     }
+}
+
+// FIXME: receivedPacket should really be a refernce to the can packet to avoid the copy
+void PrintCanPacket(CANPacket receivedPacket){
+    for(int i = 0; i < receivedPacket.dlc; i++) {
+        sprintf(txData, "Byte%d %x   ", i+1, receivedPacket.data[i]);
+        UART_UartPutString(txData);
+    }
+
+    sprintf(txData,"ID:%x %x %x\r\n",receivedPacket.id >> 10, 
+        (receivedPacket.id >> 6) & 0xF , receivedPacket.id & 0x3F);
+    UART_UartPutString(txData);
+}
+
+uint16_t ReadCAN(CANPacket *receivedPacket){
+    volatile int error = PollAndReceiveCANPacket(receivedPacket);
+    if(!error){
+        #ifdef CAN_LED
+        CAN_LED_Write(LED_ON);
+        #endif
+        CAN_time_LED = 0;
+        return receivedPacket->data[0];
+    }
+    return NO_NEW_CAN_PACKET; //Means no Packet
 }
 
