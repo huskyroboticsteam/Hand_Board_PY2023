@@ -1,0 +1,2445 @@
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"Motor_Unit_CAN.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.SendEncoderData,"ax",%progbits
+  20              		.align	2
+  21              		.global	SendEncoderData
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	SendEncoderData, %function
+  25              	SendEncoderData:
+  26              	.LFB35:
+  27              		.file 1 "Motor_Unit_CAN.c"
+   1:Motor_Unit_CAN.c **** /* ========================================
+   2:Motor_Unit_CAN.c ****  *
+   3:Motor_Unit_CAN.c ****  * Copyright YOUR COMPANY, THE YEAR
+   4:Motor_Unit_CAN.c ****  * All Rights Reserved
+   5:Motor_Unit_CAN.c ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:Motor_Unit_CAN.c ****  *
+   7:Motor_Unit_CAN.c ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:Motor_Unit_CAN.c ****  * WHICH IS THE PROPERTY OF your company.
+   9:Motor_Unit_CAN.c ****  *
+  10:Motor_Unit_CAN.c ****  * ========================================
+  11:Motor_Unit_CAN.c **** */
+  12:Motor_Unit_CAN.c **** 
+  13:Motor_Unit_CAN.c **** /* [] END OF FILE */
+  14:Motor_Unit_CAN.c **** #include "main.h"
+  15:Motor_Unit_CAN.c **** #include "Motor_Unit_CAN.h"
+  16:Motor_Unit_CAN.c **** #include "Motor_Unit_FSM.h"
+  17:Motor_Unit_CAN.c **** #include "MotorDrive.h"
+  18:Motor_Unit_CAN.c **** #include "PositionPID.h"
+  19:Motor_Unit_CAN.c **** 
+  20:Motor_Unit_CAN.c **** #ifdef RGB_LED_ARRAY
+  21:Motor_Unit_CAN.c **** #include "LED_Array.h"
+  22:Motor_Unit_CAN.c **** extern const uint32 StripLights_CLUT[ ];
+  23:Motor_Unit_CAN.c **** extern uint8_t address;
+  24:Motor_Unit_CAN.c **** #endif
+  25:Motor_Unit_CAN.c **** 
+  26:Motor_Unit_CAN.c **** 
+  27:Motor_Unit_CAN.c **** 
+  28:Motor_Unit_CAN.c **** extern int16_t nextPWM;
+  29:Motor_Unit_CAN.c **** extern int32_t millidegreeTarget;
+  30:Motor_Unit_CAN.c **** 
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 2
+
+
+  31:Motor_Unit_CAN.c **** void SendEncoderData (CANPacket *packetToSend){
+  28              		.loc 1 31 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              	.LVL0:
+  33 0000 10B5     		push	{r4, lr}
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 4, -8
+  36              		.cfi_offset 14, -4
+  37 0002 82B0     		sub	sp, sp, #8
+  38              		.cfi_def_cfa_offset 16
+  39 0004 0400     		movs	r4, r0
+  32:Motor_Unit_CAN.c ****     AssembleTelemetryReportPacket(packetToSend, DEVICE_GROUP_JETSON, DEVICE_SERIAL_JETSON, 
+  40              		.loc 1 32 0
+  41 0006 FFF7FEFF 		bl	CurrentPositionMiliDegree
+  42              	.LVL1:
+  43 000a 0090     		str	r0, [sp]
+  44 000c 0423     		movs	r3, #4
+  45 000e 0122     		movs	r2, #1
+  46 0010 0221     		movs	r1, #2
+  47 0012 2000     		movs	r0, r4
+  48 0014 FFF7FEFF 		bl	AssembleTelemetryReportPacket
+  49              	.LVL2:
+  33:Motor_Unit_CAN.c ****         PACKET_TELEMETRY_ANG_POSITION, CurrentPositionMiliDegree());
+  34:Motor_Unit_CAN.c ****     SendCANPacket(packetToSend);
+  50              		.loc 1 34 0
+  51 0018 2000     		movs	r0, r4
+  52 001a FFF7FEFF 		bl	SendCANPacket
+  53              	.LVL3:
+  35:Motor_Unit_CAN.c **** }
+  54              		.loc 1 35 0
+  55 001e 02B0     		add	sp, sp, #8
+  56              		@ sp needed
+  57              	.LVL4:
+  58 0020 10BD     		pop	{r4, pc}
+  59              		.cfi_endproc
+  60              	.LFE35:
+  61              		.size	SendEncoderData, .-SendEncoderData
+  62 0022 C046     		.section	.text.NextStateFromCAN,"ax",%progbits
+  63              		.align	2
+  64              		.global	NextStateFromCAN
+  65              		.code	16
+  66              		.thumb_func
+  67              		.type	NextStateFromCAN, %function
+  68              	NextStateFromCAN:
+  69              	.LFB36:
+  36:Motor_Unit_CAN.c **** 
+  37:Motor_Unit_CAN.c **** //Reads from CAN FIFO and changes the state and mode accordingly
+  38:Motor_Unit_CAN.c **** void NextStateFromCAN(CANPacket *receivedPacket, CANPacket *packetToSend) {
+  70              		.loc 1 38 0
+  71              		.cfi_startproc
+  72              		@ args = 0, pretend = 0, frame = 0
+  73              		@ frame_needed = 0, uses_anonymous_args = 0
+  74              	.LVL5:
+  75 0000 70B5     		push	{r4, r5, r6, lr}
+  76              		.cfi_def_cfa_offset 16
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 3
+
+
+  77              		.cfi_offset 4, -16
+  78              		.cfi_offset 5, -12
+  79              		.cfi_offset 6, -8
+  80              		.cfi_offset 14, -4
+  81 0002 0500     		movs	r5, r0
+  82 0004 0E00     		movs	r6, r1
+  39:Motor_Unit_CAN.c ****     uint16_t packageID = ReadCAN(receivedPacket);
+  83              		.loc 1 39 0
+  84 0006 FFF7FEFF 		bl	ReadCAN
+  85              	.LVL6:
+  86 000a 0400     		movs	r4, r0
+  87              	.LVL7:
+  40:Motor_Unit_CAN.c ****     switch(packageID){
+  88              		.loc 1 40 0
+  89 000c 0728     		cmp	r0, #7
+  90 000e 68D0     		beq	.L4
+  91 0010 0CD8     		bhi	.L5
+  92 0012 0428     		cmp	r0, #4
+  93 0014 70D0     		beq	.L6
+  94 0016 04D8     		bhi	.L7
+  95 0018 0028     		cmp	r0, #0
+  96 001a 18D0     		beq	.L8
+  97 001c 0328     		cmp	r0, #3
+  98 001e 37D0     		beq	.L9
+  99 0020 C7E0     		b	.L3
+ 100              	.L7:
+ 101 0022 0528     		cmp	r0, #5
+ 102 0024 47D0     		beq	.L10
+ 103 0026 0628     		cmp	r0, #6
+ 104 0028 50D0     		beq	.L11
+ 105 002a C2E0     		b	.L3
+ 106              	.L5:
+ 107 002c 0D28     		cmp	r0, #13
+ 108 002e 00D1     		bne	.LCB79
+ 109 0030 AAE0     		b	.L12	@long jump
+ 110              	.LCB79:
+ 111 0032 05D8     		bhi	.L13
+ 112 0034 0A28     		cmp	r0, #10
+ 113 0036 79D0     		beq	.L14
+ 114 0038 0C28     		cmp	r0, #12
+ 115 003a 00D1     		bne	.LCB85
+ 116 003c 81E0     		b	.L15	@long jump
+ 117              	.LCB85:
+ 118 003e B8E0     		b	.L3
+ 119              	.L13:
+ 120 0040 F028     		cmp	r0, #240
+ 121 0042 00D1     		bne	.LCB91
+ 122 0044 A9E0     		b	.L16	@long jump
+ 123              	.LCB91:
+ 124 0046 F528     		cmp	r0, #245
+ 125 0048 00D1     		bne	.LCB93
+ 126 004a AEE0     		b	.L17	@long jump
+ 127              	.LCB93:
+ 128 004c B1E0     		b	.L3
+ 129              	.L8:
+  41:Motor_Unit_CAN.c ****                     case(ID_MOTOR_UNIT_MODE_SEL):
+  42:Motor_Unit_CAN.c ****                         if(GetModeFromPacket(receivedPacket) == MOTOR_UNIT_MODE_PWM) {
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 4
+
+
+ 130              		.loc 1 42 0
+ 131 004e 2800     		movs	r0, r5
+ 132              	.LVL8:
+ 133 0050 FFF7FEFF 		bl	GetModeFromPacket
+ 134              	.LVL9:
+ 135 0054 0028     		cmp	r0, #0
+ 136 0056 0AD1     		bne	.L18
+  43:Motor_Unit_CAN.c ****                             set_PWM(0, 0, 0);
+ 137              		.loc 1 43 0
+ 138 0058 0022     		movs	r2, #0
+ 139 005a 0021     		movs	r1, #0
+ 140 005c FFF7FEFF 		bl	set_PWM
+ 141              	.LVL10:
+  44:Motor_Unit_CAN.c ****                             #ifdef RGB_LED_ARRAY
+  45:Motor_Unit_CAN.c ****                             StripLights_MemClear(StripLights_BLACK);
+  46:Motor_Unit_CAN.c ****                             StripLights_Pixel(0, 0, get_color_packet(0,0,255));
+  47:Motor_Unit_CAN.c ****                             StripLights_Trigger(1);
+  48:Motor_Unit_CAN.c ****                             #endif
+  49:Motor_Unit_CAN.c ****                             SetModeTo(MOTOR_UNIT_MODE_PWM);
+ 142              		.loc 1 49 0
+ 143 0060 0020     		movs	r0, #0
+ 144 0062 FFF7FEFF 		bl	SetModeTo
+ 145              	.LVL11:
+  50:Motor_Unit_CAN.c ****                             SetStateTo(CHECK_CAN);
+ 146              		.loc 1 50 0
+ 147 0066 0220     		movs	r0, #2
+ 148 0068 FFF7FEFF 		bl	SetStateTo
+ 149              	.LVL12:
+ 150 006c B9E0     		b	.L2
+ 151              	.L18:
+  51:Motor_Unit_CAN.c ****                         }
+  52:Motor_Unit_CAN.c ****                         else if (GetModeFromPacket(receivedPacket) == MOTOR_UNIT_MODE_PID) {
+ 152              		.loc 1 52 0
+ 153 006e 2800     		movs	r0, r5
+ 154 0070 FFF7FEFF 		bl	GetModeFromPacket
+ 155              	.LVL13:
+ 156 0074 0128     		cmp	r0, #1
+ 157 0076 08D1     		bne	.L20
+  53:Motor_Unit_CAN.c ****                             InitializePID();
+ 158              		.loc 1 53 0
+ 159 0078 FFF7FEFF 		bl	InitializePID
+ 160              	.LVL14:
+  54:Motor_Unit_CAN.c ****                             #ifdef RGB_LED_ARRAY
+  55:Motor_Unit_CAN.c ****                             StripLights_MemClear(StripLights_BLACK);
+  56:Motor_Unit_CAN.c ****                             StripLights_Pixel(1, 0, get_color_packet(0,0,255));
+  57:Motor_Unit_CAN.c ****                             StripLights_Trigger(1);
+  58:Motor_Unit_CAN.c ****                             #endif
+  59:Motor_Unit_CAN.c ****                             SetModeTo(MOTOR_UNIT_MODE_PID);
+ 161              		.loc 1 59 0
+ 162 007c 0120     		movs	r0, #1
+ 163 007e FFF7FEFF 		bl	SetModeTo
+ 164              	.LVL15:
+  60:Motor_Unit_CAN.c ****                             SetStateTo(CHECK_CAN);
+ 165              		.loc 1 60 0
+ 166 0082 0220     		movs	r0, #2
+ 167 0084 FFF7FEFF 		bl	SetStateTo
+ 168              	.LVL16:
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 5
+
+
+ 169 0088 ABE0     		b	.L2
+ 170              	.L20:
+  61:Motor_Unit_CAN.c ****                         } else {
+  62:Motor_Unit_CAN.c ****                             GotoUninitState();
+ 171              		.loc 1 62 0
+ 172 008a FFF7FEFF 		bl	GotoUninitState
+ 173              	.LVL17:
+ 174 008e A8E0     		b	.L2
+ 175              	.LVL18:
+ 176              	.L9:
+  63:Motor_Unit_CAN.c ****                         }
+  64:Motor_Unit_CAN.c ****                         break;
+  65:Motor_Unit_CAN.c ****                         
+  66:Motor_Unit_CAN.c ****                     case(ID_MOTOR_UNIT_PWM_DIR_SET):
+  67:Motor_Unit_CAN.c ****                         if(GetMode() == MOTOR_UNIT_MODE_PWM){
+ 177              		.loc 1 67 0
+ 178 0090 FFF7FEFF 		bl	GetMode
+ 179              	.LVL19:
+ 180 0094 0028     		cmp	r0, #0
+ 181 0096 07D1     		bne	.L21
+  68:Motor_Unit_CAN.c ****                             SetStateTo(SET_PWM);
+ 182              		.loc 1 68 0
+ 183 0098 FFF7FEFF 		bl	SetStateTo
+ 184              	.LVL20:
+  69:Motor_Unit_CAN.c ****                             nextPWM = GetPWMFromPacket(receivedPacket);
+ 185              		.loc 1 69 0
+ 186 009c 2800     		movs	r0, r5
+ 187 009e FFF7FEFF 		bl	GetPWMFromPacket
+ 188              	.LVL21:
+ 189 00a2 504B     		ldr	r3, .L30
+ 190 00a4 1880     		strh	r0, [r3]
+ 191 00a6 9CE0     		b	.L2
+ 192              	.L21:
+  70:Motor_Unit_CAN.c ****                         } else {
+  71:Motor_Unit_CAN.c ****                             SetStateTo(QUEUE_ERROR);
+ 193              		.loc 1 71 0
+ 194 00a8 0320     		movs	r0, #3
+ 195 00aa FFF7FEFF 		bl	SetStateTo
+ 196              	.LVL22:
+  72:Motor_Unit_CAN.c ****                             DisplayErrorCode(MOTOR_ERROR_WRONG_MODE);
+ 197              		.loc 1 72 0
+ 198 00ae 0120     		movs	r0, #1
+ 199 00b0 FFF7FEFF 		bl	DisplayErrorCode
+ 200              	.LVL23:
+ 201 00b4 95E0     		b	.L2
+ 202              	.LVL24:
+ 203              	.L10:
+  73:Motor_Unit_CAN.c ****                         }
+  74:Motor_Unit_CAN.c ****                         break;
+  75:Motor_Unit_CAN.c ****                         
+  76:Motor_Unit_CAN.c ****                     case(ID_MOTOR_UNIT_PID_P_SET):
+  77:Motor_Unit_CAN.c ****                         SetkPosition(GetPFromPacket(receivedPacket));
+ 204              		.loc 1 77 0
+ 205 00b6 2800     		movs	r0, r5
+ 206              	.LVL25:
+ 207 00b8 FFF7FEFF 		bl	GetPFromPacket
+ 208              	.LVL26:
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 6
+
+
+ 209 00bc FFF7FEFF 		bl	SetkPosition
+ 210              	.LVL27:
+  78:Motor_Unit_CAN.c ****                         PositionConstIsSet();
+ 211              		.loc 1 78 0
+ 212 00c0 FFF7FEFF 		bl	PositionConstIsSet
+ 213              	.LVL28:
+  79:Motor_Unit_CAN.c ****                         SetStateTo(CHECK_CAN);
+ 214              		.loc 1 79 0
+ 215 00c4 0220     		movs	r0, #2
+ 216 00c6 FFF7FEFF 		bl	SetStateTo
+ 217              	.LVL29:
+  80:Motor_Unit_CAN.c ****                         break;
+ 218              		.loc 1 80 0
+ 219 00ca 8AE0     		b	.L2
+ 220              	.LVL30:
+ 221              	.L11:
+  81:Motor_Unit_CAN.c ****                     
+  82:Motor_Unit_CAN.c ****                     case(ID_MOTOR_UNIT_PID_I_SET):
+  83:Motor_Unit_CAN.c ****                         SetkIntegral(GetIFromPacket(receivedPacket));
+ 222              		.loc 1 83 0
+ 223 00cc 2800     		movs	r0, r5
+ 224              	.LVL31:
+ 225 00ce FFF7FEFF 		bl	GetIFromPacket
+ 226              	.LVL32:
+ 227 00d2 FFF7FEFF 		bl	SetkIntegral
+ 228              	.LVL33:
+  84:Motor_Unit_CAN.c ****                         IntegralConstIsSet();
+ 229              		.loc 1 84 0
+ 230 00d6 FFF7FEFF 		bl	IntegralConstIsSet
+ 231              	.LVL34:
+  85:Motor_Unit_CAN.c ****                         SetStateTo(CHECK_CAN);
+ 232              		.loc 1 85 0
+ 233 00da 0220     		movs	r0, #2
+ 234 00dc FFF7FEFF 		bl	SetStateTo
+ 235              	.LVL35:
+  86:Motor_Unit_CAN.c ****                         break;
+ 236              		.loc 1 86 0
+ 237 00e0 7FE0     		b	.L2
+ 238              	.LVL36:
+ 239              	.L4:
+  87:Motor_Unit_CAN.c ****                     
+  88:Motor_Unit_CAN.c ****                     case(ID_MOTOR_UNIT_PID_D_SET):
+  89:Motor_Unit_CAN.c ****                         SetkDerivative(GetDFromPacket(receivedPacket));
+ 240              		.loc 1 89 0
+ 241 00e2 2800     		movs	r0, r5
+ 242              	.LVL37:
+ 243 00e4 FFF7FEFF 		bl	GetDFromPacket
+ 244              	.LVL38:
+ 245 00e8 FFF7FEFF 		bl	SetkDerivative
+ 246              	.LVL39:
+  90:Motor_Unit_CAN.c ****                         DerivativeConstIsSet();
+ 247              		.loc 1 90 0
+ 248 00ec FFF7FEFF 		bl	DerivativeConstIsSet
+ 249              	.LVL40:
+  91:Motor_Unit_CAN.c ****                         SetStateTo(CHECK_CAN);
+ 250              		.loc 1 91 0
+ 251 00f0 0220     		movs	r0, #2
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 7
+
+
+ 252 00f2 FFF7FEFF 		bl	SetStateTo
+ 253              	.LVL41:
+  92:Motor_Unit_CAN.c ****                         break;
+ 254              		.loc 1 92 0
+ 255 00f6 74E0     		b	.L2
+ 256              	.LVL42:
+ 257              	.L6:
+  93:Motor_Unit_CAN.c ****                     
+  94:Motor_Unit_CAN.c ****                     case(ID_MOTOR_UNIT_PID_POS_TGT_SET):
+  95:Motor_Unit_CAN.c ****                         if(GetMode() == MOTOR_UNIT_MODE_PID && PIDconstsSet()) {//&& PID values set
+ 258              		.loc 1 95 0
+ 259 00f8 FFF7FEFF 		bl	GetMode
+ 260              	.LVL43:
+ 261 00fc 0128     		cmp	r0, #1
+ 262 00fe 0ED1     		bne	.L22
+ 263              		.loc 1 95 0 is_stmt 0 discriminator 1
+ 264 0100 FFF7FEFF 		bl	PIDconstsSet
+ 265              	.LVL44:
+ 266 0104 0028     		cmp	r0, #0
+ 267 0106 0AD0     		beq	.L22
+  96:Motor_Unit_CAN.c ****                             EnablePID();
+ 268              		.loc 1 96 0 is_stmt 1
+ 269 0108 FFF7FEFF 		bl	EnablePID
+ 270              	.LVL45:
+  97:Motor_Unit_CAN.c ****                             millidegreeTarget = GetPIDTargetFromPacket(receivedPacket);
+ 271              		.loc 1 97 0
+ 272 010c 2800     		movs	r0, r5
+ 273 010e FFF7FEFF 		bl	GetPIDTargetFromPacket
+ 274              	.LVL46:
+ 275 0112 354B     		ldr	r3, .L30+4
+ 276 0114 1860     		str	r0, [r3]
+  98:Motor_Unit_CAN.c ****                             SetStateTo(CALC_PID);
+ 277              		.loc 1 98 0
+ 278 0116 0120     		movs	r0, #1
+ 279 0118 FFF7FEFF 		bl	SetStateTo
+ 280              	.LVL47:
+ 281 011c 61E0     		b	.L2
+ 282              	.L22:
+  99:Motor_Unit_CAN.c ****                         } else {
+ 100:Motor_Unit_CAN.c ****                             SetStateTo(QUEUE_ERROR);
+ 283              		.loc 1 100 0
+ 284 011e 0320     		movs	r0, #3
+ 285 0120 FFF7FEFF 		bl	SetStateTo
+ 286              	.LVL48:
+ 101:Motor_Unit_CAN.c ****                             DisplayErrorCode(MOTOR_ERROR_WRONG_MODE);
+ 287              		.loc 1 101 0
+ 288 0124 0120     		movs	r0, #1
+ 289 0126 FFF7FEFF 		bl	DisplayErrorCode
+ 290              	.LVL49:
+ 291 012a 5AE0     		b	.L2
+ 292              	.LVL50:
+ 293              	.L14:
+ 102:Motor_Unit_CAN.c ****                         }
+ 103:Motor_Unit_CAN.c ****                         break;
+ 104:Motor_Unit_CAN.c ****                      
+ 105:Motor_Unit_CAN.c ****                     case(ID_MOTOR_UNIT_ENC_PPJR_SET):
+ 106:Motor_Unit_CAN.c ****                         SetkPPJR(GetEncoderPPJRFromPacket(receivedPacket));
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 8
+
+
+ 294              		.loc 1 106 0
+ 295 012c 2800     		movs	r0, r5
+ 296              	.LVL51:
+ 297 012e FFF7FEFF 		bl	GetEncoderPPJRFromPacket
+ 298              	.LVL52:
+ 299 0132 FFF7FEFF 		bl	SetkPPJR
+ 300              	.LVL53:
+ 107:Motor_Unit_CAN.c ****                         PPJRConstIsSet();
+ 301              		.loc 1 107 0
+ 302 0136 FFF7FEFF 		bl	PPJRConstIsSet
+ 303              	.LVL54:
+ 108:Motor_Unit_CAN.c ****                         SetStateTo(CHECK_CAN);
+ 304              		.loc 1 108 0
+ 305 013a 0220     		movs	r0, #2
+ 306 013c FFF7FEFF 		bl	SetStateTo
+ 307              	.LVL55:
+ 109:Motor_Unit_CAN.c ****                         break;
+ 308              		.loc 1 109 0
+ 309 0140 4FE0     		b	.L2
+ 310              	.LVL56:
+ 311              	.L15:
+ 110:Motor_Unit_CAN.c ****                     /*
+ 111:Motor_Unit_CAN.c ****                     case(ID_MOTOR_UNIT_MAX_JNT_REV_SET):
+ 112:Motor_Unit_CAN.c ****                         break;
+ 113:Motor_Unit_CAN.c ****                     */
+ 114:Motor_Unit_CAN.c ****                     case(ID_MOTOR_UNIT_ENC_INIT):
+ 115:Motor_Unit_CAN.c ****                         if(GetMode() == MOTOR_UNIT_MODE_PID){ //turn off and clear PID Loop if enco
+ 312              		.loc 1 115 0
+ 313 0142 FFF7FEFF 		bl	GetMode
+ 314              	.LVL57:
+ 315 0146 0128     		cmp	r0, #1
+ 316 0148 08D1     		bne	.L23
+ 116:Motor_Unit_CAN.c ****                             set_PWM(0, 0, 0);
+ 317              		.loc 1 116 0
+ 318 014a 0022     		movs	r2, #0
+ 319 014c 0021     		movs	r1, #0
+ 320 014e 0020     		movs	r0, #0
+ 321 0150 FFF7FEFF 		bl	set_PWM
+ 322              	.LVL58:
+ 117:Motor_Unit_CAN.c ****                             ClearPIDProgress();
+ 323              		.loc 1 117 0
+ 324 0154 FFF7FEFF 		bl	ClearPIDProgress
+ 325              	.LVL59:
+ 118:Motor_Unit_CAN.c ****                             DisablePID();
+ 326              		.loc 1 118 0
+ 327 0158 FFF7FEFF 		bl	DisablePID
+ 328              	.LVL60:
+ 329              	.L23:
+ 119:Motor_Unit_CAN.c ****                         }
+ 120:Motor_Unit_CAN.c ****                         if(GetEncoderZeroFromPacket(receivedPacket)) {
+ 330              		.loc 1 120 0
+ 331 015c 2800     		movs	r0, r5
+ 332 015e FFF7FEFF 		bl	GetEncoderZeroFromPacket
+ 333              	.LVL61:
+ 334 0162 0028     		cmp	r0, #0
+ 335 0164 02D0     		beq	.L24
+ 121:Motor_Unit_CAN.c ****                             QuadDec_SetCounter(0);                        
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 9
+
+
+ 336              		.loc 1 121 0
+ 337 0166 0020     		movs	r0, #0
+ 338 0168 FFF7FEFF 		bl	QuadDec_SetCounter
+ 339              	.LVL62:
+ 340              	.L24:
+ 122:Motor_Unit_CAN.c ****                         }
+ 123:Motor_Unit_CAN.c ****                         if(GetEncoderDirectionFromPacket(receivedPacket)) {
+ 341              		.loc 1 123 0
+ 342 016c 2800     		movs	r0, r5
+ 343 016e FFF7FEFF 		bl	GetEncoderDirectionFromPacket
+ 344              	.LVL63:
+ 345 0172 0028     		cmp	r0, #0
+ 346 0174 02D0     		beq	.L25
+ 124:Motor_Unit_CAN.c ****                             SetEncoderDirReverse();
+ 347              		.loc 1 124 0
+ 348 0176 FFF7FEFF 		bl	SetEncoderDirReverse
+ 349              	.LVL64:
+ 350 017a 01E0     		b	.L26
+ 351              	.L25:
+ 125:Motor_Unit_CAN.c ****                         } else {
+ 126:Motor_Unit_CAN.c ****                             SetEncoderDirDefault();
+ 352              		.loc 1 126 0
+ 353 017c FFF7FEFF 		bl	SetEncoderDirDefault
+ 354              	.LVL65:
+ 355              	.L26:
+ 127:Motor_Unit_CAN.c ****                         }
+ 128:Motor_Unit_CAN.c ****                         SetStateTo(CHECK_CAN);
+ 356              		.loc 1 128 0
+ 357 0180 0220     		movs	r0, #2
+ 358 0182 FFF7FEFF 		bl	SetStateTo
+ 359              	.LVL66:
+ 129:Motor_Unit_CAN.c ****                         break;
+ 360              		.loc 1 129 0
+ 361 0186 2CE0     		b	.L2
+ 362              	.LVL67:
+ 363              	.L12:
+ 130:Motor_Unit_CAN.c ****                     case(ID_MOTOR_UNIT_MAX_PID_PWM):
+ 131:Motor_Unit_CAN.c ****                         SetMaxPIDPWM(GetMaxPIDPWMFromPacket(receivedPacket));
+ 364              		.loc 1 131 0
+ 365 0188 2800     		movs	r0, r5
+ 366              	.LVL68:
+ 367 018a FFF7FEFF 		bl	GetMaxPIDPWMFromPacket
+ 368              	.LVL69:
+ 369 018e FFF7FEFF 		bl	SetMaxPIDPWM
+ 370              	.LVL70:
+ 132:Motor_Unit_CAN.c ****                         SetStateTo(CHECK_CAN);
+ 371              		.loc 1 132 0
+ 372 0192 0220     		movs	r0, #2
+ 373 0194 FFF7FEFF 		bl	SetStateTo
+ 374              	.LVL71:
+ 133:Motor_Unit_CAN.c ****                         break;    
+ 375              		.loc 1 133 0
+ 376 0198 23E0     		b	.L2
+ 377              	.LVL72:
+ 378              	.L16:
+ 134:Motor_Unit_CAN.c ****                     
+ 135:Motor_Unit_CAN.c ****                     // Common Packets 
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 10
+
+
+ 136:Motor_Unit_CAN.c ****                     case(ID_ESTOP):
+ 137:Motor_Unit_CAN.c ****                         set_PWM(0, 0, 0);
+ 379              		.loc 1 137 0
+ 380 019a 0022     		movs	r2, #0
+ 381 019c 0021     		movs	r1, #0
+ 382 019e 0020     		movs	r0, #0
+ 383              	.LVL73:
+ 384 01a0 FFF7FEFF 		bl	set_PWM
+ 385              	.LVL74:
+ 138:Motor_Unit_CAN.c ****                         GotoUninitState();
+ 386              		.loc 1 138 0
+ 387 01a4 FFF7FEFF 		bl	GotoUninitState
+ 388              	.LVL75:
+ 139:Motor_Unit_CAN.c ****                         #ifdef RGB_LED_ARRAY
+ 140:Motor_Unit_CAN.c ****                         StripLights_MemClear(StripLights_BLACK);
+ 141:Motor_Unit_CAN.c ****                         StripLights_Pixel(0, 0, get_color_packet(0,0,255));
+ 142:Motor_Unit_CAN.c ****                         StripLights_Trigger(1);
+ 143:Motor_Unit_CAN.c ****                         #endif
+ 144:Motor_Unit_CAN.c ****                         break;
+ 389              		.loc 1 144 0
+ 390 01a8 1BE0     		b	.L2
+ 391              	.LVL76:
+ 392              	.L17:
+ 145:Motor_Unit_CAN.c ****                     
+ 146:Motor_Unit_CAN.c ****                     case(ID_TELEMETRY_PULL):
+ 147:Motor_Unit_CAN.c ****                         //AssembleChipTypeReportPacket(packetToSend, GetSenderDeviceGroupCode(recei
+ 148:Motor_Unit_CAN.c ****                         //    GetSenderDeviceSerialNumber(receivedPacket));
+ 149:Motor_Unit_CAN.c ****                         //SendCANPacket(packetToSend);
+ 150:Motor_Unit_CAN.c **** 			SendEncoderData(packetToSend);
+ 393              		.loc 1 150 0
+ 394 01aa 3000     		movs	r0, r6
+ 395              	.LVL77:
+ 396 01ac FFF7FEFF 		bl	SendEncoderData
+ 397              	.LVL78:
+ 151:Motor_Unit_CAN.c ****                         break;
+ 398              		.loc 1 151 0
+ 399 01b0 17E0     		b	.L2
+ 400              	.LVL79:
+ 401              	.L3:
+ 152:Motor_Unit_CAN.c **** 
+ 153:Motor_Unit_CAN.c ****                         
+ 154:Motor_Unit_CAN.c ****                         /*
+ 155:Motor_Unit_CAN.c ****                     case(ID_LED_COLOR):
+ 156:Motor_Unit_CAN.c ****                         break;
+ 157:Motor_Unit_CAN.c ****                         */
+ 158:Motor_Unit_CAN.c ****                         
+ 159:Motor_Unit_CAN.c ****                         
+ 160:Motor_Unit_CAN.c ****                     default://for 0xFF/no packets or Non recognized Packets
+ 161:Motor_Unit_CAN.c ****                         
+ 162:Motor_Unit_CAN.c ****                         if(GetMode() == MOTOR_UNIT_MODE_PID){ //need to check if values set;
+ 402              		.loc 1 162 0
+ 403 01b2 FFF7FEFF 		bl	GetMode
+ 404              	.LVL80:
+ 405 01b6 0128     		cmp	r0, #1
+ 406 01b8 02D1     		bne	.L27
+ 163:Motor_Unit_CAN.c ****                             SetStateTo(CALC_PID);
+ 407              		.loc 1 163 0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 11
+
+
+ 408 01ba FFF7FEFF 		bl	SetStateTo
+ 409              	.LVL81:
+ 410 01be 0AE0     		b	.L28
+ 411              	.L27:
+ 164:Motor_Unit_CAN.c ****                         } else if(GetMode() == MOTOR_UNIT_MODE_PWM){ //skips PWM state to not reset
+ 412              		.loc 1 164 0
+ 413 01c0 FFF7FEFF 		bl	GetMode
+ 414              	.LVL82:
+ 415 01c4 0028     		cmp	r0, #0
+ 416 01c6 03D1     		bne	.L29
+ 165:Motor_Unit_CAN.c ****                             SetStateTo(CHECK_CAN);
+ 417              		.loc 1 165 0
+ 418 01c8 0230     		adds	r0, r0, #2
+ 419 01ca FFF7FEFF 		bl	SetStateTo
+ 420              	.LVL83:
+ 421 01ce 02E0     		b	.L28
+ 422              	.L29:
+ 166:Motor_Unit_CAN.c ****                         } else {
+ 167:Motor_Unit_CAN.c ****                             SetStateTo(CHECK_CAN);
+ 423              		.loc 1 167 0
+ 424 01d0 0220     		movs	r0, #2
+ 425 01d2 FFF7FEFF 		bl	SetStateTo
+ 426              	.LVL84:
+ 427              	.L28:
+ 168:Motor_Unit_CAN.c ****                         }
+ 169:Motor_Unit_CAN.c ****                         
+ 170:Motor_Unit_CAN.c ****                         //recieved Packet with Non Valid ID
+ 171:Motor_Unit_CAN.c ****                         if(packageID != NO_NEW_CAN_PACKET) {
+ 428              		.loc 1 171 0
+ 429 01d6 054B     		ldr	r3, .L30+8
+ 430 01d8 9C42     		cmp	r4, r3
+ 431 01da 02D0     		beq	.L2
+ 172:Motor_Unit_CAN.c ****                             DisplayErrorCode(MOTOR_ERROR_INVALID_PACKET);
+ 432              		.loc 1 172 0
+ 433 01dc 0020     		movs	r0, #0
+ 434 01de FFF7FEFF 		bl	DisplayErrorCode
+ 435              	.LVL85:
+ 436              	.L2:
+ 173:Motor_Unit_CAN.c ****                         }
+ 174:Motor_Unit_CAN.c ****                         break;
+ 175:Motor_Unit_CAN.c ****                 }
+ 176:Motor_Unit_CAN.c **** }...
+ 437              		.loc 1 176 0
+ 438              		@ sp needed
+ 439              	.LVL86:
+ 440              	.LVL87:
+ 441              	.LVL88:
+ 442 01e2 70BD     		pop	{r4, r5, r6, pc}
+ 443              	.L31:
+ 444              		.align	2
+ 445              	.L30:
+ 446 01e4 00000000 		.word	nextPWM
+ 447 01e8 00000000 		.word	millidegreeTarget
+ 448 01ec FFFF0000 		.word	65535
+ 449              		.cfi_endproc
+ 450              	.LFE36:
+ 451              		.size	NextStateFromCAN, .-NextStateFromCAN
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 12
+
+
+ 452              		.text
+ 453              	.Letext0:
+ 454              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 455              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 456              		.file 4 "CANPacket.h"
+ 457              		.file 5 "PositionPID.h"
+ 458              		.file 6 "CANCommon.h"
+ 459              		.file 7 "Port.h"
+ 460              		.file 8 "main.h"
+ 461              		.file 9 "CANMotorUnit.h"
+ 462              		.file 10 "MotorDrive.h"
+ 463              		.file 11 "Motor_Unit_FSM.h"
+ 464              		.file 12 "Generated_Source\\PSoC4/QuadDec.h"
+ 465              		.section	.debug_info,"",%progbits
+ 466              	.Ldebug_info0:
+ 467 0000 13070000 		.4byte	0x713
+ 468 0004 0400     		.2byte	0x4
+ 469 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 470 000a 04       		.byte	0x4
+ 471 000b 01       		.uleb128 0x1
+ 472 000c 42010000 		.4byte	.LASF67
+ 473 0010 0C       		.byte	0xc
+ 474 0011 EA030000 		.4byte	.LASF68
+ 475 0015 86000000 		.4byte	.LASF69
+ 476 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 477 001d 00000000 		.4byte	0
+ 478 0021 00000000 		.4byte	.Ldebug_line0
+ 479 0025 02       		.uleb128 0x2
+ 480 0026 01       		.byte	0x1
+ 481 0027 06       		.byte	0x6
+ 482 0028 FF020000 		.4byte	.LASF0
+ 483 002c 03       		.uleb128 0x3
+ 484 002d 53020000 		.4byte	.LASF2
+ 485 0031 02       		.byte	0x2
+ 486 0032 1D       		.byte	0x1d
+ 487 0033 37000000 		.4byte	0x37
+ 488 0037 02       		.uleb128 0x2
+ 489 0038 01       		.byte	0x1
+ 490 0039 08       		.byte	0x8
+ 491 003a 65020000 		.4byte	.LASF1
+ 492 003e 03       		.uleb128 0x3
+ 493 003f 41040000 		.4byte	.LASF3
+ 494 0043 02       		.byte	0x2
+ 495 0044 29       		.byte	0x29
+ 496 0045 49000000 		.4byte	0x49
+ 497 0049 02       		.uleb128 0x2
+ 498 004a 02       		.byte	0x2
+ 499 004b 05       		.byte	0x5
+ 500 004c 48000000 		.4byte	.LASF4
+ 501 0050 03       		.uleb128 0x3
+ 502 0051 1D010000 		.4byte	.LASF5
+ 503 0055 02       		.byte	0x2
+ 504 0056 2B       		.byte	0x2b
+ 505 0057 5B000000 		.4byte	0x5b
+ 506 005b 02       		.uleb128 0x2
+ 507 005c 02       		.byte	0x2
+ 508 005d 07       		.byte	0x7
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 13
+
+
+ 509 005e 66030000 		.4byte	.LASF6
+ 510 0062 03       		.uleb128 0x3
+ 511 0063 25040000 		.4byte	.LASF7
+ 512 0067 02       		.byte	0x2
+ 513 0068 3F       		.byte	0x3f
+ 514 0069 6D000000 		.4byte	0x6d
+ 515 006d 02       		.uleb128 0x2
+ 516 006e 04       		.byte	0x4
+ 517 006f 05       		.byte	0x5
+ 518 0070 4A020000 		.4byte	.LASF8
+ 519 0074 02       		.uleb128 0x2
+ 520 0075 04       		.byte	0x4
+ 521 0076 07       		.byte	0x7
+ 522 0077 05040000 		.4byte	.LASF9
+ 523 007b 02       		.uleb128 0x2
+ 524 007c 08       		.byte	0x8
+ 525 007d 05       		.byte	0x5
+ 526 007e 1F020000 		.4byte	.LASF10
+ 527 0082 02       		.uleb128 0x2
+ 528 0083 08       		.byte	0x8
+ 529 0084 07       		.byte	0x7
+ 530 0085 DC000000 		.4byte	.LASF11
+ 531 0089 04       		.uleb128 0x4
+ 532 008a 04       		.byte	0x4
+ 533 008b 05       		.byte	0x5
+ 534 008c 696E7400 		.ascii	"int\000"
+ 535 0090 02       		.uleb128 0x2
+ 536 0091 04       		.byte	0x4
+ 537 0092 07       		.byte	0x7
+ 538 0093 22030000 		.4byte	.LASF12
+ 539 0097 03       		.uleb128 0x3
+ 540 0098 D0010000 		.4byte	.LASF13
+ 541 009c 03       		.byte	0x3
+ 542 009d 18       		.byte	0x18
+ 543 009e 2C000000 		.4byte	0x2c
+ 544 00a2 03       		.uleb128 0x3
+ 545 00a3 A1030000 		.4byte	.LASF14
+ 546 00a7 03       		.byte	0x3
+ 547 00a8 20       		.byte	0x20
+ 548 00a9 3E000000 		.4byte	0x3e
+ 549 00ad 03       		.uleb128 0x3
+ 550 00ae 2F030000 		.4byte	.LASF15
+ 551 00b2 03       		.byte	0x3
+ 552 00b3 24       		.byte	0x24
+ 553 00b4 50000000 		.4byte	0x50
+ 554 00b8 03       		.uleb128 0x3
+ 555 00b9 99030000 		.4byte	.LASF16
+ 556 00bd 03       		.byte	0x3
+ 557 00be 2C       		.byte	0x2c
+ 558 00bf 62000000 		.4byte	0x62
+ 559 00c3 05       		.uleb128 0x5
+ 560 00c4 0C       		.byte	0xc
+ 561 00c5 04       		.byte	0x4
+ 562 00c6 0F       		.byte	0xf
+ 563 00c7 EF000000 		.4byte	0xef
+ 564 00cb 06       		.uleb128 0x6
+ 565 00cc 696400   		.ascii	"id\000"
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 14
+
+
+ 566 00cf 04       		.byte	0x4
+ 567 00d0 11       		.byte	0x11
+ 568 00d1 AD000000 		.4byte	0xad
+ 569 00d5 00       		.byte	0
+ 570 00d6 06       		.uleb128 0x6
+ 571 00d7 646C6300 		.ascii	"dlc\000"
+ 572 00db 04       		.byte	0x4
+ 573 00dc 12       		.byte	0x12
+ 574 00dd 97000000 		.4byte	0x97
+ 575 00e1 02       		.byte	0x2
+ 576 00e2 07       		.uleb128 0x7
+ 577 00e3 E5030000 		.4byte	.LASF17
+ 578 00e7 04       		.byte	0x4
+ 579 00e8 13       		.byte	0x13
+ 580 00e9 EF000000 		.4byte	0xef
+ 581 00ed 03       		.byte	0x3
+ 582 00ee 00       		.byte	0
+ 583 00ef 08       		.uleb128 0x8
+ 584 00f0 97000000 		.4byte	0x97
+ 585 00f4 FF000000 		.4byte	0xff
+ 586 00f8 09       		.uleb128 0x9
+ 587 00f9 FF000000 		.4byte	0xff
+ 588 00fd 07       		.byte	0x7
+ 589 00fe 00       		.byte	0
+ 590 00ff 02       		.uleb128 0x2
+ 591 0100 04       		.byte	0x4
+ 592 0101 07       		.byte	0x7
+ 593 0102 61000000 		.4byte	.LASF18
+ 594 0106 03       		.uleb128 0x3
+ 595 0107 40020000 		.4byte	.LASF19
+ 596 010b 04       		.byte	0x4
+ 597 010c 14       		.byte	0x14
+ 598 010d C3000000 		.4byte	0xc3
+ 599 0111 02       		.uleb128 0x2
+ 600 0112 08       		.byte	0x8
+ 601 0113 04       		.byte	0x4
+ 602 0114 91020000 		.4byte	.LASF20
+ 603 0118 02       		.uleb128 0x2
+ 604 0119 01       		.byte	0x1
+ 605 011a 08       		.byte	0x8
+ 606 011b 8C030000 		.4byte	.LASF21
+ 607 011f 02       		.uleb128 0x2
+ 608 0120 04       		.byte	0x4
+ 609 0121 04       		.byte	0x4
+ 610 0122 19020000 		.4byte	.LASF22
+ 611 0126 02       		.uleb128 0x2
+ 612 0127 08       		.byte	0x8
+ 613 0128 04       		.byte	0x4
+ 614 0129 6E040000 		.4byte	.LASF23
+ 615 012d 0A       		.uleb128 0xa
+ 616 012e DC020000 		.4byte	.LASF24
+ 617 0132 01       		.byte	0x1
+ 618 0133 1F       		.byte	0x1f
+ 619 0134 00000000 		.4byte	.LFB35
+ 620 0138 22000000 		.4byte	.LFE35-.LFB35
+ 621 013c 01       		.uleb128 0x1
+ 622 013d 9C       		.byte	0x9c
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 15
+
+
+ 623 013e 8E010000 		.4byte	0x18e
+ 624 0142 0B       		.uleb128 0xb
+ 625 0143 9B040000 		.4byte	.LASF26
+ 626 0147 01       		.byte	0x1
+ 627 0148 1F       		.byte	0x1f
+ 628 0149 8E010000 		.4byte	0x18e
+ 629 014d 00000000 		.4byte	.LLST0
+ 630 0151 0C       		.uleb128 0xc
+ 631 0152 0A000000 		.4byte	.LVL1
+ 632 0156 7F050000 		.4byte	0x57f
+ 633 015a 0D       		.uleb128 0xd
+ 634 015b 18000000 		.4byte	.LVL2
+ 635 015f 8A050000 		.4byte	0x58a
+ 636 0163 7D010000 		.4byte	0x17d
+ 637 0167 0E       		.uleb128 0xe
+ 638 0168 01       		.uleb128 0x1
+ 639 0169 50       		.byte	0x50
+ 640 016a 02       		.uleb128 0x2
+ 641 016b 74       		.byte	0x74
+ 642 016c 00       		.sleb128 0
+ 643 016d 0E       		.uleb128 0xe
+ 644 016e 01       		.uleb128 0x1
+ 645 016f 51       		.byte	0x51
+ 646 0170 01       		.uleb128 0x1
+ 647 0171 32       		.byte	0x32
+ 648 0172 0E       		.uleb128 0xe
+ 649 0173 01       		.uleb128 0x1
+ 650 0174 52       		.byte	0x52
+ 651 0175 01       		.uleb128 0x1
+ 652 0176 31       		.byte	0x31
+ 653 0177 0E       		.uleb128 0xe
+ 654 0178 01       		.uleb128 0x1
+ 655 0179 53       		.byte	0x53
+ 656 017a 01       		.uleb128 0x1
+ 657 017b 34       		.byte	0x34
+ 658 017c 00       		.byte	0
+ 659 017d 0F       		.uleb128 0xf
+ 660 017e 1E000000 		.4byte	.LVL3
+ 661 0182 95050000 		.4byte	0x595
+ 662 0186 0E       		.uleb128 0xe
+ 663 0187 01       		.uleb128 0x1
+ 664 0188 50       		.byte	0x50
+ 665 0189 02       		.uleb128 0x2
+ 666 018a 74       		.byte	0x74
+ 667 018b 00       		.sleb128 0
+ 668 018c 00       		.byte	0
+ 669 018d 00       		.byte	0
+ 670 018e 10       		.uleb128 0x10
+ 671 018f 04       		.byte	0x4
+ 672 0190 06010000 		.4byte	0x106
+ 673 0194 0A       		.uleb128 0xa
+ 674 0195 55030000 		.4byte	.LASF25
+ 675 0199 01       		.byte	0x1
+ 676 019a 26       		.byte	0x26
+ 677 019b 00000000 		.4byte	.LFB36
+ 678 019f F0010000 		.4byte	.LFE36-.LFB36
+ 679 01a3 01       		.uleb128 0x1
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 16
+
+
+ 680 01a4 9C       		.byte	0x9c
+ 681 01a5 69050000 		.4byte	0x569
+ 682 01a9 0B       		.uleb128 0xb
+ 683 01aa 6A000000 		.4byte	.LASF27
+ 684 01ae 01       		.byte	0x1
+ 685 01af 26       		.byte	0x26
+ 686 01b0 8E010000 		.4byte	0x18e
+ 687 01b4 2C000000 		.4byte	.LLST1
+ 688 01b8 0B       		.uleb128 0xb
+ 689 01b9 9B040000 		.4byte	.LASF26
+ 690 01bd 01       		.byte	0x1
+ 691 01be 26       		.byte	0x26
+ 692 01bf 8E010000 		.4byte	0x18e
+ 693 01c3 58000000 		.4byte	.LLST2
+ 694 01c7 11       		.uleb128 0x11
+ 695 01c8 A8040000 		.4byte	.LASF70
+ 696 01cc 01       		.byte	0x1
+ 697 01cd 27       		.byte	0x27
+ 698 01ce AD000000 		.4byte	0xad
+ 699 01d2 84000000 		.4byte	.LLST3
+ 700 01d6 0D       		.uleb128 0xd
+ 701 01d7 0A000000 		.4byte	.LVL6
+ 702 01db A0050000 		.4byte	0x5a0
+ 703 01df EA010000 		.4byte	0x1ea
+ 704 01e3 0E       		.uleb128 0xe
+ 705 01e4 01       		.uleb128 0x1
+ 706 01e5 50       		.byte	0x50
+ 707 01e6 02       		.uleb128 0x2
+ 708 01e7 75       		.byte	0x75
+ 709 01e8 00       		.sleb128 0
+ 710 01e9 00       		.byte	0
+ 711 01ea 0D       		.uleb128 0xd
+ 712 01eb 54000000 		.4byte	.LVL9
+ 713 01ef AB050000 		.4byte	0x5ab
+ 714 01f3 FE010000 		.4byte	0x1fe
+ 715 01f7 0E       		.uleb128 0xe
+ 716 01f8 01       		.uleb128 0x1
+ 717 01f9 50       		.byte	0x50
+ 718 01fa 02       		.uleb128 0x2
+ 719 01fb 75       		.byte	0x75
+ 720 01fc 00       		.sleb128 0
+ 721 01fd 00       		.byte	0
+ 722 01fe 0D       		.uleb128 0xd
+ 723 01ff 60000000 		.4byte	.LVL10
+ 724 0203 B6050000 		.4byte	0x5b6
+ 725 0207 16020000 		.4byte	0x216
+ 726 020b 0E       		.uleb128 0xe
+ 727 020c 01       		.uleb128 0x1
+ 728 020d 51       		.byte	0x51
+ 729 020e 01       		.uleb128 0x1
+ 730 020f 30       		.byte	0x30
+ 731 0210 0E       		.uleb128 0xe
+ 732 0211 01       		.uleb128 0x1
+ 733 0212 52       		.byte	0x52
+ 734 0213 01       		.uleb128 0x1
+ 735 0214 30       		.byte	0x30
+ 736 0215 00       		.byte	0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 17
+
+
+ 737 0216 0D       		.uleb128 0xd
+ 738 0217 66000000 		.4byte	.LVL11
+ 739 021b C1050000 		.4byte	0x5c1
+ 740 021f 29020000 		.4byte	0x229
+ 741 0223 0E       		.uleb128 0xe
+ 742 0224 01       		.uleb128 0x1
+ 743 0225 50       		.byte	0x50
+ 744 0226 01       		.uleb128 0x1
+ 745 0227 30       		.byte	0x30
+ 746 0228 00       		.byte	0
+ 747 0229 0D       		.uleb128 0xd
+ 748 022a 6C000000 		.4byte	.LVL12
+ 749 022e CC050000 		.4byte	0x5cc
+ 750 0232 3C020000 		.4byte	0x23c
+ 751 0236 0E       		.uleb128 0xe
+ 752 0237 01       		.uleb128 0x1
+ 753 0238 50       		.byte	0x50
+ 754 0239 01       		.uleb128 0x1
+ 755 023a 32       		.byte	0x32
+ 756 023b 00       		.byte	0
+ 757 023c 0D       		.uleb128 0xd
+ 758 023d 74000000 		.4byte	.LVL13
+ 759 0241 AB050000 		.4byte	0x5ab
+ 760 0245 50020000 		.4byte	0x250
+ 761 0249 0E       		.uleb128 0xe
+ 762 024a 01       		.uleb128 0x1
+ 763 024b 50       		.byte	0x50
+ 764 024c 02       		.uleb128 0x2
+ 765 024d 75       		.byte	0x75
+ 766 024e 00       		.sleb128 0
+ 767 024f 00       		.byte	0
+ 768 0250 0C       		.uleb128 0xc
+ 769 0251 7C000000 		.4byte	.LVL14
+ 770 0255 D7050000 		.4byte	0x5d7
+ 771 0259 0D       		.uleb128 0xd
+ 772 025a 82000000 		.4byte	.LVL15
+ 773 025e C1050000 		.4byte	0x5c1
+ 774 0262 6C020000 		.4byte	0x26c
+ 775 0266 0E       		.uleb128 0xe
+ 776 0267 01       		.uleb128 0x1
+ 777 0268 50       		.byte	0x50
+ 778 0269 01       		.uleb128 0x1
+ 779 026a 31       		.byte	0x31
+ 780 026b 00       		.byte	0
+ 781 026c 0D       		.uleb128 0xd
+ 782 026d 88000000 		.4byte	.LVL16
+ 783 0271 CC050000 		.4byte	0x5cc
+ 784 0275 7F020000 		.4byte	0x27f
+ 785 0279 0E       		.uleb128 0xe
+ 786 027a 01       		.uleb128 0x1
+ 787 027b 50       		.byte	0x50
+ 788 027c 01       		.uleb128 0x1
+ 789 027d 32       		.byte	0x32
+ 790 027e 00       		.byte	0
+ 791 027f 0C       		.uleb128 0xc
+ 792 0280 8E000000 		.4byte	.LVL17
+ 793 0284 E2050000 		.4byte	0x5e2
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 18
+
+
+ 794 0288 0C       		.uleb128 0xc
+ 795 0289 94000000 		.4byte	.LVL19
+ 796 028d ED050000 		.4byte	0x5ed
+ 797 0291 0C       		.uleb128 0xc
+ 798 0292 9C000000 		.4byte	.LVL20
+ 799 0296 CC050000 		.4byte	0x5cc
+ 800 029a 0D       		.uleb128 0xd
+ 801 029b A2000000 		.4byte	.LVL21
+ 802 029f F8050000 		.4byte	0x5f8
+ 803 02a3 AE020000 		.4byte	0x2ae
+ 804 02a7 0E       		.uleb128 0xe
+ 805 02a8 01       		.uleb128 0x1
+ 806 02a9 50       		.byte	0x50
+ 807 02aa 02       		.uleb128 0x2
+ 808 02ab 75       		.byte	0x75
+ 809 02ac 00       		.sleb128 0
+ 810 02ad 00       		.byte	0
+ 811 02ae 0D       		.uleb128 0xd
+ 812 02af AE000000 		.4byte	.LVL22
+ 813 02b3 CC050000 		.4byte	0x5cc
+ 814 02b7 C1020000 		.4byte	0x2c1
+ 815 02bb 0E       		.uleb128 0xe
+ 816 02bc 01       		.uleb128 0x1
+ 817 02bd 50       		.byte	0x50
+ 818 02be 01       		.uleb128 0x1
+ 819 02bf 33       		.byte	0x33
+ 820 02c0 00       		.byte	0
+ 821 02c1 0D       		.uleb128 0xd
+ 822 02c2 B4000000 		.4byte	.LVL23
+ 823 02c6 03060000 		.4byte	0x603
+ 824 02ca D4020000 		.4byte	0x2d4
+ 825 02ce 0E       		.uleb128 0xe
+ 826 02cf 01       		.uleb128 0x1
+ 827 02d0 50       		.byte	0x50
+ 828 02d1 01       		.uleb128 0x1
+ 829 02d2 31       		.byte	0x31
+ 830 02d3 00       		.byte	0
+ 831 02d4 0D       		.uleb128 0xd
+ 832 02d5 BC000000 		.4byte	.LVL26
+ 833 02d9 0E060000 		.4byte	0x60e
+ 834 02dd E8020000 		.4byte	0x2e8
+ 835 02e1 0E       		.uleb128 0xe
+ 836 02e2 01       		.uleb128 0x1
+ 837 02e3 50       		.byte	0x50
+ 838 02e4 02       		.uleb128 0x2
+ 839 02e5 75       		.byte	0x75
+ 840 02e6 00       		.sleb128 0
+ 841 02e7 00       		.byte	0
+ 842 02e8 0C       		.uleb128 0xc
+ 843 02e9 C0000000 		.4byte	.LVL27
+ 844 02ed 19060000 		.4byte	0x619
+ 845 02f1 0C       		.uleb128 0xc
+ 846 02f2 C4000000 		.4byte	.LVL28
+ 847 02f6 24060000 		.4byte	0x624
+ 848 02fa 0D       		.uleb128 0xd
+ 849 02fb CA000000 		.4byte	.LVL29
+ 850 02ff CC050000 		.4byte	0x5cc
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 19
+
+
+ 851 0303 0D030000 		.4byte	0x30d
+ 852 0307 0E       		.uleb128 0xe
+ 853 0308 01       		.uleb128 0x1
+ 854 0309 50       		.byte	0x50
+ 855 030a 01       		.uleb128 0x1
+ 856 030b 32       		.byte	0x32
+ 857 030c 00       		.byte	0
+ 858 030d 0D       		.uleb128 0xd
+ 859 030e D2000000 		.4byte	.LVL32
+ 860 0312 2F060000 		.4byte	0x62f
+ 861 0316 21030000 		.4byte	0x321
+ 862 031a 0E       		.uleb128 0xe
+ 863 031b 01       		.uleb128 0x1
+ 864 031c 50       		.byte	0x50
+ 865 031d 02       		.uleb128 0x2
+ 866 031e 75       		.byte	0x75
+ 867 031f 00       		.sleb128 0
+ 868 0320 00       		.byte	0
+ 869 0321 0C       		.uleb128 0xc
+ 870 0322 D6000000 		.4byte	.LVL33
+ 871 0326 3A060000 		.4byte	0x63a
+ 872 032a 0C       		.uleb128 0xc
+ 873 032b DA000000 		.4byte	.LVL34
+ 874 032f 45060000 		.4byte	0x645
+ 875 0333 0D       		.uleb128 0xd
+ 876 0334 E0000000 		.4byte	.LVL35
+ 877 0338 CC050000 		.4byte	0x5cc
+ 878 033c 46030000 		.4byte	0x346
+ 879 0340 0E       		.uleb128 0xe
+ 880 0341 01       		.uleb128 0x1
+ 881 0342 50       		.byte	0x50
+ 882 0343 01       		.uleb128 0x1
+ 883 0344 32       		.byte	0x32
+ 884 0345 00       		.byte	0
+ 885 0346 0D       		.uleb128 0xd
+ 886 0347 E8000000 		.4byte	.LVL38
+ 887 034b 50060000 		.4byte	0x650
+ 888 034f 5A030000 		.4byte	0x35a
+ 889 0353 0E       		.uleb128 0xe
+ 890 0354 01       		.uleb128 0x1
+ 891 0355 50       		.byte	0x50
+ 892 0356 02       		.uleb128 0x2
+ 893 0357 75       		.byte	0x75
+ 894 0358 00       		.sleb128 0
+ 895 0359 00       		.byte	0
+ 896 035a 0C       		.uleb128 0xc
+ 897 035b EC000000 		.4byte	.LVL39
+ 898 035f 5B060000 		.4byte	0x65b
+ 899 0363 0C       		.uleb128 0xc
+ 900 0364 F0000000 		.4byte	.LVL40
+ 901 0368 66060000 		.4byte	0x666
+ 902 036c 0D       		.uleb128 0xd
+ 903 036d F6000000 		.4byte	.LVL41
+ 904 0371 CC050000 		.4byte	0x5cc
+ 905 0375 7F030000 		.4byte	0x37f
+ 906 0379 0E       		.uleb128 0xe
+ 907 037a 01       		.uleb128 0x1
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 20
+
+
+ 908 037b 50       		.byte	0x50
+ 909 037c 01       		.uleb128 0x1
+ 910 037d 32       		.byte	0x32
+ 911 037e 00       		.byte	0
+ 912 037f 0C       		.uleb128 0xc
+ 913 0380 FC000000 		.4byte	.LVL43
+ 914 0384 ED050000 		.4byte	0x5ed
+ 915 0388 0C       		.uleb128 0xc
+ 916 0389 04010000 		.4byte	.LVL44
+ 917 038d 71060000 		.4byte	0x671
+ 918 0391 0C       		.uleb128 0xc
+ 919 0392 0C010000 		.4byte	.LVL45
+ 920 0396 7C060000 		.4byte	0x67c
+ 921 039a 0D       		.uleb128 0xd
+ 922 039b 12010000 		.4byte	.LVL46
+ 923 039f 87060000 		.4byte	0x687
+ 924 03a3 AE030000 		.4byte	0x3ae
+ 925 03a7 0E       		.uleb128 0xe
+ 926 03a8 01       		.uleb128 0x1
+ 927 03a9 50       		.byte	0x50
+ 928 03aa 02       		.uleb128 0x2
+ 929 03ab 75       		.byte	0x75
+ 930 03ac 00       		.sleb128 0
+ 931 03ad 00       		.byte	0
+ 932 03ae 0D       		.uleb128 0xd
+ 933 03af 1C010000 		.4byte	.LVL47
+ 934 03b3 CC050000 		.4byte	0x5cc
+ 935 03b7 C1030000 		.4byte	0x3c1
+ 936 03bb 0E       		.uleb128 0xe
+ 937 03bc 01       		.uleb128 0x1
+ 938 03bd 50       		.byte	0x50
+ 939 03be 01       		.uleb128 0x1
+ 940 03bf 31       		.byte	0x31
+ 941 03c0 00       		.byte	0
+ 942 03c1 0D       		.uleb128 0xd
+ 943 03c2 24010000 		.4byte	.LVL48
+ 944 03c6 CC050000 		.4byte	0x5cc
+ 945 03ca D4030000 		.4byte	0x3d4
+ 946 03ce 0E       		.uleb128 0xe
+ 947 03cf 01       		.uleb128 0x1
+ 948 03d0 50       		.byte	0x50
+ 949 03d1 01       		.uleb128 0x1
+ 950 03d2 33       		.byte	0x33
+ 951 03d3 00       		.byte	0
+ 952 03d4 0D       		.uleb128 0xd
+ 953 03d5 2A010000 		.4byte	.LVL49
+ 954 03d9 03060000 		.4byte	0x603
+ 955 03dd E7030000 		.4byte	0x3e7
+ 956 03e1 0E       		.uleb128 0xe
+ 957 03e2 01       		.uleb128 0x1
+ 958 03e3 50       		.byte	0x50
+ 959 03e4 01       		.uleb128 0x1
+ 960 03e5 31       		.byte	0x31
+ 961 03e6 00       		.byte	0
+ 962 03e7 0D       		.uleb128 0xd
+ 963 03e8 32010000 		.4byte	.LVL52
+ 964 03ec 92060000 		.4byte	0x692
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 21
+
+
+ 965 03f0 FB030000 		.4byte	0x3fb
+ 966 03f4 0E       		.uleb128 0xe
+ 967 03f5 01       		.uleb128 0x1
+ 968 03f6 50       		.byte	0x50
+ 969 03f7 02       		.uleb128 0x2
+ 970 03f8 75       		.byte	0x75
+ 971 03f9 00       		.sleb128 0
+ 972 03fa 00       		.byte	0
+ 973 03fb 0C       		.uleb128 0xc
+ 974 03fc 36010000 		.4byte	.LVL53
+ 975 0400 9D060000 		.4byte	0x69d
+ 976 0404 0C       		.uleb128 0xc
+ 977 0405 3A010000 		.4byte	.LVL54
+ 978 0409 A8060000 		.4byte	0x6a8
+ 979 040d 0D       		.uleb128 0xd
+ 980 040e 40010000 		.4byte	.LVL55
+ 981 0412 CC050000 		.4byte	0x5cc
+ 982 0416 20040000 		.4byte	0x420
+ 983 041a 0E       		.uleb128 0xe
+ 984 041b 01       		.uleb128 0x1
+ 985 041c 50       		.byte	0x50
+ 986 041d 01       		.uleb128 0x1
+ 987 041e 32       		.byte	0x32
+ 988 041f 00       		.byte	0
+ 989 0420 0C       		.uleb128 0xc
+ 990 0421 46010000 		.4byte	.LVL57
+ 991 0425 ED050000 		.4byte	0x5ed
+ 992 0429 0D       		.uleb128 0xd
+ 993 042a 54010000 		.4byte	.LVL58
+ 994 042e B6050000 		.4byte	0x5b6
+ 995 0432 46040000 		.4byte	0x446
+ 996 0436 0E       		.uleb128 0xe
+ 997 0437 01       		.uleb128 0x1
+ 998 0438 50       		.byte	0x50
+ 999 0439 01       		.uleb128 0x1
+ 1000 043a 30       		.byte	0x30
+ 1001 043b 0E       		.uleb128 0xe
+ 1002 043c 01       		.uleb128 0x1
+ 1003 043d 51       		.byte	0x51
+ 1004 043e 01       		.uleb128 0x1
+ 1005 043f 30       		.byte	0x30
+ 1006 0440 0E       		.uleb128 0xe
+ 1007 0441 01       		.uleb128 0x1
+ 1008 0442 52       		.byte	0x52
+ 1009 0443 01       		.uleb128 0x1
+ 1010 0444 30       		.byte	0x30
+ 1011 0445 00       		.byte	0
+ 1012 0446 0C       		.uleb128 0xc
+ 1013 0447 58010000 		.4byte	.LVL59
+ 1014 044b B3060000 		.4byte	0x6b3
+ 1015 044f 0C       		.uleb128 0xc
+ 1016 0450 5C010000 		.4byte	.LVL60
+ 1017 0454 BE060000 		.4byte	0x6be
+ 1018 0458 0D       		.uleb128 0xd
+ 1019 0459 62010000 		.4byte	.LVL61
+ 1020 045d C9060000 		.4byte	0x6c9
+ 1021 0461 6C040000 		.4byte	0x46c
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 22
+
+
+ 1022 0465 0E       		.uleb128 0xe
+ 1023 0466 01       		.uleb128 0x1
+ 1024 0467 50       		.byte	0x50
+ 1025 0468 02       		.uleb128 0x2
+ 1026 0469 75       		.byte	0x75
+ 1027 046a 00       		.sleb128 0
+ 1028 046b 00       		.byte	0
+ 1029 046c 0D       		.uleb128 0xd
+ 1030 046d 6C010000 		.4byte	.LVL62
+ 1031 0471 D4060000 		.4byte	0x6d4
+ 1032 0475 7F040000 		.4byte	0x47f
+ 1033 0479 0E       		.uleb128 0xe
+ 1034 047a 01       		.uleb128 0x1
+ 1035 047b 50       		.byte	0x50
+ 1036 047c 01       		.uleb128 0x1
+ 1037 047d 30       		.byte	0x30
+ 1038 047e 00       		.byte	0
+ 1039 047f 0D       		.uleb128 0xd
+ 1040 0480 72010000 		.4byte	.LVL63
+ 1041 0484 DF060000 		.4byte	0x6df
+ 1042 0488 93040000 		.4byte	0x493
+ 1043 048c 0E       		.uleb128 0xe
+ 1044 048d 01       		.uleb128 0x1
+ 1045 048e 50       		.byte	0x50
+ 1046 048f 02       		.uleb128 0x2
+ 1047 0490 75       		.byte	0x75
+ 1048 0491 00       		.sleb128 0
+ 1049 0492 00       		.byte	0
+ 1050 0493 0C       		.uleb128 0xc
+ 1051 0494 7A010000 		.4byte	.LVL64
+ 1052 0498 EA060000 		.4byte	0x6ea
+ 1053 049c 0C       		.uleb128 0xc
+ 1054 049d 80010000 		.4byte	.LVL65
+ 1055 04a1 F5060000 		.4byte	0x6f5
+ 1056 04a5 0D       		.uleb128 0xd
+ 1057 04a6 86010000 		.4byte	.LVL66
+ 1058 04aa CC050000 		.4byte	0x5cc
+ 1059 04ae B8040000 		.4byte	0x4b8
+ 1060 04b2 0E       		.uleb128 0xe
+ 1061 04b3 01       		.uleb128 0x1
+ 1062 04b4 50       		.byte	0x50
+ 1063 04b5 01       		.uleb128 0x1
+ 1064 04b6 32       		.byte	0x32
+ 1065 04b7 00       		.byte	0
+ 1066 04b8 0D       		.uleb128 0xd
+ 1067 04b9 8E010000 		.4byte	.LVL69
+ 1068 04bd 00070000 		.4byte	0x700
+ 1069 04c1 CC040000 		.4byte	0x4cc
+ 1070 04c5 0E       		.uleb128 0xe
+ 1071 04c6 01       		.uleb128 0x1
+ 1072 04c7 50       		.byte	0x50
+ 1073 04c8 02       		.uleb128 0x2
+ 1074 04c9 75       		.byte	0x75
+ 1075 04ca 00       		.sleb128 0
+ 1076 04cb 00       		.byte	0
+ 1077 04cc 0C       		.uleb128 0xc
+ 1078 04cd 92010000 		.4byte	.LVL70
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 23
+
+
+ 1079 04d1 0B070000 		.4byte	0x70b
+ 1080 04d5 0D       		.uleb128 0xd
+ 1081 04d6 98010000 		.4byte	.LVL71
+ 1082 04da CC050000 		.4byte	0x5cc
+ 1083 04de E8040000 		.4byte	0x4e8
+ 1084 04e2 0E       		.uleb128 0xe
+ 1085 04e3 01       		.uleb128 0x1
+ 1086 04e4 50       		.byte	0x50
+ 1087 04e5 01       		.uleb128 0x1
+ 1088 04e6 32       		.byte	0x32
+ 1089 04e7 00       		.byte	0
+ 1090 04e8 0D       		.uleb128 0xd
+ 1091 04e9 A4010000 		.4byte	.LVL74
+ 1092 04ed B6050000 		.4byte	0x5b6
+ 1093 04f1 05050000 		.4byte	0x505
+ 1094 04f5 0E       		.uleb128 0xe
+ 1095 04f6 01       		.uleb128 0x1
+ 1096 04f7 50       		.byte	0x50
+ 1097 04f8 01       		.uleb128 0x1
+ 1098 04f9 30       		.byte	0x30
+ 1099 04fa 0E       		.uleb128 0xe
+ 1100 04fb 01       		.uleb128 0x1
+ 1101 04fc 51       		.byte	0x51
+ 1102 04fd 01       		.uleb128 0x1
+ 1103 04fe 30       		.byte	0x30
+ 1104 04ff 0E       		.uleb128 0xe
+ 1105 0500 01       		.uleb128 0x1
+ 1106 0501 52       		.byte	0x52
+ 1107 0502 01       		.uleb128 0x1
+ 1108 0503 30       		.byte	0x30
+ 1109 0504 00       		.byte	0
+ 1110 0505 0C       		.uleb128 0xc
+ 1111 0506 A8010000 		.4byte	.LVL75
+ 1112 050a E2050000 		.4byte	0x5e2
+ 1113 050e 0D       		.uleb128 0xd
+ 1114 050f B0010000 		.4byte	.LVL78
+ 1115 0513 2D010000 		.4byte	0x12d
+ 1116 0517 22050000 		.4byte	0x522
+ 1117 051b 0E       		.uleb128 0xe
+ 1118 051c 01       		.uleb128 0x1
+ 1119 051d 50       		.byte	0x50
+ 1120 051e 02       		.uleb128 0x2
+ 1121 051f 76       		.byte	0x76
+ 1122 0520 00       		.sleb128 0
+ 1123 0521 00       		.byte	0
+ 1124 0522 0C       		.uleb128 0xc
+ 1125 0523 B6010000 		.4byte	.LVL80
+ 1126 0527 ED050000 		.4byte	0x5ed
+ 1127 052b 0C       		.uleb128 0xc
+ 1128 052c BE010000 		.4byte	.LVL81
+ 1129 0530 CC050000 		.4byte	0x5cc
+ 1130 0534 0C       		.uleb128 0xc
+ 1131 0535 C4010000 		.4byte	.LVL82
+ 1132 0539 ED050000 		.4byte	0x5ed
+ 1133 053d 0C       		.uleb128 0xc
+ 1134 053e CE010000 		.4byte	.LVL83
+ 1135 0542 CC050000 		.4byte	0x5cc
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 24
+
+
+ 1136 0546 0D       		.uleb128 0xd
+ 1137 0547 D6010000 		.4byte	.LVL84
+ 1138 054b CC050000 		.4byte	0x5cc
+ 1139 054f 59050000 		.4byte	0x559
+ 1140 0553 0E       		.uleb128 0xe
+ 1141 0554 01       		.uleb128 0x1
+ 1142 0555 50       		.byte	0x50
+ 1143 0556 01       		.uleb128 0x1
+ 1144 0557 32       		.byte	0x32
+ 1145 0558 00       		.byte	0
+ 1146 0559 0F       		.uleb128 0xf
+ 1147 055a E2010000 		.4byte	.LVL85
+ 1148 055e 03060000 		.4byte	0x603
+ 1149 0562 0E       		.uleb128 0xe
+ 1150 0563 01       		.uleb128 0x1
+ 1151 0564 50       		.byte	0x50
+ 1152 0565 01       		.uleb128 0x1
+ 1153 0566 30       		.byte	0x30
+ 1154 0567 00       		.byte	0
+ 1155 0568 00       		.byte	0
+ 1156 0569 12       		.uleb128 0x12
+ 1157 056a 5D020000 		.4byte	.LASF28
+ 1158 056e 01       		.byte	0x1
+ 1159 056f 1C       		.byte	0x1c
+ 1160 0570 A2000000 		.4byte	0xa2
+ 1161 0574 12       		.uleb128 0x12
+ 1162 0575 2F040000 		.4byte	.LASF29
+ 1163 0579 01       		.byte	0x1
+ 1164 057a 1D       		.byte	0x1d
+ 1165 057b B8000000 		.4byte	0xb8
+ 1166 057f 13       		.uleb128 0x13
+ 1167 0580 CB030000 		.4byte	.LASF30
+ 1168 0584 CB030000 		.4byte	.LASF30
+ 1169 0588 05       		.byte	0x5
+ 1170 0589 12       		.byte	0x12
+ 1171 058a 13       		.uleb128 0x13
+ 1172 058b 9D020000 		.4byte	.LASF31
+ 1173 058f 9D020000 		.4byte	.LASF31
+ 1174 0593 06       		.byte	0x6
+ 1175 0594 3C       		.byte	0x3c
+ 1176 0595 13       		.uleb128 0x13
+ 1177 0596 00000000 		.4byte	.LASF32
+ 1178 059a 00000000 		.4byte	.LASF32
+ 1179 059e 07       		.byte	0x7
+ 1180 059f 1C       		.byte	0x1c
+ 1181 05a0 13       		.uleb128 0x13
+ 1182 05a1 91030000 		.4byte	.LASF33
+ 1183 05a5 91030000 		.4byte	.LASF33
+ 1184 05a9 08       		.byte	0x8
+ 1185 05aa 48       		.byte	0x48
+ 1186 05ab 13       		.uleb128 0x13
+ 1187 05ac 07020000 		.4byte	.LASF34
+ 1188 05b0 07020000 		.4byte	.LASF34
+ 1189 05b4 09       		.byte	0x9
+ 1190 05b5 13       		.byte	0x13
+ 1191 05b6 13       		.uleb128 0x13
+ 1192 05b7 FF010000 		.4byte	.LASF35
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 25
+
+
+ 1193 05bb FF010000 		.4byte	.LASF35
+ 1194 05bf 0A       		.byte	0xa
+ 1195 05c0 12       		.byte	0x12
+ 1196 05c1 13       		.uleb128 0x13
+ 1197 05c2 FB030000 		.4byte	.LASF36
+ 1198 05c6 FB030000 		.4byte	.LASF36
+ 1199 05ca 0B       		.byte	0xb
+ 1200 05cb 1B       		.byte	0x1b
+ 1201 05cc 13       		.uleb128 0x13
+ 1202 05cd 3D000000 		.4byte	.LASF37
+ 1203 05d1 3D000000 		.4byte	.LASF37
+ 1204 05d5 0B       		.byte	0xb
+ 1205 05d6 1A       		.byte	0x1a
+ 1206 05d7 13       		.uleb128 0x13
+ 1207 05d8 17040000 		.4byte	.LASF38
+ 1208 05dc 17040000 		.4byte	.LASF38
+ 1209 05e0 05       		.byte	0x5
+ 1210 05e1 1B       		.byte	0x1b
+ 1211 05e2 13       		.uleb128 0x13
+ 1212 05e3 BB020000 		.4byte	.LASF39
+ 1213 05e7 BB020000 		.4byte	.LASF39
+ 1214 05eb 0B       		.byte	0xb
+ 1215 05ec 19       		.byte	0x19
+ 1216 05ed 13       		.uleb128 0x13
+ 1217 05ee 4D030000 		.4byte	.LASF40
+ 1218 05f2 4D030000 		.4byte	.LASF40
+ 1219 05f6 0B       		.byte	0xb
+ 1220 05f7 1D       		.byte	0x1d
+ 1221 05f8 13       		.uleb128 0x13
+ 1222 05f9 B2040000 		.4byte	.LASF41
+ 1223 05fd B2040000 		.4byte	.LASF41
+ 1224 0601 09       		.byte	0x9
+ 1225 0602 1A       		.byte	0x1a
+ 1226 0603 13       		.uleb128 0x13
+ 1227 0604 0C010000 		.4byte	.LASF42
+ 1228 0608 0C010000 		.4byte	.LASF42
+ 1229 060c 08       		.byte	0x8
+ 1230 060d 4A       		.byte	0x4a
+ 1231 060e 13       		.uleb128 0x13
+ 1232 060f 52000000 		.4byte	.LASF43
+ 1233 0613 52000000 		.4byte	.LASF43
+ 1234 0617 09       		.byte	0x9
+ 1235 0618 29       		.byte	0x29
+ 1236 0619 13       		.uleb128 0x13
+ 1237 061a 1B000000 		.4byte	.LASF44
+ 1238 061e 1B000000 		.4byte	.LASF44
+ 1239 0622 05       		.byte	0x5
+ 1240 0623 14       		.byte	0x14
+ 1241 0624 13       		.uleb128 0x13
+ 1242 0625 79030000 		.4byte	.LASF45
+ 1243 0629 79030000 		.4byte	.LASF45
+ 1244 062d 0B       		.byte	0xb
+ 1245 062e 1F       		.byte	0x1f
+ 1246 062f 13       		.uleb128 0x13
+ 1247 0630 E7010000 		.4byte	.LASF46
+ 1248 0634 E7010000 		.4byte	.LASF46
+ 1249 0638 09       		.byte	0x9
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 26
+
+
+ 1250 0639 30       		.byte	0x30
+ 1251 063a 13       		.uleb128 0x13
+ 1252 063b 0E000000 		.4byte	.LASF47
+ 1253 063f 0E000000 		.4byte	.LASF47
+ 1254 0643 05       		.byte	0x5
+ 1255 0644 15       		.byte	0x15
+ 1256 0645 13       		.uleb128 0x13
+ 1257 0646 EC020000 		.4byte	.LASF48
+ 1258 064a EC020000 		.4byte	.LASF48
+ 1259 064e 0B       		.byte	0xb
+ 1260 064f 20       		.byte	0x20
+ 1261 0650 13       		.uleb128 0x13
+ 1262 0651 D8010000 		.4byte	.LASF49
+ 1263 0655 D8010000 		.4byte	.LASF49
+ 1264 0659 09       		.byte	0x9
+ 1265 065a 37       		.byte	0x37
+ 1266 065b 13       		.uleb128 0x13
+ 1267 065c 28010000 		.4byte	.LASF50
+ 1268 0660 28010000 		.4byte	.LASF50
+ 1269 0664 05       		.byte	0x5
+ 1270 0665 16       		.byte	0x16
+ 1271 0666 13       		.uleb128 0x13
+ 1272 0667 28000000 		.4byte	.LASF51
+ 1273 066b 28000000 		.4byte	.LASF51
+ 1274 066f 0B       		.byte	0xb
+ 1275 0670 21       		.byte	0x21
+ 1276 0671 13       		.uleb128 0x13
+ 1277 0672 A9030000 		.4byte	.LASF52
+ 1278 0676 A9030000 		.4byte	.LASF52
+ 1279 067a 0B       		.byte	0xb
+ 1280 067b 24       		.byte	0x24
+ 1281 067c 13       		.uleb128 0x13
+ 1282 067d 64040000 		.4byte	.LASF53
+ 1283 0681 64040000 		.4byte	.LASF53
+ 1284 0685 05       		.byte	0x5
+ 1285 0686 1E       		.byte	0x1e
+ 1286 0687 13       		.uleb128 0x13
+ 1287 0688 75040000 		.4byte	.LASF54
+ 1288 068c 75040000 		.4byte	.LASF54
+ 1289 0690 09       		.byte	0x9
+ 1290 0691 22       		.byte	0x22
+ 1291 0692 13       		.uleb128 0x13
+ 1292 0693 4B040000 		.4byte	.LASF55
+ 1293 0697 4B040000 		.4byte	.LASF55
+ 1294 069b 09       		.byte	0x9
+ 1295 069c 4E       		.byte	0x4e
+ 1296 069d 13       		.uleb128 0x13
+ 1297 069e F6010000 		.4byte	.LASF56
+ 1298 06a2 F6010000 		.4byte	.LASF56
+ 1299 06a6 05       		.byte	0x5
+ 1300 06a7 17       		.byte	0x17
+ 1301 06a8 13       		.uleb128 0x13
+ 1302 06a9 8C040000 		.4byte	.LASF57
+ 1303 06ad 8C040000 		.4byte	.LASF57
+ 1304 06b1 0B       		.byte	0xb
+ 1305 06b2 22       		.byte	0x22
+ 1306 06b3 13       		.uleb128 0x13
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 27
+
+
+ 1307 06b4 CB020000 		.4byte	.LASF58
+ 1308 06b8 CB020000 		.4byte	.LASF58
+ 1309 06bc 05       		.byte	0x5
+ 1310 06bd 1A       		.byte	0x1a
+ 1311 06be 13       		.uleb128 0x13
+ 1312 06bf 37010000 		.4byte	.LASF59
+ 1313 06c3 37010000 		.4byte	.LASF59
+ 1314 06c7 05       		.byte	0x5
+ 1315 06c8 1D       		.byte	0x1d
+ 1316 06c9 13       		.uleb128 0x13
+ 1317 06ca F3000000 		.4byte	.LASF60
+ 1318 06ce F3000000 		.4byte	.LASF60
+ 1319 06d2 09       		.byte	0x9
+ 1320 06d3 9C       		.byte	0x9c
+ 1321 06d4 13       		.uleb128 0x13
+ 1322 06d5 2D020000 		.4byte	.LASF61
+ 1323 06d9 2D020000 		.4byte	.LASF61
+ 1324 06dd 0C       		.byte	0xc
+ 1325 06de 4F       		.byte	0x4f
+ 1326 06df 13       		.uleb128 0x13
+ 1327 06e0 73020000 		.4byte	.LASF62
+ 1328 06e4 73020000 		.4byte	.LASF62
+ 1329 06e8 09       		.byte	0x9
+ 1330 06e9 9B       		.byte	0x9b
+ 1331 06ea 13       		.uleb128 0x13
+ 1332 06eb 38030000 		.4byte	.LASF63
+ 1333 06ef 38030000 		.4byte	.LASF63
+ 1334 06f3 05       		.byte	0x5
+ 1335 06f4 23       		.byte	0x23
+ 1336 06f5 13       		.uleb128 0x13
+ 1337 06f6 B6030000 		.4byte	.LASF64
+ 1338 06fa B6030000 		.4byte	.LASF64
+ 1339 06fe 05       		.byte	0x5
+ 1340 06ff 22       		.byte	0x22
+ 1341 0700 13       		.uleb128 0x13
+ 1342 0701 0B030000 		.4byte	.LASF65
+ 1343 0705 0B030000 		.4byte	.LASF65
+ 1344 0709 09       		.byte	0x9
+ 1345 070a A2       		.byte	0xa2
+ 1346 070b 13       		.uleb128 0x13
+ 1347 070c 79000000 		.4byte	.LASF66
+ 1348 0710 79000000 		.4byte	.LASF66
+ 1349 0714 05       		.byte	0x5
+ 1350 0715 24       		.byte	0x24
+ 1351 0716 00       		.byte	0
+ 1352              		.section	.debug_abbrev,"",%progbits
+ 1353              	.Ldebug_abbrev0:
+ 1354 0000 01       		.uleb128 0x1
+ 1355 0001 11       		.uleb128 0x11
+ 1356 0002 01       		.byte	0x1
+ 1357 0003 25       		.uleb128 0x25
+ 1358 0004 0E       		.uleb128 0xe
+ 1359 0005 13       		.uleb128 0x13
+ 1360 0006 0B       		.uleb128 0xb
+ 1361 0007 03       		.uleb128 0x3
+ 1362 0008 0E       		.uleb128 0xe
+ 1363 0009 1B       		.uleb128 0x1b
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 28
+
+
+ 1364 000a 0E       		.uleb128 0xe
+ 1365 000b 55       		.uleb128 0x55
+ 1366 000c 17       		.uleb128 0x17
+ 1367 000d 11       		.uleb128 0x11
+ 1368 000e 01       		.uleb128 0x1
+ 1369 000f 10       		.uleb128 0x10
+ 1370 0010 17       		.uleb128 0x17
+ 1371 0011 00       		.byte	0
+ 1372 0012 00       		.byte	0
+ 1373 0013 02       		.uleb128 0x2
+ 1374 0014 24       		.uleb128 0x24
+ 1375 0015 00       		.byte	0
+ 1376 0016 0B       		.uleb128 0xb
+ 1377 0017 0B       		.uleb128 0xb
+ 1378 0018 3E       		.uleb128 0x3e
+ 1379 0019 0B       		.uleb128 0xb
+ 1380 001a 03       		.uleb128 0x3
+ 1381 001b 0E       		.uleb128 0xe
+ 1382 001c 00       		.byte	0
+ 1383 001d 00       		.byte	0
+ 1384 001e 03       		.uleb128 0x3
+ 1385 001f 16       		.uleb128 0x16
+ 1386 0020 00       		.byte	0
+ 1387 0021 03       		.uleb128 0x3
+ 1388 0022 0E       		.uleb128 0xe
+ 1389 0023 3A       		.uleb128 0x3a
+ 1390 0024 0B       		.uleb128 0xb
+ 1391 0025 3B       		.uleb128 0x3b
+ 1392 0026 0B       		.uleb128 0xb
+ 1393 0027 49       		.uleb128 0x49
+ 1394 0028 13       		.uleb128 0x13
+ 1395 0029 00       		.byte	0
+ 1396 002a 00       		.byte	0
+ 1397 002b 04       		.uleb128 0x4
+ 1398 002c 24       		.uleb128 0x24
+ 1399 002d 00       		.byte	0
+ 1400 002e 0B       		.uleb128 0xb
+ 1401 002f 0B       		.uleb128 0xb
+ 1402 0030 3E       		.uleb128 0x3e
+ 1403 0031 0B       		.uleb128 0xb
+ 1404 0032 03       		.uleb128 0x3
+ 1405 0033 08       		.uleb128 0x8
+ 1406 0034 00       		.byte	0
+ 1407 0035 00       		.byte	0
+ 1408 0036 05       		.uleb128 0x5
+ 1409 0037 13       		.uleb128 0x13
+ 1410 0038 01       		.byte	0x1
+ 1411 0039 0B       		.uleb128 0xb
+ 1412 003a 0B       		.uleb128 0xb
+ 1413 003b 3A       		.uleb128 0x3a
+ 1414 003c 0B       		.uleb128 0xb
+ 1415 003d 3B       		.uleb128 0x3b
+ 1416 003e 0B       		.uleb128 0xb
+ 1417 003f 01       		.uleb128 0x1
+ 1418 0040 13       		.uleb128 0x13
+ 1419 0041 00       		.byte	0
+ 1420 0042 00       		.byte	0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 29
+
+
+ 1421 0043 06       		.uleb128 0x6
+ 1422 0044 0D       		.uleb128 0xd
+ 1423 0045 00       		.byte	0
+ 1424 0046 03       		.uleb128 0x3
+ 1425 0047 08       		.uleb128 0x8
+ 1426 0048 3A       		.uleb128 0x3a
+ 1427 0049 0B       		.uleb128 0xb
+ 1428 004a 3B       		.uleb128 0x3b
+ 1429 004b 0B       		.uleb128 0xb
+ 1430 004c 49       		.uleb128 0x49
+ 1431 004d 13       		.uleb128 0x13
+ 1432 004e 38       		.uleb128 0x38
+ 1433 004f 0B       		.uleb128 0xb
+ 1434 0050 00       		.byte	0
+ 1435 0051 00       		.byte	0
+ 1436 0052 07       		.uleb128 0x7
+ 1437 0053 0D       		.uleb128 0xd
+ 1438 0054 00       		.byte	0
+ 1439 0055 03       		.uleb128 0x3
+ 1440 0056 0E       		.uleb128 0xe
+ 1441 0057 3A       		.uleb128 0x3a
+ 1442 0058 0B       		.uleb128 0xb
+ 1443 0059 3B       		.uleb128 0x3b
+ 1444 005a 0B       		.uleb128 0xb
+ 1445 005b 49       		.uleb128 0x49
+ 1446 005c 13       		.uleb128 0x13
+ 1447 005d 38       		.uleb128 0x38
+ 1448 005e 0B       		.uleb128 0xb
+ 1449 005f 00       		.byte	0
+ 1450 0060 00       		.byte	0
+ 1451 0061 08       		.uleb128 0x8
+ 1452 0062 01       		.uleb128 0x1
+ 1453 0063 01       		.byte	0x1
+ 1454 0064 49       		.uleb128 0x49
+ 1455 0065 13       		.uleb128 0x13
+ 1456 0066 01       		.uleb128 0x1
+ 1457 0067 13       		.uleb128 0x13
+ 1458 0068 00       		.byte	0
+ 1459 0069 00       		.byte	0
+ 1460 006a 09       		.uleb128 0x9
+ 1461 006b 21       		.uleb128 0x21
+ 1462 006c 00       		.byte	0
+ 1463 006d 49       		.uleb128 0x49
+ 1464 006e 13       		.uleb128 0x13
+ 1465 006f 2F       		.uleb128 0x2f
+ 1466 0070 0B       		.uleb128 0xb
+ 1467 0071 00       		.byte	0
+ 1468 0072 00       		.byte	0
+ 1469 0073 0A       		.uleb128 0xa
+ 1470 0074 2E       		.uleb128 0x2e
+ 1471 0075 01       		.byte	0x1
+ 1472 0076 3F       		.uleb128 0x3f
+ 1473 0077 19       		.uleb128 0x19
+ 1474 0078 03       		.uleb128 0x3
+ 1475 0079 0E       		.uleb128 0xe
+ 1476 007a 3A       		.uleb128 0x3a
+ 1477 007b 0B       		.uleb128 0xb
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 30
+
+
+ 1478 007c 3B       		.uleb128 0x3b
+ 1479 007d 0B       		.uleb128 0xb
+ 1480 007e 27       		.uleb128 0x27
+ 1481 007f 19       		.uleb128 0x19
+ 1482 0080 11       		.uleb128 0x11
+ 1483 0081 01       		.uleb128 0x1
+ 1484 0082 12       		.uleb128 0x12
+ 1485 0083 06       		.uleb128 0x6
+ 1486 0084 40       		.uleb128 0x40
+ 1487 0085 18       		.uleb128 0x18
+ 1488 0086 9742     		.uleb128 0x2117
+ 1489 0088 19       		.uleb128 0x19
+ 1490 0089 01       		.uleb128 0x1
+ 1491 008a 13       		.uleb128 0x13
+ 1492 008b 00       		.byte	0
+ 1493 008c 00       		.byte	0
+ 1494 008d 0B       		.uleb128 0xb
+ 1495 008e 05       		.uleb128 0x5
+ 1496 008f 00       		.byte	0
+ 1497 0090 03       		.uleb128 0x3
+ 1498 0091 0E       		.uleb128 0xe
+ 1499 0092 3A       		.uleb128 0x3a
+ 1500 0093 0B       		.uleb128 0xb
+ 1501 0094 3B       		.uleb128 0x3b
+ 1502 0095 0B       		.uleb128 0xb
+ 1503 0096 49       		.uleb128 0x49
+ 1504 0097 13       		.uleb128 0x13
+ 1505 0098 02       		.uleb128 0x2
+ 1506 0099 17       		.uleb128 0x17
+ 1507 009a 00       		.byte	0
+ 1508 009b 00       		.byte	0
+ 1509 009c 0C       		.uleb128 0xc
+ 1510 009d 898201   		.uleb128 0x4109
+ 1511 00a0 00       		.byte	0
+ 1512 00a1 11       		.uleb128 0x11
+ 1513 00a2 01       		.uleb128 0x1
+ 1514 00a3 31       		.uleb128 0x31
+ 1515 00a4 13       		.uleb128 0x13
+ 1516 00a5 00       		.byte	0
+ 1517 00a6 00       		.byte	0
+ 1518 00a7 0D       		.uleb128 0xd
+ 1519 00a8 898201   		.uleb128 0x4109
+ 1520 00ab 01       		.byte	0x1
+ 1521 00ac 11       		.uleb128 0x11
+ 1522 00ad 01       		.uleb128 0x1
+ 1523 00ae 31       		.uleb128 0x31
+ 1524 00af 13       		.uleb128 0x13
+ 1525 00b0 01       		.uleb128 0x1
+ 1526 00b1 13       		.uleb128 0x13
+ 1527 00b2 00       		.byte	0
+ 1528 00b3 00       		.byte	0
+ 1529 00b4 0E       		.uleb128 0xe
+ 1530 00b5 8A8201   		.uleb128 0x410a
+ 1531 00b8 00       		.byte	0
+ 1532 00b9 02       		.uleb128 0x2
+ 1533 00ba 18       		.uleb128 0x18
+ 1534 00bb 9142     		.uleb128 0x2111
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 31
+
+
+ 1535 00bd 18       		.uleb128 0x18
+ 1536 00be 00       		.byte	0
+ 1537 00bf 00       		.byte	0
+ 1538 00c0 0F       		.uleb128 0xf
+ 1539 00c1 898201   		.uleb128 0x4109
+ 1540 00c4 01       		.byte	0x1
+ 1541 00c5 11       		.uleb128 0x11
+ 1542 00c6 01       		.uleb128 0x1
+ 1543 00c7 31       		.uleb128 0x31
+ 1544 00c8 13       		.uleb128 0x13
+ 1545 00c9 00       		.byte	0
+ 1546 00ca 00       		.byte	0
+ 1547 00cb 10       		.uleb128 0x10
+ 1548 00cc 0F       		.uleb128 0xf
+ 1549 00cd 00       		.byte	0
+ 1550 00ce 0B       		.uleb128 0xb
+ 1551 00cf 0B       		.uleb128 0xb
+ 1552 00d0 49       		.uleb128 0x49
+ 1553 00d1 13       		.uleb128 0x13
+ 1554 00d2 00       		.byte	0
+ 1555 00d3 00       		.byte	0
+ 1556 00d4 11       		.uleb128 0x11
+ 1557 00d5 34       		.uleb128 0x34
+ 1558 00d6 00       		.byte	0
+ 1559 00d7 03       		.uleb128 0x3
+ 1560 00d8 0E       		.uleb128 0xe
+ 1561 00d9 3A       		.uleb128 0x3a
+ 1562 00da 0B       		.uleb128 0xb
+ 1563 00db 3B       		.uleb128 0x3b
+ 1564 00dc 0B       		.uleb128 0xb
+ 1565 00dd 49       		.uleb128 0x49
+ 1566 00de 13       		.uleb128 0x13
+ 1567 00df 02       		.uleb128 0x2
+ 1568 00e0 17       		.uleb128 0x17
+ 1569 00e1 00       		.byte	0
+ 1570 00e2 00       		.byte	0
+ 1571 00e3 12       		.uleb128 0x12
+ 1572 00e4 34       		.uleb128 0x34
+ 1573 00e5 00       		.byte	0
+ 1574 00e6 03       		.uleb128 0x3
+ 1575 00e7 0E       		.uleb128 0xe
+ 1576 00e8 3A       		.uleb128 0x3a
+ 1577 00e9 0B       		.uleb128 0xb
+ 1578 00ea 3B       		.uleb128 0x3b
+ 1579 00eb 0B       		.uleb128 0xb
+ 1580 00ec 49       		.uleb128 0x49
+ 1581 00ed 13       		.uleb128 0x13
+ 1582 00ee 3F       		.uleb128 0x3f
+ 1583 00ef 19       		.uleb128 0x19
+ 1584 00f0 3C       		.uleb128 0x3c
+ 1585 00f1 19       		.uleb128 0x19
+ 1586 00f2 00       		.byte	0
+ 1587 00f3 00       		.byte	0
+ 1588 00f4 13       		.uleb128 0x13
+ 1589 00f5 2E       		.uleb128 0x2e
+ 1590 00f6 00       		.byte	0
+ 1591 00f7 3F       		.uleb128 0x3f
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 32
+
+
+ 1592 00f8 19       		.uleb128 0x19
+ 1593 00f9 3C       		.uleb128 0x3c
+ 1594 00fa 19       		.uleb128 0x19
+ 1595 00fb 6E       		.uleb128 0x6e
+ 1596 00fc 0E       		.uleb128 0xe
+ 1597 00fd 03       		.uleb128 0x3
+ 1598 00fe 0E       		.uleb128 0xe
+ 1599 00ff 3A       		.uleb128 0x3a
+ 1600 0100 0B       		.uleb128 0xb
+ 1601 0101 3B       		.uleb128 0x3b
+ 1602 0102 0B       		.uleb128 0xb
+ 1603 0103 00       		.byte	0
+ 1604 0104 00       		.byte	0
+ 1605 0105 00       		.byte	0
+ 1606              		.section	.debug_loc,"",%progbits
+ 1607              	.Ldebug_loc0:
+ 1608              	.LLST0:
+ 1609 0000 00000000 		.4byte	.LVL0
+ 1610 0004 09000000 		.4byte	.LVL1-1
+ 1611 0008 0100     		.2byte	0x1
+ 1612 000a 50       		.byte	0x50
+ 1613 000b 09000000 		.4byte	.LVL1-1
+ 1614 000f 20000000 		.4byte	.LVL4
+ 1615 0013 0100     		.2byte	0x1
+ 1616 0015 54       		.byte	0x54
+ 1617 0016 20000000 		.4byte	.LVL4
+ 1618 001a 22000000 		.4byte	.LFE35
+ 1619 001e 0400     		.2byte	0x4
+ 1620 0020 F3       		.byte	0xf3
+ 1621 0021 01       		.uleb128 0x1
+ 1622 0022 50       		.byte	0x50
+ 1623 0023 9F       		.byte	0x9f
+ 1624 0024 00000000 		.4byte	0
+ 1625 0028 00000000 		.4byte	0
+ 1626              	.LLST1:
+ 1627 002c 00000000 		.4byte	.LVL5
+ 1628 0030 09000000 		.4byte	.LVL6-1
+ 1629 0034 0100     		.2byte	0x1
+ 1630 0036 50       		.byte	0x50
+ 1631 0037 09000000 		.4byte	.LVL6-1
+ 1632 003b E2010000 		.4byte	.LVL87
+ 1633 003f 0100     		.2byte	0x1
+ 1634 0041 55       		.byte	0x55
+ 1635 0042 E2010000 		.4byte	.LVL87
+ 1636 0046 F0010000 		.4byte	.LFE36
+ 1637 004a 0400     		.2byte	0x4
+ 1638 004c F3       		.byte	0xf3
+ 1639 004d 01       		.uleb128 0x1
+ 1640 004e 50       		.byte	0x50
+ 1641 004f 9F       		.byte	0x9f
+ 1642 0050 00000000 		.4byte	0
+ 1643 0054 00000000 		.4byte	0
+ 1644              	.LLST2:
+ 1645 0058 00000000 		.4byte	.LVL5
+ 1646 005c 09000000 		.4byte	.LVL6-1
+ 1647 0060 0100     		.2byte	0x1
+ 1648 0062 51       		.byte	0x51
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 33
+
+
+ 1649 0063 09000000 		.4byte	.LVL6-1
+ 1650 0067 E2010000 		.4byte	.LVL88
+ 1651 006b 0100     		.2byte	0x1
+ 1652 006d 56       		.byte	0x56
+ 1653 006e E2010000 		.4byte	.LVL88
+ 1654 0072 F0010000 		.4byte	.LFE36
+ 1655 0076 0400     		.2byte	0x4
+ 1656 0078 F3       		.byte	0xf3
+ 1657 0079 01       		.uleb128 0x1
+ 1658 007a 51       		.byte	0x51
+ 1659 007b 9F       		.byte	0x9f
+ 1660 007c 00000000 		.4byte	0
+ 1661 0080 00000000 		.4byte	0
+ 1662              	.LLST3:
+ 1663 0084 0C000000 		.4byte	.LVL7
+ 1664 0088 50000000 		.4byte	.LVL8
+ 1665 008c 0100     		.2byte	0x1
+ 1666 008e 50       		.byte	0x50
+ 1667 008f 50000000 		.4byte	.LVL8
+ 1668 0093 90000000 		.4byte	.LVL18
+ 1669 0097 0100     		.2byte	0x1
+ 1670 0099 54       		.byte	0x54
+ 1671 009a 90000000 		.4byte	.LVL18
+ 1672 009e 93000000 		.4byte	.LVL19-1
+ 1673 00a2 0100     		.2byte	0x1
+ 1674 00a4 50       		.byte	0x50
+ 1675 00a5 93000000 		.4byte	.LVL19-1
+ 1676 00a9 B6000000 		.4byte	.LVL24
+ 1677 00ad 0100     		.2byte	0x1
+ 1678 00af 54       		.byte	0x54
+ 1679 00b0 B6000000 		.4byte	.LVL24
+ 1680 00b4 B8000000 		.4byte	.LVL25
+ 1681 00b8 0100     		.2byte	0x1
+ 1682 00ba 50       		.byte	0x50
+ 1683 00bb B8000000 		.4byte	.LVL25
+ 1684 00bf CC000000 		.4byte	.LVL30
+ 1685 00c3 0100     		.2byte	0x1
+ 1686 00c5 54       		.byte	0x54
+ 1687 00c6 CC000000 		.4byte	.LVL30
+ 1688 00ca CE000000 		.4byte	.LVL31
+ 1689 00ce 0100     		.2byte	0x1
+ 1690 00d0 50       		.byte	0x50
+ 1691 00d1 CE000000 		.4byte	.LVL31
+ 1692 00d5 E2000000 		.4byte	.LVL36
+ 1693 00d9 0100     		.2byte	0x1
+ 1694 00db 54       		.byte	0x54
+ 1695 00dc E2000000 		.4byte	.LVL36
+ 1696 00e0 E4000000 		.4byte	.LVL37
+ 1697 00e4 0100     		.2byte	0x1
+ 1698 00e6 50       		.byte	0x50
+ 1699 00e7 E4000000 		.4byte	.LVL37
+ 1700 00eb F8000000 		.4byte	.LVL42
+ 1701 00ef 0100     		.2byte	0x1
+ 1702 00f1 54       		.byte	0x54
+ 1703 00f2 F8000000 		.4byte	.LVL42
+ 1704 00f6 FB000000 		.4byte	.LVL43-1
+ 1705 00fa 0100     		.2byte	0x1
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 34
+
+
+ 1706 00fc 50       		.byte	0x50
+ 1707 00fd FB000000 		.4byte	.LVL43-1
+ 1708 0101 2C010000 		.4byte	.LVL50
+ 1709 0105 0100     		.2byte	0x1
+ 1710 0107 54       		.byte	0x54
+ 1711 0108 2C010000 		.4byte	.LVL50
+ 1712 010c 2E010000 		.4byte	.LVL51
+ 1713 0110 0100     		.2byte	0x1
+ 1714 0112 50       		.byte	0x50
+ 1715 0113 2E010000 		.4byte	.LVL51
+ 1716 0117 42010000 		.4byte	.LVL56
+ 1717 011b 0100     		.2byte	0x1
+ 1718 011d 54       		.byte	0x54
+ 1719 011e 42010000 		.4byte	.LVL56
+ 1720 0122 45010000 		.4byte	.LVL57-1
+ 1721 0126 0100     		.2byte	0x1
+ 1722 0128 50       		.byte	0x50
+ 1723 0129 45010000 		.4byte	.LVL57-1
+ 1724 012d 88010000 		.4byte	.LVL67
+ 1725 0131 0100     		.2byte	0x1
+ 1726 0133 54       		.byte	0x54
+ 1727 0134 88010000 		.4byte	.LVL67
+ 1728 0138 8A010000 		.4byte	.LVL68
+ 1729 013c 0100     		.2byte	0x1
+ 1730 013e 50       		.byte	0x50
+ 1731 013f 8A010000 		.4byte	.LVL68
+ 1732 0143 9A010000 		.4byte	.LVL72
+ 1733 0147 0100     		.2byte	0x1
+ 1734 0149 54       		.byte	0x54
+ 1735 014a 9A010000 		.4byte	.LVL72
+ 1736 014e A0010000 		.4byte	.LVL73
+ 1737 0152 0100     		.2byte	0x1
+ 1738 0154 50       		.byte	0x50
+ 1739 0155 A0010000 		.4byte	.LVL73
+ 1740 0159 AA010000 		.4byte	.LVL76
+ 1741 015d 0100     		.2byte	0x1
+ 1742 015f 54       		.byte	0x54
+ 1743 0160 AA010000 		.4byte	.LVL76
+ 1744 0164 AC010000 		.4byte	.LVL77
+ 1745 0168 0100     		.2byte	0x1
+ 1746 016a 50       		.byte	0x50
+ 1747 016b AC010000 		.4byte	.LVL77
+ 1748 016f B2010000 		.4byte	.LVL79
+ 1749 0173 0100     		.2byte	0x1
+ 1750 0175 54       		.byte	0x54
+ 1751 0176 B2010000 		.4byte	.LVL79
+ 1752 017a B5010000 		.4byte	.LVL80-1
+ 1753 017e 0100     		.2byte	0x1
+ 1754 0180 50       		.byte	0x50
+ 1755 0181 B5010000 		.4byte	.LVL80-1
+ 1756 0185 E2010000 		.4byte	.LVL86
+ 1757 0189 0100     		.2byte	0x1
+ 1758 018b 54       		.byte	0x54
+ 1759 018c 00000000 		.4byte	0
+ 1760 0190 00000000 		.4byte	0
+ 1761              		.section	.debug_aranges,"",%progbits
+ 1762 0000 24000000 		.4byte	0x24
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 35
+
+
+ 1763 0004 0200     		.2byte	0x2
+ 1764 0006 00000000 		.4byte	.Ldebug_info0
+ 1765 000a 04       		.byte	0x4
+ 1766 000b 00       		.byte	0
+ 1767 000c 0000     		.2byte	0
+ 1768 000e 0000     		.2byte	0
+ 1769 0010 00000000 		.4byte	.LFB35
+ 1770 0014 22000000 		.4byte	.LFE35-.LFB35
+ 1771 0018 00000000 		.4byte	.LFB36
+ 1772 001c F0010000 		.4byte	.LFE36-.LFB36
+ 1773 0020 00000000 		.4byte	0
+ 1774 0024 00000000 		.4byte	0
+ 1775              		.section	.debug_ranges,"",%progbits
+ 1776              	.Ldebug_ranges0:
+ 1777 0000 00000000 		.4byte	.LFB35
+ 1778 0004 22000000 		.4byte	.LFE35
+ 1779 0008 00000000 		.4byte	.LFB36
+ 1780 000c F0010000 		.4byte	.LFE36
+ 1781 0010 00000000 		.4byte	0
+ 1782 0014 00000000 		.4byte	0
+ 1783              		.section	.debug_line,"",%progbits
+ 1784              	.Ldebug_line0:
+ 1785 0000 33020000 		.section	.debug_str,"MS",%progbits,1
+ 1785      0200C101 
+ 1785      00000201 
+ 1785      FB0E0D00 
+ 1785      01010101 
+ 1786              	.LASF32:
+ 1787 0000 53656E64 		.ascii	"SendCANPacket\000"
+ 1787      43414E50 
+ 1787      61636B65 
+ 1787      7400
+ 1788              	.LASF47:
+ 1789 000e 5365746B 		.ascii	"SetkIntegral\000"
+ 1789      496E7465 
+ 1789      6772616C 
+ 1789      00
+ 1790              	.LASF44:
+ 1791 001b 5365746B 		.ascii	"SetkPosition\000"
+ 1791      506F7369 
+ 1791      74696F6E 
+ 1791      00
+ 1792              	.LASF51:
+ 1793 0028 44657269 		.ascii	"DerivativeConstIsSet\000"
+ 1793      76617469 
+ 1793      7665436F 
+ 1793      6E737449 
+ 1793      73536574 
+ 1794              	.LASF37:
+ 1795 003d 53657453 		.ascii	"SetStateTo\000"
+ 1795      74617465 
+ 1795      546F00
+ 1796              	.LASF4:
+ 1797 0048 73686F72 		.ascii	"short int\000"
+ 1797      7420696E 
+ 1797      7400
+ 1798              	.LASF43:
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 36
+
+
+ 1799 0052 47657450 		.ascii	"GetPFromPacket\000"
+ 1799      46726F6D 
+ 1799      5061636B 
+ 1799      657400
+ 1800              	.LASF18:
+ 1801 0061 73697A65 		.ascii	"sizetype\000"
+ 1801      74797065 
+ 1801      00
+ 1802              	.LASF27:
+ 1803 006a 72656365 		.ascii	"receivedPacket\000"
+ 1803      69766564 
+ 1803      5061636B 
+ 1803      657400
+ 1804              	.LASF66:
+ 1805 0079 5365744D 		.ascii	"SetMaxPIDPWM\000"
+ 1805      61785049 
+ 1805      4450574D 
+ 1805      00
+ 1806              	.LASF69:
+ 1807 0086 433A5C55 		.ascii	"C:\\Users\\kratz\\OneDrive\\Documents\\PSoC Creator"
+ 1807      73657273 
+ 1807      5C6B7261 
+ 1807      747A5C4F 
+ 1807      6E654472 
+ 1808 00b4 5C48616E 		.ascii	"\\Hand_Board_PY2023\\HandBoard_Rev1.cydsn\000"
+ 1808      645F426F 
+ 1808      6172645F 
+ 1808      50593230 
+ 1808      32335C48 
+ 1809              	.LASF11:
+ 1810 00dc 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1810      206C6F6E 
+ 1810      6720756E 
+ 1810      7369676E 
+ 1810      65642069 
+ 1811              	.LASF60:
+ 1812 00f3 47657445 		.ascii	"GetEncoderZeroFromPacket\000"
+ 1812      6E636F64 
+ 1812      65725A65 
+ 1812      726F4672 
+ 1812      6F6D5061 
+ 1813              	.LASF42:
+ 1814 010c 44697370 		.ascii	"DisplayErrorCode\000"
+ 1814      6C617945 
+ 1814      72726F72 
+ 1814      436F6465 
+ 1814      00
+ 1815              	.LASF5:
+ 1816 011d 5F5F7569 		.ascii	"__uint16_t\000"
+ 1816      6E743136 
+ 1816      5F7400
+ 1817              	.LASF50:
+ 1818 0128 5365746B 		.ascii	"SetkDerivative\000"
+ 1818      44657269 
+ 1818      76617469 
+ 1818      766500
+ 1819              	.LASF59:
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 37
+
+
+ 1820 0137 44697361 		.ascii	"DisablePID\000"
+ 1820      626C6550 
+ 1820      494400
+ 1821              	.LASF67:
+ 1822 0142 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1822      43313120 
+ 1822      352E342E 
+ 1822      31203230 
+ 1822      31363036 
+ 1823 0175 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1823      20726576 
+ 1823      6973696F 
+ 1823      6E203233 
+ 1823      37373135 
+ 1824 01a8 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1824      66756E63 
+ 1824      74696F6E 
+ 1824      2D736563 
+ 1824      74696F6E 
+ 1825              	.LASF13:
+ 1826 01d0 75696E74 		.ascii	"uint8_t\000"
+ 1826      385F7400 
+ 1827              	.LASF49:
+ 1828 01d8 47657444 		.ascii	"GetDFromPacket\000"
+ 1828      46726F6D 
+ 1828      5061636B 
+ 1828      657400
+ 1829              	.LASF46:
+ 1830 01e7 47657449 		.ascii	"GetIFromPacket\000"
+ 1830      46726F6D 
+ 1830      5061636B 
+ 1830      657400
+ 1831              	.LASF56:
+ 1832 01f6 5365746B 		.ascii	"SetkPPJR\000"
+ 1832      50504A52 
+ 1832      00
+ 1833              	.LASF35:
+ 1834 01ff 7365745F 		.ascii	"set_PWM\000"
+ 1834      50574D00 
+ 1835              	.LASF34:
+ 1836 0207 4765744D 		.ascii	"GetModeFromPacket\000"
+ 1836      6F646546 
+ 1836      726F6D50 
+ 1836      61636B65 
+ 1836      7400
+ 1837              	.LASF22:
+ 1838 0219 666C6F61 		.ascii	"float\000"
+ 1838      7400
+ 1839              	.LASF10:
+ 1840 021f 6C6F6E67 		.ascii	"long long int\000"
+ 1840      206C6F6E 
+ 1840      6720696E 
+ 1840      7400
+ 1841              	.LASF61:
+ 1842 022d 51756164 		.ascii	"QuadDec_SetCounter\000"
+ 1842      4465635F 
+ 1842      53657443 
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 38
+
+
+ 1842      6F756E74 
+ 1842      657200
+ 1843              	.LASF19:
+ 1844 0240 43414E50 		.ascii	"CANPacket\000"
+ 1844      61636B65 
+ 1844      7400
+ 1845              	.LASF8:
+ 1846 024a 6C6F6E67 		.ascii	"long int\000"
+ 1846      20696E74 
+ 1846      00
+ 1847              	.LASF2:
+ 1848 0253 5F5F7569 		.ascii	"__uint8_t\000"
+ 1848      6E74385F 
+ 1848      7400
+ 1849              	.LASF28:
+ 1850 025d 6E657874 		.ascii	"nextPWM\000"
+ 1850      50574D00 
+ 1851              	.LASF1:
+ 1852 0265 756E7369 		.ascii	"unsigned char\000"
+ 1852      676E6564 
+ 1852      20636861 
+ 1852      7200
+ 1853              	.LASF62:
+ 1854 0273 47657445 		.ascii	"GetEncoderDirectionFromPacket\000"
+ 1854      6E636F64 
+ 1854      65724469 
+ 1854      72656374 
+ 1854      696F6E46 
+ 1855              	.LASF20:
+ 1856 0291 6C6F6E67 		.ascii	"long double\000"
+ 1856      20646F75 
+ 1856      626C6500 
+ 1857              	.LASF31:
+ 1858 029d 41737365 		.ascii	"AssembleTelemetryReportPacket\000"
+ 1858      6D626C65 
+ 1858      54656C65 
+ 1858      6D657472 
+ 1858      79526570 
+ 1859              	.LASF39:
+ 1860 02bb 476F746F 		.ascii	"GotoUninitState\000"
+ 1860      556E696E 
+ 1860      69745374 
+ 1860      61746500 
+ 1861              	.LASF58:
+ 1862 02cb 436C6561 		.ascii	"ClearPIDProgress\000"
+ 1862      72504944 
+ 1862      50726F67 
+ 1862      72657373 
+ 1862      00
+ 1863              	.LASF24:
+ 1864 02dc 53656E64 		.ascii	"SendEncoderData\000"
+ 1864      456E636F 
+ 1864      64657244 
+ 1864      61746100 
+ 1865              	.LASF48:
+ 1866 02ec 496E7465 		.ascii	"IntegralConstIsSet\000"
+ 1866      6772616C 
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 39
+
+
+ 1866      436F6E73 
+ 1866      74497353 
+ 1866      657400
+ 1867              	.LASF0:
+ 1868 02ff 7369676E 		.ascii	"signed char\000"
+ 1868      65642063 
+ 1868      68617200 
+ 1869              	.LASF65:
+ 1870 030b 4765744D 		.ascii	"GetMaxPIDPWMFromPacket\000"
+ 1870      61785049 
+ 1870      4450574D 
+ 1870      46726F6D 
+ 1870      5061636B 
+ 1871              	.LASF12:
+ 1872 0322 756E7369 		.ascii	"unsigned int\000"
+ 1872      676E6564 
+ 1872      20696E74 
+ 1872      00
+ 1873              	.LASF15:
+ 1874 032f 75696E74 		.ascii	"uint16_t\000"
+ 1874      31365F74 
+ 1874      00
+ 1875              	.LASF63:
+ 1876 0338 53657445 		.ascii	"SetEncoderDirReverse\000"
+ 1876      6E636F64 
+ 1876      65724469 
+ 1876      72526576 
+ 1876      65727365 
+ 1877              	.LASF40:
+ 1878 034d 4765744D 		.ascii	"GetMode\000"
+ 1878      6F646500 
+ 1879              	.LASF25:
+ 1880 0355 4E657874 		.ascii	"NextStateFromCAN\000"
+ 1880      53746174 
+ 1880      6546726F 
+ 1880      6D43414E 
+ 1880      00
+ 1881              	.LASF6:
+ 1882 0366 73686F72 		.ascii	"short unsigned int\000"
+ 1882      7420756E 
+ 1882      7369676E 
+ 1882      65642069 
+ 1882      6E7400
+ 1883              	.LASF45:
+ 1884 0379 506F7369 		.ascii	"PositionConstIsSet\000"
+ 1884      74696F6E 
+ 1884      436F6E73 
+ 1884      74497353 
+ 1884      657400
+ 1885              	.LASF21:
+ 1886 038c 63686172 		.ascii	"char\000"
+ 1886      00
+ 1887              	.LASF33:
+ 1888 0391 52656164 		.ascii	"ReadCAN\000"
+ 1888      43414E00 
+ 1889              	.LASF16:
+ 1890 0399 696E7433 		.ascii	"int32_t\000"
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 40
+
+
+ 1890      325F7400 
+ 1891              	.LASF14:
+ 1892 03a1 696E7431 		.ascii	"int16_t\000"
+ 1892      365F7400 
+ 1893              	.LASF52:
+ 1894 03a9 50494463 		.ascii	"PIDconstsSet\000"
+ 1894      6F6E7374 
+ 1894      73536574 
+ 1894      00
+ 1895              	.LASF64:
+ 1896 03b6 53657445 		.ascii	"SetEncoderDirDefault\000"
+ 1896      6E636F64 
+ 1896      65724469 
+ 1896      72446566 
+ 1896      61756C74 
+ 1897              	.LASF30:
+ 1898 03cb 43757272 		.ascii	"CurrentPositionMiliDegree\000"
+ 1898      656E7450 
+ 1898      6F736974 
+ 1898      696F6E4D 
+ 1898      696C6944 
+ 1899              	.LASF17:
+ 1900 03e5 64617461 		.ascii	"data\000"
+ 1900      00
+ 1901              	.LASF68:
+ 1902 03ea 4D6F746F 		.ascii	"Motor_Unit_CAN.c\000"
+ 1902      725F556E 
+ 1902      69745F43 
+ 1902      414E2E63 
+ 1902      00
+ 1903              	.LASF36:
+ 1904 03fb 5365744D 		.ascii	"SetModeTo\000"
+ 1904      6F646554 
+ 1904      6F00
+ 1905              	.LASF9:
+ 1906 0405 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1906      20756E73 
+ 1906      69676E65 
+ 1906      6420696E 
+ 1906      7400
+ 1907              	.LASF38:
+ 1908 0417 496E6974 		.ascii	"InitializePID\000"
+ 1908      69616C69 
+ 1908      7A655049 
+ 1908      4400
+ 1909              	.LASF7:
+ 1910 0425 5F5F696E 		.ascii	"__int32_t\000"
+ 1910      7433325F 
+ 1910      7400
+ 1911              	.LASF29:
+ 1912 042f 6D696C6C 		.ascii	"millidegreeTarget\000"
+ 1912      69646567 
+ 1912      72656554 
+ 1912      61726765 
+ 1912      7400
+ 1913              	.LASF3:
+ 1914 0441 5F5F696E 		.ascii	"__int16_t\000"
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccqvhFwC.s 			page 41
+
+
+ 1914      7431365F 
+ 1914      7400
+ 1915              	.LASF55:
+ 1916 044b 47657445 		.ascii	"GetEncoderPPJRFromPacket\000"
+ 1916      6E636F64 
+ 1916      65725050 
+ 1916      4A524672 
+ 1916      6F6D5061 
+ 1917              	.LASF53:
+ 1918 0464 456E6162 		.ascii	"EnablePID\000"
+ 1918      6C655049 
+ 1918      4400
+ 1919              	.LASF23:
+ 1920 046e 646F7562 		.ascii	"double\000"
+ 1920      6C6500
+ 1921              	.LASF54:
+ 1922 0475 47657450 		.ascii	"GetPIDTargetFromPacket\000"
+ 1922      49445461 
+ 1922      72676574 
+ 1922      46726F6D 
+ 1922      5061636B 
+ 1923              	.LASF57:
+ 1924 048c 50504A52 		.ascii	"PPJRConstIsSet\000"
+ 1924      436F6E73 
+ 1924      74497353 
+ 1924      657400
+ 1925              	.LASF26:
+ 1926 049b 7061636B 		.ascii	"packetToSend\000"
+ 1926      6574546F 
+ 1926      53656E64 
+ 1926      00
+ 1927              	.LASF70:
+ 1928 04a8 7061636B 		.ascii	"packageID\000"
+ 1928      61676549 
+ 1928      4400
+ 1929              	.LASF41:
+ 1930 04b2 47657450 		.ascii	"GetPWMFromPacket\000"
+ 1930      574D4672 
+ 1930      6F6D5061 
+ 1930      636B6574 
+ 1930      00
+ 1931              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

@@ -1,11 +1,14 @@
---------------- Rebuild Started: 01/09/2023 18:51:23 Project: HandBoard_Rev1, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
+--------------- Rebuild Started: 02/27/2023 19:16:33 Project: HandBoard_Rev1, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
+Deleting file ".\HandBoard_Rev1.cycdx"
+Deleting file ".\HandBoard_Rev1.svd"
 Deleting file ".\HandBoard_Rev1.rpt"
+Deleting file ".\HandBoard_Rev1_timing.html"
 cydsfit.exe -.appdatapath "C:\Users\kratz\AppData\Local\Cypress Semiconductor\PSoC Creator\4.4" -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p "C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\HandBoard_Rev1.cyprj" -d CY8C4248BZI-L489 -s "C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\Generated_Source\PSoC4" -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
 Elaborating Design...
 HDL Generation...
 Synthesis...
 Tech Mapping...
-ADD: pft.M0040: information: The following 2 pin(s) will be assigned a location by the fitter: LimitSwitch_1(0), LimitSwitch_2(0)
+ADD: pft.M0040: information: The following 14 pin(s) will be assigned a location by the fitter: \UART:rx(0)\, \UART:tx(0)\, Dip_1(0), Dip_2(0), Dip_3(0), Dip_4(0), Pin_Direction(0), Pin_Encoder_A(0), Pin_Limit_1(0), Pin_Limit_2(0), Pin_Limit_3(0), Pin_Motor(0), RX_1(0), TX_1(0)
 Analog Placement...
 Analog Routing...
 Analog Code Generation...
@@ -19,98 +22,101 @@ Dependency Generation...
 Cleanup...
 arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/main.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c main.c -o .\CortexM0\ARM_GCC_541\Debug\main.o
 main.c: In function 'main':
-main.c:19:5: warning: implicit declaration of function 'LimitSwitch_1_Start' [-Wimplicit-function-declaration]
-     LimitSwitch_1_Start();
-     ^
-main.c:20:5: warning: implicit declaration of function 'LimitSwitch_2_Start' [-Wimplicit-function-declaration]
-     LimitSwitch_2_Start();
-     ^
-main.c:23:5: warning: implicit declaration of function 'Encoder_Start' [-Wimplicit-function-declaration]
-     Encoder_Start();
-     ^
-main.c:26:5: warning: implicit declaration of function 'DCMotor_Start' [-Wimplicit-function-declaration]
-     DCMotor_Start();
-     ^
-main.c:29:5: warning: implicit declaration of function 'Servo_1_Start' [-Wimplicit-function-declaration]
-     Servo_1_Start();
-     ^
-main.c:30:5: warning: implicit declaration of function 'Servo_2_Start' [-Wimplicit-function-declaration]
-     Servo_2_Start();
-     ^
-main.c:31:5: warning: implicit declaration of function 'Servo_3_Start' [-Wimplicit-function-declaration]
-     Servo_3_Start();
-     ^
-main.c:32:5: warning: implicit declaration of function 'Servo_4_Start' [-Wimplicit-function-declaration]
-     Servo_4_Start();
-     ^
-main.c:33:5: warning: implicit declaration of function 'Servo_5_Start' [-Wimplicit-function-declaration]
-     Servo_5_Start();
-     ^
-main.c:34:5: warning: implicit declaration of function 'Servo_6_Start' [-Wimplicit-function-declaration]
-     Servo_6_Start();
-     ^
-main.c:59:21: warning: implicit declaration of function 'Encoder_GetCounter' [-Wimplicit-function-declaration]
-         int value = Encoder_GetCounter();
-                     ^
-main.c:79:13: warning: implicit declaration of function 'DCMotor_Write' [-Wimplicit-function-declaration]
-             DCMotor_Write(1);
-             ^
-main.c:87:9: warning: implicit declaration of function 'Servo_1_Write' [-Wimplicit-function-declaration]
-         Servo_1_Write(value);
-         ^
-main.c:88:9: warning: implicit declaration of function 'Servo_2_Write' [-Wimplicit-function-declaration]
-         Servo_2_Write(value);
-         ^
-main.c:89:9: warning: implicit declaration of function 'Servo_3_Write' [-Wimplicit-function-declaration]
-         Servo_3_Write(value);
-         ^
-main.c:90:9: warning: implicit declaration of function 'Servo_4_Write' [-Wimplicit-function-declaration]
-         Servo_4_Write(value);
-         ^
-main.c:91:9: warning: implicit declaration of function 'Servo_5_Write' [-Wimplicit-function-declaration]
-         Servo_5_Write(value);
-         ^
-arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/cyfitter_cfg.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\cyfitter_cfg.c -o .\CortexM0\ARM_GCC_541\Debug\cyfitter_cfg.o
-main.c:92:9: warning: implicit declaration of function 'Servo_6_Write' [-Wimplicit-function-declaration]
-         Servo_6_Write(value);
-         ^
-arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/cymetadata.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\cymetadata.c -o .\CortexM0\ARM_GCC_541\Debug\cymetadata.o
-arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/LimitSwitch_1.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\LimitSwitch_1.c -o .\CortexM0\ARM_GCC_541\Debug\LimitSwitch_1.o
-arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/LimitSwitch_1_PM.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\LimitSwitch_1_PM.c -o .\CortexM0\ARM_GCC_541\Debug\LimitSwitch_1_PM.o
-arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/LimitSwitch_2.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\LimitSwitch_2.c -o .\CortexM0\ARM_GCC_541\Debug\LimitSwitch_2.o
-arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/LimitSwitch_2_PM.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\LimitSwitch_2_PM.c -o .\CortexM0\ARM_GCC_541\Debug\LimitSwitch_2_PM.o
-arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/Cm0Start.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\Cm0Start.c -o .\CortexM0\ARM_GCC_541\Debug\Cm0Start.o
-arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/CyFlash.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\CyFlash.c -o .\CortexM0\ARM_GCC_541\Debug\CyFlash.o
-arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/CyLib.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\CyLib.c -o .\CortexM0\ARM_GCC_541\Debug\CyLib.o
-arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/cyPm.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\cyPm.c -o .\CortexM0\ARM_GCC_541\Debug\cyPm.o
-arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/cyutils.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\cyutils.c -o .\CortexM0\ARM_GCC_541\Debug\cyutils.o
-arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/CyDMA.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\CyDMA.c -o .\CortexM0\ARM_GCC_541\Debug\CyDMA.o
-arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/CyLFClk.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\CyLFClk.c -o .\CortexM0\ARM_GCC_541\Debug\CyLFClk.o
-arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/cy_em_eeprom.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c Generated_Source\PSoC4\cy_em_eeprom.c -o .\CortexM0\ARM_GCC_541\Debug\cy_em_eeprom.o
-arm-none-eabi-as.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -alh=.\CortexM0\ARM_GCC_541\Debug/CyBootAsmGnu.lst -g -W -o .\CortexM0\ARM_GCC_541\Debug\CyBootAsmGnu.o Generated_Source\PSoC4\CyBootAsmGnu.s
-arm-none-eabi-ar.exe -rs .\CortexM0\ARM_GCC_541\Debug\HandBoard_Rev1.a .\CortexM0\ARM_GCC_541\Debug\LimitSwitch_1.o .\CortexM0\ARM_GCC_541\Debug\LimitSwitch_1_PM.o .\CortexM0\ARM_GCC_541\Debug\LimitSwitch_2.o .\CortexM0\ARM_GCC_541\Debug\LimitSwitch_2_PM.o .\CortexM0\ARM_GCC_541\Debug\CyFlash.o .\CortexM0\ARM_GCC_541\Debug\CyLib.o .\CortexM0\ARM_GCC_541\Debug\cyPm.o .\CortexM0\ARM_GCC_541\Debug\cyutils.o .\CortexM0\ARM_GCC_541\Debug\CyDMA.o .\CortexM0\ARM_GCC_541\Debug\CyLFClk.o .\CortexM0\ARM_GCC_541\Debug\cy_em_eeprom.o .\CortexM0\ARM_GCC_541\Debug\CyBootAsmGnu.o
-arm-none-eabi-ar.exe: creating .\CortexM0\ARM_GCC_541\Debug\HandBoard_Rev1.a
-arm-none-eabi-gcc.exe -Wl,--start-group -o "C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\CortexM0\ARM_GCC_541\Debug\HandBoard_Rev1.elf" .\CortexM0\ARM_GCC_541\Debug\main.o .\CortexM0\ARM_GCC_541\Debug\cyfitter_cfg.o .\CortexM0\ARM_GCC_541\Debug\cymetadata.o .\CortexM0\ARM_GCC_541\Debug\Cm0Start.o .\CortexM0\ARM_GCC_541\Debug\HandBoard_Rev1.a -mcpu=cortex-m0 -mthumb -L Generated_Source\PSoC4 -Wl,-Map,.\CortexM0\ARM_GCC_541\Debug/HandBoard_Rev1.map -T Generated_Source\PSoC4\cm0gcc.ld -specs=nano.specs -Wl,--gc-sections -g -ffunction-sections -Og -ffat-lto-objects -Wl,--end-group
-.\CortexM0\ARM_GCC_541\Debug\main.o: In function `main':
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:19: undefined reference to `LimitSwitch_1_Start'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:20: undefined reference to `LimitSwitch_2_Start'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:23: undefined reference to `Encoder_Start'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:26: undefined reference to `DCMotor_Start'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:29: undefined reference to `Servo_1_Start'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:30: undefined reference to `Servo_2_Start'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:31: undefined reference to `Servo_3_Start'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:32: undefined reference to `Servo_4_Start'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:33: undefined reference to `Servo_5_Start'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:34: undefined reference to `Servo_6_Start'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:59: undefined reference to `Encoder_GetCounter'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:79: undefined reference to `DCMotor_Write'
+main.c:20:25: error: 'nextPWM' undeclared (first use in this function)
+                 set_PWM(nextPWM, ignoreLimSw, Status_Reg_Switches_Read());
+                         ^
+main.c:20:25: note: each undeclared identifier is reported only once for each function it appears in
+main.c:20:34: error: 'ignoreLimSw' undeclared (first use in this function)
+                 set_PWM(nextPWM, ignoreLimSw, Status_Reg_Switches_Read());
+                                  ^
+main.c:24:29: error: 'millidegreeTarget' undeclared (first use in this function)
+                 SetPosition(millidegreeTarget);   
+                             ^
+main.c:31:17: warning: implicit declaration of function 'NextStateFromCAN' [-Wimplicit-function-declaration]
+                 NextStateFromCAN(&can_recieve, &can_send);
+                 ^
+main.c:31:35: error: 'can_recieve' undeclared (first use in this function)
+                 NextStateFromCAN(&can_recieve, &can_send);
+                                   ^
+main.c:31:49: error: 'can_send' undeclared (first use in this function)
+                 NextStateFromCAN(&can_recieve, &can_send);
+                                                 ^
+main.c: In function 'Initialize':
+main.c:69:5: error: 'address' undeclared (first use in this function)
 The command 'arm-none-eabi-gcc.exe' failed with exit code '1'.
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:83: undefined reference to `DCMotor_Write'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:87: undefined reference to `Servo_1_Write'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:88: undefined reference to `Servo_2_Write'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:89: undefined reference to `Servo_3_Write'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:90: undefined reference to `Servo_4_Write'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:91: undefined reference to `Servo_5_Write'
-C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn/main.c:92: undefined reference to `Servo_6_Write'
-collect2.exe: error: ld returned 1 exit status
---------------- Rebuild Failed: 01/09/2023 18:51:39 ---------------
+     address = Can_addr_Read();
+     ^
+main.c:87:5: warning: implicit declaration of function 'Timer_PWM_Start' [-Wimplicit-function-declaration]
+     Timer_PWM_Start();
+     ^
+main.c:88:5: warning: implicit declaration of function 'QuadDec_Start' [-Wimplicit-function-declaration]
+     QuadDec_Start();
+     ^
+main.c:91:25: error: 'Pin_Limit_Handler' undeclared (first use in this function)
+     isr_Limit_1_StartEx(Pin_Limit_Handler);
+                         ^
+main.c:92:5: warning: implicit declaration of function 'isr_period_PWM_StartEx' [-Wimplicit-function-declaration]
+     isr_period_PWM_StartEx(Period_Reset_Handler);
+     ^
+main.c:92:28: error: 'Period_Reset_Handler' undeclared (first use in this function)
+     isr_period_PWM_StartEx(Period_Reset_Handler);
+                            ^
+main.c: In function 'Pin_Limit_Handler':
+main.c:101:30: error: 'ignoreLimSw' undeclared (first use in this function)
+     set_PWM(GetCurrentPWM(), ignoreLimSw, Status_Reg_Switches_Read());
+                              ^
+main.c:110:9: error: 'bound_set1' undeclared (first use in this function)
+     if (bound_set1 && ~Pin_Limit_1_Read()) {
+         ^
+main.c:111:9: warning: implicit declaration of function 'QuadDec_SetCounter' [-Wimplicit-function-declaration]
+         QuadDec_SetCounter(enc_lim_1);
+         ^
+main.c:111:28: error: 'enc_lim_1' undeclared (first use in this function)
+         QuadDec_SetCounter(enc_lim_1);
+                            ^
+main.c:113:28: error: 'enc_lim_2' undeclared (first use in this function)
+         QuadDec_SetCounter(enc_lim_2);
+                            ^
+main.c: In function 'Period_Reset_Handler':
+main.c:118:17: warning: implicit declaration of function 'Timer_PWM_ReadStatusRegister' [-Wimplicit-function-declaration]
+     int timer = Timer_PWM_ReadStatusRegister();
+                 ^
+main.c:119:5: error: 'invalidate' undeclared (first use in this function)
+     invalidate++;
+     ^
+main.c:120:5: error: 'CAN_time_LED' undeclared (first use in this function)
+     CAN_time_LED++;
+     ^
+main.c:121:5: error: 'CAN_check_delay' undeclared (first use in this function)
+     CAN_check_delay ++;
+     ^
+main.c:122:5: error: 'ERRORTimeLED' undeclared (first use in this function)
+     ERRORTimeLED++;
+     ^
+main.c:123:5: error: 'encoderTimeOut' undeclared (first use in this function)
+     encoderTimeOut++;
+     ^
+main.c:126:9: warning: implicit declaration of function 'SendEncoderData' [-Wimplicit-function-declaration]
+         SendEncoderData(&can_send);
+         ^
+main.c:126:26: error: 'can_send' undeclared (first use in this function)
+         SendEncoderData(&can_send);
+                          ^
+main.c:118:9: warning: unused variable 'timer' [-Wunused-variable]
+     int timer = Timer_PWM_ReadStatusRegister();
+         ^
+main.c: In function 'PrintCanPacket':
+main.c:152:17: error: 'txData' undeclared (first use in this function)
+         sprintf(txData, "Byte%d %x   ", i+1, receivedPacket.data[i]);
+                 ^
+main.c: In function 'ReadCAN':
+main.c:167:9: error: 'CAN_time_LED' undeclared (first use in this function)
+         CAN_time_LED = 0;
+         ^
+main.c:170:12: error: 'NO_NEW_CAN_PACKET' undeclared (first use in this function)
+     return NO_NEW_CAN_PACKET; //Means no Packet
+            ^
+main.c:171:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+--------------- Rebuild Failed: 02/27/2023 19:16:48 ---------------

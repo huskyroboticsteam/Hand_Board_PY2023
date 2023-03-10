@@ -1,0 +1,2857 @@
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"PositionPID.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.ClearPIDProgress,"ax",%progbits
+  20              		.align	2
+  21              		.global	ClearPIDProgress
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	ClearPIDProgress, %function
+  25              	ClearPIDProgress:
+  26              	.LFB35:
+  27              		.file 1 "PositionPID.c"
+   1:PositionPID.c **** /* ========================================
+   2:PositionPID.c ****  *
+   3:PositionPID.c ****  * Copyright YOUR COMPANY, THE YEAR
+   4:PositionPID.c ****  * All Rights Reserved
+   5:PositionPID.c ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:PositionPID.c ****  *
+   7:PositionPID.c ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:PositionPID.c ****  * WHICH IS THE PROPERTY OF your company.
+   9:PositionPID.c ****  *
+  10:PositionPID.c ****  * ========================================
+  11:PositionPID.c **** */
+  12:PositionPID.c **** 
+  13:PositionPID.c **** //PID varaibles
+  14:PositionPID.c **** #include <project.h>
+  15:PositionPID.c **** #include "PositionPID.h"
+  16:PositionPID.c **** #include "MotorDrive.h"
+  17:PositionPID.c **** #include "main.h"
+  18:PositionPID.c **** 
+  19:PositionPID.c **** int32_t kPosition = 0;
+  20:PositionPID.c **** int32_t kIntegral = 0;
+  21:PositionPID.c **** int32_t kDerivative = 0;
+  22:PositionPID.c **** int32_t kPPJR = 0;
+  23:PositionPID.c **** int32_t PWM = 0;
+  24:PositionPID.c **** extern uint8_t ignoreLimSw;
+  25:PositionPID.c **** 
+  26:PositionPID.c **** extern char txData[TX_DATA_SIZE];
+  27:PositionPID.c **** int8 flipEncoder = 1;
+  28:PositionPID.c **** uint8_t usingPot = 0;
+  29:PositionPID.c **** 
+  30:PositionPID.c **** int integral = 0;     //needs to be reset upon mode change
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 2
+
+
+  31:PositionPID.c **** int lastPosition = 0; //needs to be reset upon mode change
+  32:PositionPID.c **** int integralClamp = 500;
+  33:PositionPID.c **** 
+  34:PositionPID.c **** double ratio;
+  35:PositionPID.c **** uint8 complete = 0;
+  36:PositionPID.c **** int32 maxPWM = 32767;
+  37:PositionPID.c **** 
+  38:PositionPID.c **** uint8_t enabledPID = 0;
+  39:PositionPID.c **** 
+  40:PositionPID.c **** void ClearPIDProgress() {
+  28              		.loc 1 40 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  41:PositionPID.c ****     integral = 0;
+  33              		.loc 1 41 0
+  34 0000 024B     		ldr	r3, .L2
+  35 0002 0022     		movs	r2, #0
+  36 0004 1A60     		str	r2, [r3]
+  42:PositionPID.c ****     lastPosition = 0;
+  37              		.loc 1 42 0
+  38 0006 5A60     		str	r2, [r3, #4]
+  43:PositionPID.c **** }
+  39              		.loc 1 43 0
+  40              		@ sp needed
+  41 0008 7047     		bx	lr
+  42              	.L3:
+  43 000a C046     		.align	2
+  44              	.L2:
+  45 000c 00000000 		.word	.LANCHOR0
+  46              		.cfi_endproc
+  47              	.LFE35:
+  48              		.size	ClearPIDProgress, .-ClearPIDProgress
+  49              		.section	.text.DisablePID,"ax",%progbits
+  50              		.align	2
+  51              		.global	DisablePID
+  52              		.code	16
+  53              		.thumb_func
+  54              		.type	DisablePID, %function
+  55              	DisablePID:
+  56              	.LFB36:
+  44:PositionPID.c **** void DisablePID() {
+  57              		.loc 1 44 0
+  58              		.cfi_startproc
+  59              		@ args = 0, pretend = 0, frame = 0
+  60              		@ frame_needed = 0, uses_anonymous_args = 0
+  61              		@ link register save eliminated.
+  45:PositionPID.c ****     enabledPID = 0;
+  62              		.loc 1 45 0
+  63 0000 0022     		movs	r2, #0
+  64 0002 014B     		ldr	r3, .L5
+  65 0004 1A72     		strb	r2, [r3, #8]
+  46:PositionPID.c **** }
+  66              		.loc 1 46 0
+  67              		@ sp needed
+  68 0006 7047     		bx	lr
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 3
+
+
+  69              	.L6:
+  70              		.align	2
+  71              	.L5:
+  72 0008 00000000 		.word	.LANCHOR0
+  73              		.cfi_endproc
+  74              	.LFE36:
+  75              		.size	DisablePID, .-DisablePID
+  76              		.section	.text.EnablePID,"ax",%progbits
+  77              		.align	2
+  78              		.global	EnablePID
+  79              		.code	16
+  80              		.thumb_func
+  81              		.type	EnablePID, %function
+  82              	EnablePID:
+  83              	.LFB37:
+  47:PositionPID.c **** void EnablePID() {
+  84              		.loc 1 47 0
+  85              		.cfi_startproc
+  86              		@ args = 0, pretend = 0, frame = 0
+  87              		@ frame_needed = 0, uses_anonymous_args = 0
+  88              		@ link register save eliminated.
+  48:PositionPID.c ****     enabledPID = 1;
+  89              		.loc 1 48 0
+  90 0000 0122     		movs	r2, #1
+  91 0002 014B     		ldr	r3, .L8
+  92 0004 1A72     		strb	r2, [r3, #8]
+  49:PositionPID.c **** }
+  93              		.loc 1 49 0
+  94              		@ sp needed
+  95 0006 7047     		bx	lr
+  96              	.L9:
+  97              		.align	2
+  98              	.L8:
+  99 0008 00000000 		.word	.LANCHOR0
+ 100              		.cfi_endproc
+ 101              	.LFE37:
+ 102              		.size	EnablePID, .-EnablePID
+ 103              		.section	.text.PIDIsEnabled,"ax",%progbits
+ 104              		.align	2
+ 105              		.global	PIDIsEnabled
+ 106              		.code	16
+ 107              		.thumb_func
+ 108              		.type	PIDIsEnabled, %function
+ 109              	PIDIsEnabled:
+ 110              	.LFB38:
+  50:PositionPID.c **** uint8_t PIDIsEnabled() {
+ 111              		.loc 1 50 0
+ 112              		.cfi_startproc
+ 113              		@ args = 0, pretend = 0, frame = 0
+ 114              		@ frame_needed = 0, uses_anonymous_args = 0
+ 115              		@ link register save eliminated.
+  51:PositionPID.c ****     return(enabledPID);
+ 116              		.loc 1 51 0
+ 117 0000 014B     		ldr	r3, .L11
+ 118 0002 187A     		ldrb	r0, [r3, #8]
+  52:PositionPID.c **** }
+ 119              		.loc 1 52 0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 4
+
+
+ 120              		@ sp needed
+ 121 0004 7047     		bx	lr
+ 122              	.L12:
+ 123 0006 C046     		.align	2
+ 124              	.L11:
+ 125 0008 00000000 		.word	.LANCHOR0
+ 126              		.cfi_endproc
+ 127              	.LFE38:
+ 128              		.size	PIDIsEnabled, .-PIDIsEnabled
+ 129              		.section	.text.SetkPosition,"ax",%progbits
+ 130              		.align	2
+ 131              		.global	SetkPosition
+ 132              		.code	16
+ 133              		.thumb_func
+ 134              		.type	SetkPosition, %function
+ 135              	SetkPosition:
+ 136              	.LFB40:
+  53:PositionPID.c **** void InitializePID() {
+  54:PositionPID.c ****     set_PWM(0, 0, 0);
+  55:PositionPID.c ****     ClearPIDProgress();
+  56:PositionPID.c ****     DisablePID();
+  57:PositionPID.c ****     lastPosition = GetEncoderValWithFlip();
+  58:PositionPID.c **** }
+  59:PositionPID.c **** 
+  60:PositionPID.c **** void SetkPosition(int32_t kP){
+ 137              		.loc 1 60 0
+ 138              		.cfi_startproc
+ 139              		@ args = 0, pretend = 0, frame = 0
+ 140              		@ frame_needed = 0, uses_anonymous_args = 0
+ 141              		@ link register save eliminated.
+ 142              	.LVL0:
+  61:PositionPID.c ****     kPosition = kP;
+ 143              		.loc 1 61 0
+ 144 0000 014B     		ldr	r3, .L14
+ 145 0002 D860     		str	r0, [r3, #12]
+  62:PositionPID.c **** }
+ 146              		.loc 1 62 0
+ 147              		@ sp needed
+ 148 0004 7047     		bx	lr
+ 149              	.L15:
+ 150 0006 C046     		.align	2
+ 151              	.L14:
+ 152 0008 00000000 		.word	.LANCHOR0
+ 153              		.cfi_endproc
+ 154              	.LFE40:
+ 155              		.size	SetkPosition, .-SetkPosition
+ 156              		.section	.text.SetkIntegral,"ax",%progbits
+ 157              		.align	2
+ 158              		.global	SetkIntegral
+ 159              		.code	16
+ 160              		.thumb_func
+ 161              		.type	SetkIntegral, %function
+ 162              	SetkIntegral:
+ 163              	.LFB41:
+  63:PositionPID.c **** void SetkIntegral(int32_t kI){
+ 164              		.loc 1 63 0
+ 165              		.cfi_startproc
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 5
+
+
+ 166              		@ args = 0, pretend = 0, frame = 0
+ 167              		@ frame_needed = 0, uses_anonymous_args = 0
+ 168              		@ link register save eliminated.
+ 169              	.LVL1:
+  64:PositionPID.c ****     kIntegral = kI;
+ 170              		.loc 1 64 0
+ 171 0000 014B     		ldr	r3, .L17
+ 172 0002 1861     		str	r0, [r3, #16]
+  65:PositionPID.c **** }
+ 173              		.loc 1 65 0
+ 174              		@ sp needed
+ 175 0004 7047     		bx	lr
+ 176              	.L18:
+ 177 0006 C046     		.align	2
+ 178              	.L17:
+ 179 0008 00000000 		.word	.LANCHOR0
+ 180              		.cfi_endproc
+ 181              	.LFE41:
+ 182              		.size	SetkIntegral, .-SetkIntegral
+ 183              		.section	.text.SetkDerivative,"ax",%progbits
+ 184              		.align	2
+ 185              		.global	SetkDerivative
+ 186              		.code	16
+ 187              		.thumb_func
+ 188              		.type	SetkDerivative, %function
+ 189              	SetkDerivative:
+ 190              	.LFB42:
+  66:PositionPID.c **** void SetkDerivative(int32_t kD){
+ 191              		.loc 1 66 0
+ 192              		.cfi_startproc
+ 193              		@ args = 0, pretend = 0, frame = 0
+ 194              		@ frame_needed = 0, uses_anonymous_args = 0
+ 195              		@ link register save eliminated.
+ 196              	.LVL2:
+  67:PositionPID.c ****     kDerivative = kD;
+ 197              		.loc 1 67 0
+ 198 0000 014B     		ldr	r3, .L20
+ 199 0002 5861     		str	r0, [r3, #20]
+  68:PositionPID.c **** }
+ 200              		.loc 1 68 0
+ 201              		@ sp needed
+ 202 0004 7047     		bx	lr
+ 203              	.L21:
+ 204 0006 C046     		.align	2
+ 205              	.L20:
+ 206 0008 00000000 		.word	.LANCHOR0
+ 207              		.cfi_endproc
+ 208              	.LFE42:
+ 209              		.size	SetkDerivative, .-SetkDerivative
+ 210              		.section	.text.SetkPPJR,"ax",%progbits
+ 211              		.align	2
+ 212              		.global	SetkPPJR
+ 213              		.code	16
+ 214              		.thumb_func
+ 215              		.type	SetkPPJR, %function
+ 216              	SetkPPJR:
+ 217              	.LFB43:
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 6
+
+
+  69:PositionPID.c **** void SetkPPJR(uint32_t kppjr){
+ 218              		.loc 1 69 0
+ 219              		.cfi_startproc
+ 220              		@ args = 0, pretend = 0, frame = 0
+ 221              		@ frame_needed = 0, uses_anonymous_args = 0
+ 222              		@ link register save eliminated.
+ 223              	.LVL3:
+  70:PositionPID.c ****     kPPJR = kppjr;
+ 224              		.loc 1 70 0
+ 225 0000 014B     		ldr	r3, .L23
+ 226 0002 9861     		str	r0, [r3, #24]
+  71:PositionPID.c **** }
+ 227              		.loc 1 71 0
+ 228              		@ sp needed
+ 229 0004 7047     		bx	lr
+ 230              	.L24:
+ 231 0006 C046     		.align	2
+ 232              	.L23:
+ 233 0008 00000000 		.word	.LANCHOR0
+ 234              		.cfi_endproc
+ 235              	.LFE43:
+ 236              		.size	SetkPPJR, .-SetkPPJR
+ 237              		.section	.text.GetkPosition,"ax",%progbits
+ 238              		.align	2
+ 239              		.global	GetkPosition
+ 240              		.code	16
+ 241              		.thumb_func
+ 242              		.type	GetkPosition, %function
+ 243              	GetkPosition:
+ 244              	.LFB44:
+  72:PositionPID.c **** int32_t GetkPosition(){
+ 245              		.loc 1 72 0
+ 246              		.cfi_startproc
+ 247              		@ args = 0, pretend = 0, frame = 0
+ 248              		@ frame_needed = 0, uses_anonymous_args = 0
+ 249              		@ link register save eliminated.
+  73:PositionPID.c ****     return kPosition;
+ 250              		.loc 1 73 0
+ 251 0000 014B     		ldr	r3, .L26
+ 252 0002 D868     		ldr	r0, [r3, #12]
+  74:PositionPID.c **** }
+ 253              		.loc 1 74 0
+ 254              		@ sp needed
+ 255 0004 7047     		bx	lr
+ 256              	.L27:
+ 257 0006 C046     		.align	2
+ 258              	.L26:
+ 259 0008 00000000 		.word	.LANCHOR0
+ 260              		.cfi_endproc
+ 261              	.LFE44:
+ 262              		.size	GetkPosition, .-GetkPosition
+ 263              		.section	.text.GetkIntegral,"ax",%progbits
+ 264              		.align	2
+ 265              		.global	GetkIntegral
+ 266              		.code	16
+ 267              		.thumb_func
+ 268              		.type	GetkIntegral, %function
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 7
+
+
+ 269              	GetkIntegral:
+ 270              	.LFB45:
+  75:PositionPID.c **** int32_t GetkIntegral(){
+ 271              		.loc 1 75 0
+ 272              		.cfi_startproc
+ 273              		@ args = 0, pretend = 0, frame = 0
+ 274              		@ frame_needed = 0, uses_anonymous_args = 0
+ 275              		@ link register save eliminated.
+  76:PositionPID.c ****     return kIntegral;
+ 276              		.loc 1 76 0
+ 277 0000 014B     		ldr	r3, .L29
+ 278 0002 1869     		ldr	r0, [r3, #16]
+  77:PositionPID.c **** }
+ 279              		.loc 1 77 0
+ 280              		@ sp needed
+ 281 0004 7047     		bx	lr
+ 282              	.L30:
+ 283 0006 C046     		.align	2
+ 284              	.L29:
+ 285 0008 00000000 		.word	.LANCHOR0
+ 286              		.cfi_endproc
+ 287              	.LFE45:
+ 288              		.size	GetkIntegral, .-GetkIntegral
+ 289              		.section	.text.GetkDerivative,"ax",%progbits
+ 290              		.align	2
+ 291              		.global	GetkDerivative
+ 292              		.code	16
+ 293              		.thumb_func
+ 294              		.type	GetkDerivative, %function
+ 295              	GetkDerivative:
+ 296              	.LFB46:
+  78:PositionPID.c **** int32_t GetkDerivative(){
+ 297              		.loc 1 78 0
+ 298              		.cfi_startproc
+ 299              		@ args = 0, pretend = 0, frame = 0
+ 300              		@ frame_needed = 0, uses_anonymous_args = 0
+ 301              		@ link register save eliminated.
+  79:PositionPID.c ****     return kDerivative;
+ 302              		.loc 1 79 0
+ 303 0000 014B     		ldr	r3, .L32
+ 304 0002 5869     		ldr	r0, [r3, #20]
+  80:PositionPID.c **** }
+ 305              		.loc 1 80 0
+ 306              		@ sp needed
+ 307 0004 7047     		bx	lr
+ 308              	.L33:
+ 309 0006 C046     		.align	2
+ 310              	.L32:
+ 311 0008 00000000 		.word	.LANCHOR0
+ 312              		.cfi_endproc
+ 313              	.LFE46:
+ 314              		.size	GetkDerivative, .-GetkDerivative
+ 315              		.section	.text.GetkPPJR,"ax",%progbits
+ 316              		.align	2
+ 317              		.global	GetkPPJR
+ 318              		.code	16
+ 319              		.thumb_func
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 8
+
+
+ 320              		.type	GetkPPJR, %function
+ 321              	GetkPPJR:
+ 322              	.LFB47:
+  81:PositionPID.c **** uint32_t GetkPPJR(){
+ 323              		.loc 1 81 0
+ 324              		.cfi_startproc
+ 325              		@ args = 0, pretend = 0, frame = 0
+ 326              		@ frame_needed = 0, uses_anonymous_args = 0
+ 327              		@ link register save eliminated.
+  82:PositionPID.c ****     return kPPJR;
+ 328              		.loc 1 82 0
+ 329 0000 014B     		ldr	r3, .L35
+ 330 0002 9869     		ldr	r0, [r3, #24]
+  83:PositionPID.c **** }
+ 331              		.loc 1 83 0
+ 332              		@ sp needed
+ 333 0004 7047     		bx	lr
+ 334              	.L36:
+ 335 0006 C046     		.align	2
+ 336              	.L35:
+ 337 0008 00000000 		.word	.LANCHOR0
+ 338              		.cfi_endproc
+ 339              	.LFE47:
+ 340              		.size	GetkPPJR, .-GetkPPJR
+ 341              		.section	.text.SetMaxPIDPWM,"ax",%progbits
+ 342              		.align	2
+ 343              		.global	SetMaxPIDPWM
+ 344              		.code	16
+ 345              		.thumb_func
+ 346              		.type	SetMaxPIDPWM, %function
+ 347              	SetMaxPIDPWM:
+ 348              	.LFB48:
+  84:PositionPID.c **** 
+  85:PositionPID.c **** void SetMaxPIDPWM(uint16_t setValue){
+ 349              		.loc 1 85 0
+ 350              		.cfi_startproc
+ 351              		@ args = 0, pretend = 0, frame = 0
+ 352              		@ frame_needed = 0, uses_anonymous_args = 0
+ 353              		@ link register save eliminated.
+ 354              	.LVL4:
+  86:PositionPID.c ****     maxPWM = setValue;
+ 355              		.loc 1 86 0
+ 356 0000 014B     		ldr	r3, .L38
+ 357 0002 1860     		str	r0, [r3]
+  87:PositionPID.c **** }
+ 358              		.loc 1 87 0
+ 359              		@ sp needed
+ 360 0004 7047     		bx	lr
+ 361              	.L39:
+ 362 0006 C046     		.align	2
+ 363              	.L38:
+ 364 0008 00000000 		.word	.LANCHOR1
+ 365              		.cfi_endproc
+ 366              	.LFE48:
+ 367              		.size	SetMaxPIDPWM, .-SetMaxPIDPWM
+ 368              		.section	.text.GetMaxPIDPWM,"ax",%progbits
+ 369              		.align	2
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 9
+
+
+ 370              		.global	GetMaxPIDPWM
+ 371              		.code	16
+ 372              		.thumb_func
+ 373              		.type	GetMaxPIDPWM, %function
+ 374              	GetMaxPIDPWM:
+ 375              	.LFB49:
+  88:PositionPID.c **** int32_t GetMaxPIDPWM(){
+ 376              		.loc 1 88 0
+ 377              		.cfi_startproc
+ 378              		@ args = 0, pretend = 0, frame = 0
+ 379              		@ frame_needed = 0, uses_anonymous_args = 0
+ 380              		@ link register save eliminated.
+  89:PositionPID.c ****     return maxPWM;
+ 381              		.loc 1 89 0
+ 382 0000 014B     		ldr	r3, .L41
+ 383 0002 1868     		ldr	r0, [r3]
+  90:PositionPID.c **** }
+ 384              		.loc 1 90 0
+ 385              		@ sp needed
+ 386 0004 7047     		bx	lr
+ 387              	.L42:
+ 388 0006 C046     		.align	2
+ 389              	.L41:
+ 390 0008 00000000 		.word	.LANCHOR1
+ 391              		.cfi_endproc
+ 392              	.LFE49:
+ 393              		.size	GetMaxPIDPWM, .-GetMaxPIDPWM
+ 394              		.section	.text.GetEncoderValWithFlip,"ax",%progbits
+ 395              		.align	2
+ 396              		.global	GetEncoderValWithFlip
+ 397              		.code	16
+ 398              		.thumb_func
+ 399              		.type	GetEncoderValWithFlip, %function
+ 400              	GetEncoderValWithFlip:
+ 401              	.LFB50:
+  91:PositionPID.c **** 
+  92:PositionPID.c **** int32_t GetEncoderValWithFlip() {
+ 402              		.loc 1 92 0
+ 403              		.cfi_startproc
+ 404              		@ args = 0, pretend = 0, frame = 0
+ 405              		@ frame_needed = 0, uses_anonymous_args = 0
+ 406 0000 10B5     		push	{r4, lr}
+ 407              		.cfi_def_cfa_offset 8
+ 408              		.cfi_offset 4, -8
+ 409              		.cfi_offset 14, -4
+  93:PositionPID.c ****     return flipEncoder * QuadDec_GetCounter();
+ 410              		.loc 1 93 0
+ 411 0002 034B     		ldr	r3, .L44
+ 412 0004 0424     		movs	r4, #4
+ 413 0006 1C57     		ldrsb	r4, [r3, r4]
+ 414 0008 FFF7FEFF 		bl	QuadDec_GetCounter
+ 415              	.LVL5:
+ 416 000c 6043     		muls	r0, r4
+  94:PositionPID.c **** }
+ 417              		.loc 1 94 0
+ 418              		@ sp needed
+ 419 000e 10BD     		pop	{r4, pc}
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 10
+
+
+ 420              	.L45:
+ 421              		.align	2
+ 422              	.L44:
+ 423 0010 00000000 		.word	.LANCHOR1
+ 424              		.cfi_endproc
+ 425              	.LFE50:
+ 426              		.size	GetEncoderValWithFlip, .-GetEncoderValWithFlip
+ 427              		.section	.text.InitializePID,"ax",%progbits
+ 428              		.align	2
+ 429              		.global	InitializePID
+ 430              		.code	16
+ 431              		.thumb_func
+ 432              		.type	InitializePID, %function
+ 433              	InitializePID:
+ 434              	.LFB39:
+  53:PositionPID.c ****     set_PWM(0, 0, 0);
+ 435              		.loc 1 53 0
+ 436              		.cfi_startproc
+ 437              		@ args = 0, pretend = 0, frame = 0
+ 438              		@ frame_needed = 0, uses_anonymous_args = 0
+ 439 0000 10B5     		push	{r4, lr}
+ 440              		.cfi_def_cfa_offset 8
+ 441              		.cfi_offset 4, -8
+ 442              		.cfi_offset 14, -4
+  54:PositionPID.c ****     ClearPIDProgress();
+ 443              		.loc 1 54 0
+ 444 0002 0022     		movs	r2, #0
+ 445 0004 0021     		movs	r1, #0
+ 446 0006 0020     		movs	r0, #0
+ 447 0008 FFF7FEFF 		bl	set_PWM
+ 448              	.LVL6:
+  55:PositionPID.c ****     DisablePID();
+ 449              		.loc 1 55 0
+ 450 000c FFF7FEFF 		bl	ClearPIDProgress
+ 451              	.LVL7:
+  56:PositionPID.c ****     lastPosition = GetEncoderValWithFlip();
+ 452              		.loc 1 56 0
+ 453 0010 FFF7FEFF 		bl	DisablePID
+ 454              	.LVL8:
+  57:PositionPID.c **** }
+ 455              		.loc 1 57 0
+ 456 0014 FFF7FEFF 		bl	GetEncoderValWithFlip
+ 457              	.LVL9:
+ 458 0018 014B     		ldr	r3, .L47
+ 459 001a 5860     		str	r0, [r3, #4]
+  58:PositionPID.c **** 
+ 460              		.loc 1 58 0
+ 461              		@ sp needed
+ 462 001c 10BD     		pop	{r4, pc}
+ 463              	.L48:
+ 464 001e C046     		.align	2
+ 465              	.L47:
+ 466 0020 00000000 		.word	.LANCHOR0
+ 467              		.cfi_endproc
+ 468              	.LFE39:
+ 469              		.size	InitializePID, .-InitializePID
+ 470              		.section	.text.SetEncoderDirDefault,"ax",%progbits
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 11
+
+
+ 471              		.align	2
+ 472              		.global	SetEncoderDirDefault
+ 473              		.code	16
+ 474              		.thumb_func
+ 475              		.type	SetEncoderDirDefault, %function
+ 476              	SetEncoderDirDefault:
+ 477              	.LFB51:
+  95:PositionPID.c **** void SetEncoderDirDefault(){
+ 478              		.loc 1 95 0
+ 479              		.cfi_startproc
+ 480              		@ args = 0, pretend = 0, frame = 0
+ 481              		@ frame_needed = 0, uses_anonymous_args = 0
+ 482              		@ link register save eliminated.
+  96:PositionPID.c ****     flipEncoder = 1;
+ 483              		.loc 1 96 0
+ 484 0000 0122     		movs	r2, #1
+ 485 0002 014B     		ldr	r3, .L50
+ 486 0004 1A71     		strb	r2, [r3, #4]
+  97:PositionPID.c **** }
+ 487              		.loc 1 97 0
+ 488              		@ sp needed
+ 489 0006 7047     		bx	lr
+ 490              	.L51:
+ 491              		.align	2
+ 492              	.L50:
+ 493 0008 00000000 		.word	.LANCHOR1
+ 494              		.cfi_endproc
+ 495              	.LFE51:
+ 496              		.size	SetEncoderDirDefault, .-SetEncoderDirDefault
+ 497              		.section	.text.SetEncoderDirReverse,"ax",%progbits
+ 498              		.align	2
+ 499              		.global	SetEncoderDirReverse
+ 500              		.code	16
+ 501              		.thumb_func
+ 502              		.type	SetEncoderDirReverse, %function
+ 503              	SetEncoderDirReverse:
+ 504              	.LFB52:
+  98:PositionPID.c **** void SetEncoderDirReverse(){
+ 505              		.loc 1 98 0
+ 506              		.cfi_startproc
+ 507              		@ args = 0, pretend = 0, frame = 0
+ 508              		@ frame_needed = 0, uses_anonymous_args = 0
+ 509              		@ link register save eliminated.
+  99:PositionPID.c ****     flipEncoder = -1;
+ 510              		.loc 1 99 0
+ 511 0000 FF22     		movs	r2, #255
+ 512 0002 014B     		ldr	r3, .L53
+ 513 0004 1A71     		strb	r2, [r3, #4]
+ 100:PositionPID.c **** }
+ 514              		.loc 1 100 0
+ 515              		@ sp needed
+ 516 0006 7047     		bx	lr
+ 517              	.L54:
+ 518              		.align	2
+ 519              	.L53:
+ 520 0008 00000000 		.word	.LANCHOR1
+ 521              		.cfi_endproc
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 12
+
+
+ 522              	.LFE52:
+ 523              		.size	SetEncoderDirReverse, .-SetEncoderDirReverse
+ 524              		.global	__aeabi_idiv
+ 525              		.section	.text.CurrentPositionMiliDegree,"ax",%progbits
+ 526              		.align	2
+ 527              		.global	CurrentPositionMiliDegree
+ 528              		.code	16
+ 529              		.thumb_func
+ 530              		.type	CurrentPositionMiliDegree, %function
+ 531              	CurrentPositionMiliDegree:
+ 532              	.LFB53:
+ 101:PositionPID.c **** int32_t CurrentPositionMiliDegree(){
+ 533              		.loc 1 101 0
+ 534              		.cfi_startproc
+ 535              		@ args = 0, pretend = 0, frame = 0
+ 536              		@ frame_needed = 0, uses_anonymous_args = 0
+ 537 0000 10B5     		push	{r4, lr}
+ 538              		.cfi_def_cfa_offset 8
+ 539              		.cfi_offset 4, -8
+ 540              		.cfi_offset 14, -4
+ 102:PositionPID.c ****     if(kPPJR == 0){
+ 541              		.loc 1 102 0
+ 542 0002 064B     		ldr	r3, .L57
+ 543 0004 9869     		ldr	r0, [r3, #24]
+ 544 0006 0028     		cmp	r0, #0
+ 545 0008 07D0     		beq	.L56
+ 103:PositionPID.c ****         return(0);
+ 104:PositionPID.c ****     }
+ 105:PositionPID.c ****     return GetEncoderValWithFlip() * (360*1000) / kPPJR;
+ 546              		.loc 1 105 0
+ 547 000a FFF7FEFF 		bl	GetEncoderValWithFlip
+ 548              	.LVL10:
+ 549 000e 044B     		ldr	r3, .L57+4
+ 550 0010 5843     		muls	r0, r3
+ 551 0012 024B     		ldr	r3, .L57
+ 552 0014 9969     		ldr	r1, [r3, #24]
+ 553 0016 FFF7FEFF 		bl	__aeabi_idiv
+ 554              	.LVL11:
+ 555              	.L56:
+ 106:PositionPID.c **** }
+ 556              		.loc 1 106 0
+ 557              		@ sp needed
+ 558 001a 10BD     		pop	{r4, pc}
+ 559              	.L58:
+ 560              		.align	2
+ 561              	.L57:
+ 562 001c 00000000 		.word	.LANCHOR0
+ 563 0020 407E0500 		.word	360000
+ 564              		.cfi_endproc
+ 565              	.LFE53:
+ 566              		.size	CurrentPositionMiliDegree, .-CurrentPositionMiliDegree
+ 567              		.section	.text.MiliDegreesToTicks,"ax",%progbits
+ 568              		.align	2
+ 569              		.global	MiliDegreesToTicks
+ 570              		.code	16
+ 571              		.thumb_func
+ 572              		.type	MiliDegreesToTicks, %function
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 13
+
+
+ 573              	MiliDegreesToTicks:
+ 574              	.LFB55:
+ 107:PositionPID.c **** void SetPosition(int32 miliDegrees) {
+ 108:PositionPID.c ****         //TODO: Make Potentiometer Compatible
+ 109:PositionPID.c ****         PWM = Position_PID(MiliDegreesToTicks(miliDegrees));
+ 110:PositionPID.c ****         
+ 111:PositionPID.c ****         //Max Power clamp
+ 112:PositionPID.c ****         if(PWM > GetMaxPIDPWM()){
+ 113:PositionPID.c ****             set_PWM(GetMaxPIDPWM(), ignoreLimSw, Status_Reg_Switches_Read());   
+ 114:PositionPID.c ****         } else if(PWM < -GetMaxPIDPWM()) {
+ 115:PositionPID.c ****             set_PWM(-GetMaxPIDPWM(), ignoreLimSw, Status_Reg_Switches_Read());
+ 116:PositionPID.c ****         } else {
+ 117:PositionPID.c ****             set_PWM(PWM, ignoreLimSw, Status_Reg_Switches_Read());   
+ 118:PositionPID.c ****         }
+ 119:PositionPID.c **** }
+ 120:PositionPID.c **** 
+ 121:PositionPID.c **** int32_t MiliDegreesToTicks(int32_t miliDegrees){
+ 575              		.loc 1 121 0
+ 576              		.cfi_startproc
+ 577              		@ args = 0, pretend = 0, frame = 0
+ 578              		@ frame_needed = 0, uses_anonymous_args = 0
+ 579              	.LVL12:
+ 580 0000 10B5     		push	{r4, lr}
+ 581              		.cfi_def_cfa_offset 8
+ 582              		.cfi_offset 4, -8
+ 583              		.cfi_offset 14, -4
+ 122:PositionPID.c ****     int32_t ticks = miliDegrees * kPPJR/(360*1000);// make float
+ 584              		.loc 1 122 0
+ 585 0002 034B     		ldr	r3, .L60
+ 586 0004 9B69     		ldr	r3, [r3, #24]
+ 587 0006 5843     		muls	r0, r3
+ 588              	.LVL13:
+ 589 0008 0249     		ldr	r1, .L60+4
+ 590 000a FFF7FEFF 		bl	__aeabi_idiv
+ 591              	.LVL14:
+ 123:PositionPID.c ****     return(ticks);
+ 124:PositionPID.c **** }
+ 592              		.loc 1 124 0
+ 593              		@ sp needed
+ 594 000e 10BD     		pop	{r4, pc}
+ 595              	.L61:
+ 596              		.align	2
+ 597              	.L60:
+ 598 0010 00000000 		.word	.LANCHOR0
+ 599 0014 407E0500 		.word	360000
+ 600              		.cfi_endproc
+ 601              	.LFE55:
+ 602              		.size	MiliDegreesToTicks, .-MiliDegreesToTicks
+ 603              		.section	.text.Position_PID,"ax",%progbits
+ 604              		.align	2
+ 605              		.global	Position_PID
+ 606              		.code	16
+ 607              		.thumb_func
+ 608              		.type	Position_PID, %function
+ 609              	Position_PID:
+ 610              	.LFB56:
+ 125:PositionPID.c **** 
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 14
+
+
+ 126:PositionPID.c **** int32_t Position_PID(int32 targetTick){
+ 611              		.loc 1 126 0
+ 612              		.cfi_startproc
+ 613              		@ args = 0, pretend = 0, frame = 8
+ 614              		@ frame_needed = 0, uses_anonymous_args = 0
+ 615              	.LVL15:
+ 616 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 617              		.cfi_def_cfa_offset 20
+ 618              		.cfi_offset 4, -20
+ 619              		.cfi_offset 5, -16
+ 620              		.cfi_offset 6, -12
+ 621              		.cfi_offset 7, -8
+ 622              		.cfi_offset 14, -4
+ 623 0002 83B0     		sub	sp, sp, #12
+ 624              		.cfi_def_cfa_offset 32
+ 625 0004 0500     		movs	r5, r0
+ 127:PositionPID.c ****     if(!PIDIsEnabled()){
+ 626              		.loc 1 127 0
+ 627 0006 FFF7FEFF 		bl	PIDIsEnabled
+ 628              	.LVL16:
+ 629 000a 0028     		cmp	r0, #0
+ 630 000c 30D0     		beq	.L66
+ 128:PositionPID.c ****         return(0);
+ 129:PositionPID.c ****     }
+ 130:PositionPID.c ****     //TODO: Make Potenitometer Compatible
+ 131:PositionPID.c ****     volatile int32 current =  GetEncoderValWithFlip();
+ 631              		.loc 1 131 0
+ 632 000e FFF7FEFF 		bl	GetEncoderValWithFlip
+ 633              	.LVL17:
+ 634 0012 0190     		str	r0, [sp, #4]
+ 132:PositionPID.c ****     int32 position = targetTick - current;
+ 635              		.loc 1 132 0
+ 636 0014 019C     		ldr	r4, [sp, #4]
+ 637 0016 2C1B     		subs	r4, r5, r4
+ 638              	.LVL18:
+ 133:PositionPID.c ****     
+ 134:PositionPID.c ****     //if within tolerance exit
+ 135:PositionPID.c ****     if(position <= 5 && position >= -5) {
+ 639              		.loc 1 135 0
+ 640 0018 631D     		adds	r3, r4, #5
+ 641 001a 0A2B     		cmp	r3, #10
+ 642 001c 2AD9     		bls	.L67
+ 136:PositionPID.c ****       return(0);
+ 137:PositionPID.c ****     }
+ 138:PositionPID.c ****     
+ 139:PositionPID.c ****     integral = integral + position;
+ 643              		.loc 1 139 0
+ 644 001e 174B     		ldr	r3, .L68
+ 645 0020 1A68     		ldr	r2, [r3]
+ 646 0022 A218     		adds	r2, r4, r2
+ 647 0024 1A60     		str	r2, [r3]
+ 140:PositionPID.c ****     
+ 141:PositionPID.c ****     //integral clamp
+ 142:PositionPID.c ****     if (integral > integralClamp) {
+ 648              		.loc 1 142 0
+ 649 0026 164B     		ldr	r3, .L68+4
+ 650 0028 9B68     		ldr	r3, [r3, #8]
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 15
+
+
+ 651 002a 9A42     		cmp	r2, r3
+ 652 002c 01DD     		ble	.L64
+ 143:PositionPID.c ****         integral = integralClamp;   
+ 653              		.loc 1 143 0
+ 654 002e 134A     		ldr	r2, .L68
+ 655 0030 1360     		str	r3, [r2]
+ 656              	.L64:
+ 144:PositionPID.c ****     }
+ 145:PositionPID.c ****     if (integral < -integralClamp) {
+ 657              		.loc 1 145 0
+ 658 0032 5B42     		rsbs	r3, r3, #0
+ 659 0034 114A     		ldr	r2, .L68
+ 660 0036 1268     		ldr	r2, [r2]
+ 661 0038 9342     		cmp	r3, r2
+ 662 003a 01DD     		ble	.L65
+ 146:PositionPID.c ****         integral = -integralClamp;
+ 663              		.loc 1 146 0
+ 664 003c 0F4A     		ldr	r2, .L68
+ 665 003e 1360     		str	r3, [r2]
+ 666              	.L65:
+ 147:PositionPID.c ****     }
+ 148:PositionPID.c ****     
+ 149:PositionPID.c ****     int derivative = position - lastPosition;
+ 667              		.loc 1 149 0
+ 668 0040 0E4D     		ldr	r5, .L68
+ 669              	.LVL19:
+ 670 0042 6B68     		ldr	r3, [r5, #4]
+ 671 0044 E71A     		subs	r7, r4, r3
+ 672              	.LVL20:
+ 150:PositionPID.c ****     int PWMOut = position*kPosition/10 + integral*kIntegral/10 + derivative*kDerivative/10;
+ 673              		.loc 1 150 0
+ 674 0046 E868     		ldr	r0, [r5, #12]
+ 675 0048 6043     		muls	r0, r4
+ 676 004a 0A21     		movs	r1, #10
+ 677 004c FFF7FEFF 		bl	__aeabi_idiv
+ 678              	.LVL21:
+ 679 0050 0600     		movs	r6, r0
+ 680 0052 2869     		ldr	r0, [r5, #16]
+ 681 0054 2B68     		ldr	r3, [r5]
+ 682 0056 5843     		muls	r0, r3
+ 683 0058 0A21     		movs	r1, #10
+ 684 005a FFF7FEFF 		bl	__aeabi_idiv
+ 685              	.LVL22:
+ 686 005e 3618     		adds	r6, r6, r0
+ 687 0060 6869     		ldr	r0, [r5, #20]
+ 688 0062 7843     		muls	r0, r7
+ 689 0064 0A21     		movs	r1, #10
+ 690 0066 FFF7FEFF 		bl	__aeabi_idiv
+ 691              	.LVL23:
+ 151:PositionPID.c ****     lastPosition = position;
+ 692              		.loc 1 151 0
+ 693 006a 6C60     		str	r4, [r5, #4]
+ 152:PositionPID.c ****     
+ 153:PositionPID.c ****     #ifdef PRINT_PID_DEBUG
+ 154:PositionPID.c ****         sprintf(txData,"c:%d, P:%d, I%d, D:%d, Out:%d", current, position, integral, derivative, PW
+ 155:PositionPID.c ****         UART_UartPutString(txData);   
+ 156:PositionPID.c ****     #endif
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 16
+
+
+ 157:PositionPID.c ****  
+ 158:PositionPID.c ****     return (PWMOut);
+ 694              		.loc 1 158 0
+ 695 006c 3018     		adds	r0, r6, r0
+ 696              	.LVL24:
+ 697 006e 02E0     		b	.L63
+ 698              	.LVL25:
+ 699              	.L66:
+ 128:PositionPID.c ****     }
+ 700              		.loc 1 128 0
+ 701 0070 0020     		movs	r0, #0
+ 702 0072 00E0     		b	.L63
+ 703              	.LVL26:
+ 704              	.L67:
+ 136:PositionPID.c ****     }
+ 705              		.loc 1 136 0
+ 706 0074 0020     		movs	r0, #0
+ 707              	.LVL27:
+ 708              	.L63:
+ 159:PositionPID.c **** }
+ 709              		.loc 1 159 0
+ 710 0076 03B0     		add	sp, sp, #12
+ 711              		@ sp needed
+ 712 0078 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 713              	.L69:
+ 714 007a C046     		.align	2
+ 715              	.L68:
+ 716 007c 00000000 		.word	.LANCHOR0
+ 717 0080 00000000 		.word	.LANCHOR1
+ 718              		.cfi_endproc
+ 719              	.LFE56:
+ 720              		.size	Position_PID, .-Position_PID
+ 721              		.section	.text.SetPosition,"ax",%progbits
+ 722              		.align	2
+ 723              		.global	SetPosition
+ 724              		.code	16
+ 725              		.thumb_func
+ 726              		.type	SetPosition, %function
+ 727              	SetPosition:
+ 728              	.LFB54:
+ 107:PositionPID.c ****         //TODO: Make Potentiometer Compatible
+ 729              		.loc 1 107 0
+ 730              		.cfi_startproc
+ 731              		@ args = 0, pretend = 0, frame = 0
+ 732              		@ frame_needed = 0, uses_anonymous_args = 0
+ 733              	.LVL28:
+ 734 0000 70B5     		push	{r4, r5, r6, lr}
+ 735              		.cfi_def_cfa_offset 16
+ 736              		.cfi_offset 4, -16
+ 737              		.cfi_offset 5, -12
+ 738              		.cfi_offset 6, -8
+ 739              		.cfi_offset 14, -4
+ 109:PositionPID.c ****         
+ 740              		.loc 1 109 0
+ 741 0002 FFF7FEFF 		bl	MiliDegreesToTicks
+ 742              	.LVL29:
+ 743 0006 FFF7FEFF 		bl	Position_PID
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 17
+
+
+ 744              	.LVL30:
+ 745 000a 0400     		movs	r4, r0
+ 746 000c 144B     		ldr	r3, .L74
+ 747 000e D861     		str	r0, [r3, #28]
+ 112:PositionPID.c ****             set_PWM(GetMaxPIDPWM(), ignoreLimSw, Status_Reg_Switches_Read());   
+ 748              		.loc 1 112 0
+ 749 0010 FFF7FEFF 		bl	GetMaxPIDPWM
+ 750              	.LVL31:
+ 751 0014 0500     		movs	r5, r0
+ 752 0016 8442     		cmp	r4, r0
+ 753 0018 09DD     		ble	.L71
+ 113:PositionPID.c ****         } else if(PWM < -GetMaxPIDPWM()) {
+ 754              		.loc 1 113 0
+ 755 001a 124B     		ldr	r3, .L74+4
+ 756 001c 1C78     		ldrb	r4, [r3]
+ 757 001e FFF7FEFF 		bl	Status_Reg_Switches_Read
+ 758              	.LVL32:
+ 759 0022 0200     		movs	r2, r0
+ 760 0024 28B2     		sxth	r0, r5
+ 761 0026 2100     		movs	r1, r4
+ 762 0028 FFF7FEFF 		bl	set_PWM
+ 763              	.LVL33:
+ 764 002c 16E0     		b	.L70
+ 765              	.L71:
+ 114:PositionPID.c ****             set_PWM(-GetMaxPIDPWM(), ignoreLimSw, Status_Reg_Switches_Read());
+ 766              		.loc 1 114 0
+ 767 002e 4342     		rsbs	r3, r0, #0
+ 768 0030 9C42     		cmp	r4, r3
+ 769 0032 0ADA     		bge	.L73
+ 115:PositionPID.c ****         } else {
+ 770              		.loc 1 115 0
+ 771 0034 0B4B     		ldr	r3, .L74+4
+ 772 0036 1C78     		ldrb	r4, [r3]
+ 773 0038 FFF7FEFF 		bl	Status_Reg_Switches_Read
+ 774              	.LVL34:
+ 775 003c 0200     		movs	r2, r0
+ 776 003e 6D42     		rsbs	r5, r5, #0
+ 777 0040 28B2     		sxth	r0, r5
+ 778 0042 2100     		movs	r1, r4
+ 779 0044 FFF7FEFF 		bl	set_PWM
+ 780              	.LVL35:
+ 781 0048 08E0     		b	.L70
+ 782              	.L73:
+ 117:PositionPID.c ****         }
+ 783              		.loc 1 117 0
+ 784 004a 064B     		ldr	r3, .L74+4
+ 785 004c 1D78     		ldrb	r5, [r3]
+ 786 004e FFF7FEFF 		bl	Status_Reg_Switches_Read
+ 787              	.LVL36:
+ 788 0052 0200     		movs	r2, r0
+ 789 0054 20B2     		sxth	r0, r4
+ 790 0056 2900     		movs	r1, r5
+ 791 0058 FFF7FEFF 		bl	set_PWM
+ 792              	.LVL37:
+ 793              	.L70:
+ 119:PositionPID.c **** 
+ 794              		.loc 1 119 0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 18
+
+
+ 795              		@ sp needed
+ 796 005c 70BD     		pop	{r4, r5, r6, pc}
+ 797              	.L75:
+ 798 005e C046     		.align	2
+ 799              	.L74:
+ 800 0060 00000000 		.word	.LANCHOR0
+ 801 0064 00000000 		.word	ignoreLimSw
+ 802              		.cfi_endproc
+ 803              	.LFE54:
+ 804              		.size	SetPosition, .-SetPosition
+ 805              		.global	enabledPID
+ 806              		.global	maxPWM
+ 807              		.global	complete
+ 808              		.comm	ratio,8,8
+ 809              		.global	integralClamp
+ 810              		.global	lastPosition
+ 811              		.global	integral
+ 812              		.global	usingPot
+ 813              		.global	flipEncoder
+ 814              		.global	PWM
+ 815              		.global	kPPJR
+ 816              		.global	kDerivative
+ 817              		.global	kIntegral
+ 818              		.global	kPosition
+ 819              		.data
+ 820              		.align	2
+ 821              		.set	.LANCHOR1,. + 0
+ 822              		.type	maxPWM, %object
+ 823              		.size	maxPWM, 4
+ 824              	maxPWM:
+ 825 0000 FF7F0000 		.word	32767
+ 826              		.type	flipEncoder, %object
+ 827              		.size	flipEncoder, 1
+ 828              	flipEncoder:
+ 829 0004 01       		.byte	1
+ 830 0005 000000   		.space	3
+ 831              		.type	integralClamp, %object
+ 832              		.size	integralClamp, 4
+ 833              	integralClamp:
+ 834 0008 F4010000 		.word	500
+ 835              		.bss
+ 836              		.align	2
+ 837              		.set	.LANCHOR0,. + 0
+ 838              		.type	integral, %object
+ 839              		.size	integral, 4
+ 840              	integral:
+ 841 0000 00000000 		.space	4
+ 842              		.type	lastPosition, %object
+ 843              		.size	lastPosition, 4
+ 844              	lastPosition:
+ 845 0004 00000000 		.space	4
+ 846              		.type	enabledPID, %object
+ 847              		.size	enabledPID, 1
+ 848              	enabledPID:
+ 849 0008 00       		.space	1
+ 850 0009 000000   		.space	3
+ 851              		.type	kPosition, %object
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 19
+
+
+ 852              		.size	kPosition, 4
+ 853              	kPosition:
+ 854 000c 00000000 		.space	4
+ 855              		.type	kIntegral, %object
+ 856              		.size	kIntegral, 4
+ 857              	kIntegral:
+ 858 0010 00000000 		.space	4
+ 859              		.type	kDerivative, %object
+ 860              		.size	kDerivative, 4
+ 861              	kDerivative:
+ 862 0014 00000000 		.space	4
+ 863              		.type	kPPJR, %object
+ 864              		.size	kPPJR, 4
+ 865              	kPPJR:
+ 866 0018 00000000 		.space	4
+ 867              		.type	PWM, %object
+ 868              		.size	PWM, 4
+ 869              	PWM:
+ 870 001c 00000000 		.space	4
+ 871              		.type	complete, %object
+ 872              		.size	complete, 1
+ 873              	complete:
+ 874 0020 00       		.space	1
+ 875              		.type	usingPot, %object
+ 876              		.size	usingPot, 1
+ 877              	usingPot:
+ 878 0021 00       		.space	1
+ 879              		.text
+ 880              	.Letext0:
+ 881              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 882              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 883              		.file 4 "Generated_Source\\PSoC4/cytypes.h"
+ 884              		.file 5 "Generated_Source\\PSoC4/QuadDec.h"
+ 885              		.file 6 "MotorDrive.h"
+ 886              		.file 7 "Generated_Source\\PSoC4/Status_Reg_Switches.h"
+ 887              		.section	.debug_info,"",%progbits
+ 888              	.Ldebug_info0:
+ 889 0000 96050000 		.4byte	0x596
+ 890 0004 0400     		.2byte	0x4
+ 891 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 892 000a 04       		.byte	0x4
+ 893 000b 01       		.uleb128 0x1
+ 894 000c 47010000 		.4byte	.LASF72
+ 895 0010 0C       		.byte	0xc
+ 896 0011 BB000000 		.4byte	.LASF73
+ 897 0015 56000000 		.4byte	.LASF74
+ 898 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 899 001d 00000000 		.4byte	0
+ 900 0021 00000000 		.4byte	.Ldebug_line0
+ 901 0025 02       		.uleb128 0x2
+ 902 0026 01       		.byte	0x1
+ 903 0027 06       		.byte	0x6
+ 904 0028 A1020000 		.4byte	.LASF0
+ 905 002c 03       		.uleb128 0x3
+ 906 002d 3E020000 		.4byte	.LASF3
+ 907 0031 02       		.byte	0x2
+ 908 0032 1D       		.byte	0x1d
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 20
+
+
+ 909 0033 37000000 		.4byte	0x37
+ 910 0037 02       		.uleb128 0x2
+ 911 0038 01       		.byte	0x1
+ 912 0039 08       		.byte	0x8
+ 913 003a 82020000 		.4byte	.LASF1
+ 914 003e 02       		.uleb128 0x2
+ 915 003f 02       		.byte	0x2
+ 916 0040 05       		.byte	0x5
+ 917 0041 4C000000 		.4byte	.LASF2
+ 918 0045 03       		.uleb128 0x3
+ 919 0046 01010000 		.4byte	.LASF4
+ 920 004a 02       		.byte	0x2
+ 921 004b 2B       		.byte	0x2b
+ 922 004c 50000000 		.4byte	0x50
+ 923 0050 02       		.uleb128 0x2
+ 924 0051 02       		.byte	0x2
+ 925 0052 07       		.byte	0x7
+ 926 0053 2E030000 		.4byte	.LASF5
+ 927 0057 03       		.uleb128 0x3
+ 928 0058 F3030000 		.4byte	.LASF6
+ 929 005c 02       		.byte	0x2
+ 930 005d 3F       		.byte	0x3f
+ 931 005e 62000000 		.4byte	0x62
+ 932 0062 02       		.uleb128 0x2
+ 933 0063 04       		.byte	0x4
+ 934 0064 05       		.byte	0x5
+ 935 0065 26020000 		.4byte	.LASF7
+ 936 0069 03       		.uleb128 0x3
+ 937 006a E3000000 		.4byte	.LASF8
+ 938 006e 02       		.byte	0x2
+ 939 006f 41       		.byte	0x41
+ 940 0070 74000000 		.4byte	0x74
+ 941 0074 02       		.uleb128 0x2
+ 942 0075 04       		.byte	0x4
+ 943 0076 07       		.byte	0x7
+ 944 0077 BA030000 		.4byte	.LASF9
+ 945 007b 02       		.uleb128 0x2
+ 946 007c 08       		.byte	0x8
+ 947 007d 05       		.byte	0x5
+ 948 007e FA010000 		.4byte	.LASF10
+ 949 0082 02       		.uleb128 0x2
+ 950 0083 08       		.byte	0x8
+ 951 0084 07       		.byte	0x7
+ 952 0085 B5020000 		.4byte	.LASF11
+ 953 0089 04       		.uleb128 0x4
+ 954 008a 04       		.byte	0x4
+ 955 008b 05       		.byte	0x5
+ 956 008c 696E7400 		.ascii	"int\000"
+ 957 0090 02       		.uleb128 0x2
+ 958 0091 04       		.byte	0x4
+ 959 0092 07       		.byte	0x7
+ 960 0093 D5020000 		.4byte	.LASF12
+ 961 0097 03       		.uleb128 0x3
+ 962 0098 D5010000 		.4byte	.LASF13
+ 963 009c 03       		.byte	0x3
+ 964 009d 18       		.byte	0x18
+ 965 009e 2C000000 		.4byte	0x2c
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 21
+
+
+ 966 00a2 03       		.uleb128 0x3
+ 967 00a3 E2020000 		.4byte	.LASF14
+ 968 00a7 03       		.byte	0x3
+ 969 00a8 24       		.byte	0x24
+ 970 00a9 45000000 		.4byte	0x45
+ 971 00ad 03       		.uleb128 0x3
+ 972 00ae AD020000 		.4byte	.LASF15
+ 973 00b2 03       		.byte	0x3
+ 974 00b3 2C       		.byte	0x2c
+ 975 00b4 57000000 		.4byte	0x57
+ 976 00b8 03       		.uleb128 0x3
+ 977 00b9 CC020000 		.4byte	.LASF16
+ 978 00bd 03       		.byte	0x3
+ 979 00be 30       		.byte	0x30
+ 980 00bf 69000000 		.4byte	0x69
+ 981 00c3 05       		.uleb128 0x5
+ 982 00c4 DD010000 		.4byte	.LASF17
+ 983 00c8 04       		.byte	0x4
+ 984 00c9 FB01     		.2byte	0x1fb
+ 985 00cb 37000000 		.4byte	0x37
+ 986 00cf 05       		.uleb128 0x5
+ 987 00d0 08020000 		.4byte	.LASF18
+ 988 00d4 04       		.byte	0x4
+ 989 00d5 FE01     		.2byte	0x1fe
+ 990 00d7 25000000 		.4byte	0x25
+ 991 00db 05       		.uleb128 0x5
+ 992 00dc CC030000 		.4byte	.LASF19
+ 993 00e0 04       		.byte	0x4
+ 994 00e1 0002     		.2byte	0x200
+ 995 00e3 62000000 		.4byte	0x62
+ 996 00e7 02       		.uleb128 0x2
+ 997 00e8 04       		.byte	0x4
+ 998 00e9 04       		.byte	0x4
+ 999 00ea F4010000 		.4byte	.LASF20
+ 1000 00ee 02       		.uleb128 0x2
+ 1001 00ef 08       		.byte	0x8
+ 1002 00f0 04       		.byte	0x4
+ 1003 00f1 25040000 		.4byte	.LASF21
+ 1004 00f5 02       		.uleb128 0x2
+ 1005 00f6 01       		.byte	0x1
+ 1006 00f7 08       		.byte	0x8
+ 1007 00f8 57030000 		.4byte	.LASF22
+ 1008 00fc 02       		.uleb128 0x2
+ 1009 00fd 08       		.byte	0x8
+ 1010 00fe 04       		.byte	0x4
+ 1011 00ff 76020000 		.4byte	.LASF23
+ 1012 0103 02       		.uleb128 0x2
+ 1013 0104 04       		.byte	0x4
+ 1014 0105 07       		.byte	0x7
+ 1015 0106 AC000000 		.4byte	.LASF24
+ 1016 010a 06       		.uleb128 0x6
+ 1017 010b 90020000 		.4byte	.LASF25
+ 1018 010f 01       		.byte	0x1
+ 1019 0110 28       		.byte	0x28
+ 1020 0111 00000000 		.4byte	.LFB35
+ 1021 0115 10000000 		.4byte	.LFE35-.LFB35
+ 1022 0119 01       		.uleb128 0x1
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 22
+
+
+ 1023 011a 9C       		.byte	0x9c
+ 1024 011b 06       		.uleb128 0x6
+ 1025 011c 3C010000 		.4byte	.LASF26
+ 1026 0120 01       		.byte	0x1
+ 1027 0121 2C       		.byte	0x2c
+ 1028 0122 00000000 		.4byte	.LFB36
+ 1029 0126 0C000000 		.4byte	.LFE36-.LFB36
+ 1030 012a 01       		.uleb128 0x1
+ 1031 012b 9C       		.byte	0x9c
+ 1032 012c 06       		.uleb128 0x6
+ 1033 012d 1B040000 		.4byte	.LASF27
+ 1034 0131 01       		.byte	0x1
+ 1035 0132 2F       		.byte	0x2f
+ 1036 0133 00000000 		.4byte	.LFB37
+ 1037 0137 0C000000 		.4byte	.LFE37-.LFB37
+ 1038 013b 01       		.uleb128 0x1
+ 1039 013c 9C       		.byte	0x9c
+ 1040 013d 07       		.uleb128 0x7
+ 1041 013e EB020000 		.4byte	.LASF33
+ 1042 0142 01       		.byte	0x1
+ 1043 0143 32       		.byte	0x32
+ 1044 0144 97000000 		.4byte	0x97
+ 1045 0148 00000000 		.4byte	.LFB38
+ 1046 014c 0C000000 		.4byte	.LFE38-.LFB38
+ 1047 0150 01       		.uleb128 0x1
+ 1048 0151 9C       		.byte	0x9c
+ 1049 0152 08       		.uleb128 0x8
+ 1050 0153 26000000 		.4byte	.LASF28
+ 1051 0157 01       		.byte	0x1
+ 1052 0158 3C       		.byte	0x3c
+ 1053 0159 00000000 		.4byte	.LFB40
+ 1054 015d 0C000000 		.4byte	.LFE40-.LFB40
+ 1055 0161 01       		.uleb128 0x1
+ 1056 0162 9C       		.byte	0x9c
+ 1057 0163 74010000 		.4byte	0x174
+ 1058 0167 09       		.uleb128 0x9
+ 1059 0168 6B5000   		.ascii	"kP\000"
+ 1060 016b 01       		.byte	0x1
+ 1061 016c 3C       		.byte	0x3c
+ 1062 016d AD000000 		.4byte	0xad
+ 1063 0171 01       		.uleb128 0x1
+ 1064 0172 50       		.byte	0x50
+ 1065 0173 00       		.byte	0
+ 1066 0174 08       		.uleb128 0x8
+ 1067 0175 19000000 		.4byte	.LASF29
+ 1068 0179 01       		.byte	0x1
+ 1069 017a 3F       		.byte	0x3f
+ 1070 017b 00000000 		.4byte	.LFB41
+ 1071 017f 0C000000 		.4byte	.LFE41-.LFB41
+ 1072 0183 01       		.uleb128 0x1
+ 1073 0184 9C       		.byte	0x9c
+ 1074 0185 96010000 		.4byte	0x196
+ 1075 0189 09       		.uleb128 0x9
+ 1076 018a 6B4900   		.ascii	"kI\000"
+ 1077 018d 01       		.byte	0x1
+ 1078 018e 3F       		.byte	0x3f
+ 1079 018f AD000000 		.4byte	0xad
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 23
+
+
+ 1080 0193 01       		.uleb128 0x1
+ 1081 0194 50       		.byte	0x50
+ 1082 0195 00       		.byte	0
+ 1083 0196 08       		.uleb128 0x8
+ 1084 0197 22010000 		.4byte	.LASF30
+ 1085 019b 01       		.byte	0x1
+ 1086 019c 42       		.byte	0x42
+ 1087 019d 00000000 		.4byte	.LFB42
+ 1088 01a1 0C000000 		.4byte	.LFE42-.LFB42
+ 1089 01a5 01       		.uleb128 0x1
+ 1090 01a6 9C       		.byte	0x9c
+ 1091 01a7 B8010000 		.4byte	0x1b8
+ 1092 01ab 09       		.uleb128 0x9
+ 1093 01ac 6B4400   		.ascii	"kD\000"
+ 1094 01af 01       		.byte	0x1
+ 1095 01b0 42       		.byte	0x42
+ 1096 01b1 AD000000 		.4byte	0xad
+ 1097 01b5 01       		.uleb128 0x1
+ 1098 01b6 50       		.byte	0x50
+ 1099 01b7 00       		.byte	0
+ 1100 01b8 08       		.uleb128 0x8
+ 1101 01b9 E3010000 		.4byte	.LASF31
+ 1102 01bd 01       		.byte	0x1
+ 1103 01be 45       		.byte	0x45
+ 1104 01bf 00000000 		.4byte	.LFB43
+ 1105 01c3 0C000000 		.4byte	.LFE43-.LFB43
+ 1106 01c7 01       		.uleb128 0x1
+ 1107 01c8 9C       		.byte	0x9c
+ 1108 01c9 DB010000 		.4byte	0x1db
+ 1109 01cd 0A       		.uleb128 0xa
+ 1110 01ce 2F020000 		.4byte	.LASF32
+ 1111 01d2 01       		.byte	0x1
+ 1112 01d3 45       		.byte	0x45
+ 1113 01d4 B8000000 		.4byte	0xb8
+ 1114 01d8 01       		.uleb128 0x1
+ 1115 01d9 50       		.byte	0x50
+ 1116 01da 00       		.byte	0
+ 1117 01db 07       		.uleb128 0x7
+ 1118 01dc D6000000 		.4byte	.LASF34
+ 1119 01e0 01       		.byte	0x1
+ 1120 01e1 48       		.byte	0x48
+ 1121 01e2 AD000000 		.4byte	0xad
+ 1122 01e6 00000000 		.4byte	.LFB44
+ 1123 01ea 0C000000 		.4byte	.LFE44-.LFB44
+ 1124 01ee 01       		.uleb128 0x1
+ 1125 01ef 9C       		.byte	0x9c
+ 1126 01f0 07       		.uleb128 0x7
+ 1127 01f1 4A030000 		.4byte	.LASF35
+ 1128 01f5 01       		.byte	0x1
+ 1129 01f6 4B       		.byte	0x4b
+ 1130 01f7 AD000000 		.4byte	0xad
+ 1131 01fb 00000000 		.4byte	.LFB45
+ 1132 01ff 0C000000 		.4byte	.LFE45-.LFB45
+ 1133 0203 01       		.uleb128 0x1
+ 1134 0204 9C       		.byte	0x9c
+ 1135 0205 07       		.uleb128 0x7
+ 1136 0206 2C040000 		.4byte	.LASF36
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 24
+
+
+ 1137 020a 01       		.byte	0x1
+ 1138 020b 4E       		.byte	0x4e
+ 1139 020c AD000000 		.4byte	0xad
+ 1140 0210 00000000 		.4byte	.LFB46
+ 1141 0214 0C000000 		.4byte	.LFE46-.LFB46
+ 1142 0218 01       		.uleb128 0x1
+ 1143 0219 9C       		.byte	0x9c
+ 1144 021a 07       		.uleb128 0x7
+ 1145 021b 72030000 		.4byte	.LASF37
+ 1146 021f 01       		.byte	0x1
+ 1147 0220 51       		.byte	0x51
+ 1148 0221 B8000000 		.4byte	0xb8
+ 1149 0225 00000000 		.4byte	.LFB47
+ 1150 0229 0C000000 		.4byte	.LFE47-.LFB47
+ 1151 022d 01       		.uleb128 0x1
+ 1152 022e 9C       		.byte	0x9c
+ 1153 022f 08       		.uleb128 0x8
+ 1154 0230 C9000000 		.4byte	.LASF38
+ 1155 0234 01       		.byte	0x1
+ 1156 0235 55       		.byte	0x55
+ 1157 0236 00000000 		.4byte	.LFB48
+ 1158 023a 0C000000 		.4byte	.LFE48-.LFB48
+ 1159 023e 01       		.uleb128 0x1
+ 1160 023f 9C       		.byte	0x9c
+ 1161 0240 52020000 		.4byte	0x252
+ 1162 0244 0A       		.uleb128 0xa
+ 1163 0245 5C030000 		.4byte	.LASF39
+ 1164 0249 01       		.byte	0x1
+ 1165 024a 55       		.byte	0x55
+ 1166 024b A2000000 		.4byte	0xa2
+ 1167 024f 01       		.uleb128 0x1
+ 1168 0250 50       		.byte	0x50
+ 1169 0251 00       		.byte	0
+ 1170 0252 07       		.uleb128 0x7
+ 1171 0253 65030000 		.4byte	.LASF40
+ 1172 0257 01       		.byte	0x1
+ 1173 0258 58       		.byte	0x58
+ 1174 0259 AD000000 		.4byte	0xad
+ 1175 025d 00000000 		.4byte	.LFB49
+ 1176 0261 0C000000 		.4byte	.LFE49-.LFB49
+ 1177 0265 01       		.uleb128 0x1
+ 1178 0266 9C       		.byte	0x9c
+ 1179 0267 0B       		.uleb128 0xb
+ 1180 0268 54020000 		.4byte	.LASF41
+ 1181 026c 01       		.byte	0x1
+ 1182 026d 5C       		.byte	0x5c
+ 1183 026e AD000000 		.4byte	0xad
+ 1184 0272 00000000 		.4byte	.LFB50
+ 1185 0276 14000000 		.4byte	.LFE50-.LFB50
+ 1186 027a 01       		.uleb128 0x1
+ 1187 027b 9C       		.byte	0x9c
+ 1188 027c 8A020000 		.4byte	0x28a
+ 1189 0280 0C       		.uleb128 0xc
+ 1190 0281 0C000000 		.4byte	.LVL5
+ 1191 0285 78050000 		.4byte	0x578
+ 1192 0289 00       		.byte	0
+ 1193 028a 0D       		.uleb128 0xd
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 25
+
+
+ 1194 028b D2030000 		.4byte	.LASF75
+ 1195 028f 01       		.byte	0x1
+ 1196 0290 35       		.byte	0x35
+ 1197 0291 00000000 		.4byte	.LFB39
+ 1198 0295 24000000 		.4byte	.LFE39-.LFB39
+ 1199 0299 01       		.uleb128 0x1
+ 1200 029a 9C       		.byte	0x9c
+ 1201 029b D8020000 		.4byte	0x2d8
+ 1202 029f 0E       		.uleb128 0xe
+ 1203 02a0 0C000000 		.4byte	.LVL6
+ 1204 02a4 83050000 		.4byte	0x583
+ 1205 02a8 BC020000 		.4byte	0x2bc
+ 1206 02ac 0F       		.uleb128 0xf
+ 1207 02ad 01       		.uleb128 0x1
+ 1208 02ae 50       		.byte	0x50
+ 1209 02af 01       		.uleb128 0x1
+ 1210 02b0 30       		.byte	0x30
+ 1211 02b1 0F       		.uleb128 0xf
+ 1212 02b2 01       		.uleb128 0x1
+ 1213 02b3 51       		.byte	0x51
+ 1214 02b4 01       		.uleb128 0x1
+ 1215 02b5 30       		.byte	0x30
+ 1216 02b6 0F       		.uleb128 0xf
+ 1217 02b7 01       		.uleb128 0x1
+ 1218 02b8 52       		.byte	0x52
+ 1219 02b9 01       		.uleb128 0x1
+ 1220 02ba 30       		.byte	0x30
+ 1221 02bb 00       		.byte	0
+ 1222 02bc 0C       		.uleb128 0xc
+ 1223 02bd 10000000 		.4byte	.LVL7
+ 1224 02c1 0A010000 		.4byte	0x10a
+ 1225 02c5 0C       		.uleb128 0xc
+ 1226 02c6 14000000 		.4byte	.LVL8
+ 1227 02ca 1B010000 		.4byte	0x11b
+ 1228 02ce 0C       		.uleb128 0xc
+ 1229 02cf 18000000 		.4byte	.LVL9
+ 1230 02d3 67020000 		.4byte	0x267
+ 1231 02d7 00       		.byte	0
+ 1232 02d8 06       		.uleb128 0x6
+ 1233 02d9 85030000 		.4byte	.LASF42
+ 1234 02dd 01       		.byte	0x1
+ 1235 02de 5F       		.byte	0x5f
+ 1236 02df 00000000 		.4byte	.LFB51
+ 1237 02e3 0C000000 		.4byte	.LFE51-.LFB51
+ 1238 02e7 01       		.uleb128 0x1
+ 1239 02e8 9C       		.byte	0x9c
+ 1240 02e9 06       		.uleb128 0x6
+ 1241 02ea 19030000 		.4byte	.LASF43
+ 1242 02ee 01       		.byte	0x1
+ 1243 02ef 62       		.byte	0x62
+ 1244 02f0 00000000 		.4byte	.LFB52
+ 1245 02f4 0C000000 		.4byte	.LFE52-.LFB52
+ 1246 02f8 01       		.uleb128 0x1
+ 1247 02f9 9C       		.byte	0x9c
+ 1248 02fa 10       		.uleb128 0x10
+ 1249 02fb 9A030000 		.4byte	.LASF44
+ 1250 02ff 01       		.byte	0x1
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 26
+
+
+ 1251 0300 65       		.byte	0x65
+ 1252 0301 AD000000 		.4byte	0xad
+ 1253 0305 00000000 		.4byte	.LFB53
+ 1254 0309 24000000 		.4byte	.LFE53-.LFB53
+ 1255 030d 01       		.uleb128 0x1
+ 1256 030e 9C       		.byte	0x9c
+ 1257 030f 1D030000 		.4byte	0x31d
+ 1258 0313 0C       		.uleb128 0xc
+ 1259 0314 0E000000 		.4byte	.LVL10
+ 1260 0318 67020000 		.4byte	0x267
+ 1261 031c 00       		.byte	0
+ 1262 031d 11       		.uleb128 0x11
+ 1263 031e 08040000 		.4byte	.LASF46
+ 1264 0322 01       		.byte	0x1
+ 1265 0323 79       		.byte	0x79
+ 1266 0324 AD000000 		.4byte	0xad
+ 1267 0328 00000000 		.4byte	.LFB55
+ 1268 032c 18000000 		.4byte	.LFE55-.LFB55
+ 1269 0330 01       		.uleb128 0x1
+ 1270 0331 9C       		.byte	0x9c
+ 1271 0332 53030000 		.4byte	0x353
+ 1272 0336 12       		.uleb128 0x12
+ 1273 0337 E0030000 		.4byte	.LASF45
+ 1274 033b 01       		.byte	0x1
+ 1275 033c 79       		.byte	0x79
+ 1276 033d AD000000 		.4byte	0xad
+ 1277 0341 00000000 		.4byte	.LLST0
+ 1278 0345 13       		.uleb128 0x13
+ 1279 0346 00000000 		.4byte	.LASF49
+ 1280 034a 01       		.byte	0x1
+ 1281 034b 7A       		.byte	0x7a
+ 1282 034c AD000000 		.4byte	0xad
+ 1283 0350 01       		.uleb128 0x1
+ 1284 0351 50       		.byte	0x50
+ 1285 0352 00       		.byte	0
+ 1286 0353 11       		.uleb128 0x11
+ 1287 0354 33000000 		.4byte	.LASF47
+ 1288 0358 01       		.byte	0x1
+ 1289 0359 7E       		.byte	0x7e
+ 1290 035a AD000000 		.4byte	0xad
+ 1291 035e 00000000 		.4byte	.LFB56
+ 1292 0362 84000000 		.4byte	.LFE56-.LFB56
+ 1293 0366 01       		.uleb128 0x1
+ 1294 0367 9C       		.byte	0x9c
+ 1295 0368 C9030000 		.4byte	0x3c9
+ 1296 036c 12       		.uleb128 0x12
+ 1297 036d FD030000 		.4byte	.LASF48
+ 1298 0371 01       		.byte	0x1
+ 1299 0372 7E       		.byte	0x7e
+ 1300 0373 DB000000 		.4byte	0xdb
+ 1301 0377 21000000 		.4byte	.LLST1
+ 1302 037b 13       		.uleb128 0x13
+ 1303 037c 11030000 		.4byte	.LASF50
+ 1304 0380 01       		.byte	0x1
+ 1305 0381 83       		.byte	0x83
+ 1306 0382 C9030000 		.4byte	0x3c9
+ 1307 0386 02       		.uleb128 0x2
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 27
+
+
+ 1308 0387 91       		.byte	0x91
+ 1309 0388 64       		.sleb128 -28
+ 1310 0389 14       		.uleb128 0x14
+ 1311 038a 0C010000 		.4byte	.LASF51
+ 1312 038e 01       		.byte	0x1
+ 1313 038f 84       		.byte	0x84
+ 1314 0390 DB000000 		.4byte	0xdb
+ 1315 0394 66000000 		.4byte	.LLST2
+ 1316 0398 14       		.uleb128 0x14
+ 1317 0399 31010000 		.4byte	.LASF52
+ 1318 039d 01       		.byte	0x1
+ 1319 039e 95       		.byte	0x95
+ 1320 039f 89000000 		.4byte	0x89
+ 1321 03a3 84000000 		.4byte	.LLST3
+ 1322 03a7 14       		.uleb128 0x14
+ 1323 03a8 EC030000 		.4byte	.LASF53
+ 1324 03ac 01       		.byte	0x1
+ 1325 03ad 96       		.byte	0x96
+ 1326 03ae 89000000 		.4byte	0x89
+ 1327 03b2 97000000 		.4byte	.LLST4
+ 1328 03b6 0C       		.uleb128 0xc
+ 1329 03b7 0A000000 		.4byte	.LVL16
+ 1330 03bb 3D010000 		.4byte	0x13d
+ 1331 03bf 0C       		.uleb128 0xc
+ 1332 03c0 12000000 		.4byte	.LVL17
+ 1333 03c4 67020000 		.4byte	0x267
+ 1334 03c8 00       		.byte	0
+ 1335 03c9 15       		.uleb128 0x15
+ 1336 03ca DB000000 		.4byte	0xdb
+ 1337 03ce 08       		.uleb128 0x8
+ 1338 03cf 40000000 		.4byte	.LASF54
+ 1339 03d3 01       		.byte	0x1
+ 1340 03d4 6B       		.byte	0x6b
+ 1341 03d5 00000000 		.4byte	.LFB54
+ 1342 03d9 68000000 		.4byte	.LFE54-.LFB54
+ 1343 03dd 01       		.uleb128 0x1
+ 1344 03de 9C       		.byte	0x9c
+ 1345 03df 7F040000 		.4byte	0x47f
+ 1346 03e3 12       		.uleb128 0x12
+ 1347 03e4 E0030000 		.4byte	.LASF45
+ 1348 03e8 01       		.byte	0x1
+ 1349 03e9 6B       		.byte	0x6b
+ 1350 03ea DB000000 		.4byte	0xdb
+ 1351 03ee BA000000 		.4byte	.LLST5
+ 1352 03f2 0E       		.uleb128 0xe
+ 1353 03f3 06000000 		.4byte	.LVL29
+ 1354 03f7 1D030000 		.4byte	0x31d
+ 1355 03fb 07040000 		.4byte	0x407
+ 1356 03ff 0F       		.uleb128 0xf
+ 1357 0400 01       		.uleb128 0x1
+ 1358 0401 50       		.byte	0x50
+ 1359 0402 03       		.uleb128 0x3
+ 1360 0403 F3       		.byte	0xf3
+ 1361 0404 01       		.uleb128 0x1
+ 1362 0405 50       		.byte	0x50
+ 1363 0406 00       		.byte	0
+ 1364 0407 0C       		.uleb128 0xc
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 28
+
+
+ 1365 0408 0A000000 		.4byte	.LVL30
+ 1366 040c 53030000 		.4byte	0x353
+ 1367 0410 0C       		.uleb128 0xc
+ 1368 0411 14000000 		.4byte	.LVL31
+ 1369 0415 52020000 		.4byte	0x252
+ 1370 0419 0C       		.uleb128 0xc
+ 1371 041a 22000000 		.4byte	.LVL32
+ 1372 041e 8E050000 		.4byte	0x58e
+ 1373 0422 0E       		.uleb128 0xe
+ 1374 0423 2C000000 		.4byte	.LVL33
+ 1375 0427 83050000 		.4byte	0x583
+ 1376 042b 3C040000 		.4byte	0x43c
+ 1377 042f 0F       		.uleb128 0xf
+ 1378 0430 01       		.uleb128 0x1
+ 1379 0431 50       		.byte	0x50
+ 1380 0432 02       		.uleb128 0x2
+ 1381 0433 75       		.byte	0x75
+ 1382 0434 00       		.sleb128 0
+ 1383 0435 0F       		.uleb128 0xf
+ 1384 0436 01       		.uleb128 0x1
+ 1385 0437 51       		.byte	0x51
+ 1386 0438 02       		.uleb128 0x2
+ 1387 0439 74       		.byte	0x74
+ 1388 043a 00       		.sleb128 0
+ 1389 043b 00       		.byte	0
+ 1390 043c 0C       		.uleb128 0xc
+ 1391 043d 3C000000 		.4byte	.LVL34
+ 1392 0441 8E050000 		.4byte	0x58e
+ 1393 0445 0E       		.uleb128 0xe
+ 1394 0446 48000000 		.4byte	.LVL35
+ 1395 044a 83050000 		.4byte	0x583
+ 1396 044e 5F040000 		.4byte	0x45f
+ 1397 0452 0F       		.uleb128 0xf
+ 1398 0453 01       		.uleb128 0x1
+ 1399 0454 50       		.byte	0x50
+ 1400 0455 02       		.uleb128 0x2
+ 1401 0456 75       		.byte	0x75
+ 1402 0457 00       		.sleb128 0
+ 1403 0458 0F       		.uleb128 0xf
+ 1404 0459 01       		.uleb128 0x1
+ 1405 045a 51       		.byte	0x51
+ 1406 045b 02       		.uleb128 0x2
+ 1407 045c 74       		.byte	0x74
+ 1408 045d 00       		.sleb128 0
+ 1409 045e 00       		.byte	0
+ 1410 045f 0C       		.uleb128 0xc
+ 1411 0460 52000000 		.4byte	.LVL36
+ 1412 0464 8E050000 		.4byte	0x58e
+ 1413 0468 16       		.uleb128 0x16
+ 1414 0469 5C000000 		.4byte	.LVL37
+ 1415 046d 83050000 		.4byte	0x583
+ 1416 0471 0F       		.uleb128 0xf
+ 1417 0472 01       		.uleb128 0x1
+ 1418 0473 50       		.byte	0x50
+ 1419 0474 02       		.uleb128 0x2
+ 1420 0475 74       		.byte	0x74
+ 1421 0476 00       		.sleb128 0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 29
+
+
+ 1422 0477 0F       		.uleb128 0xf
+ 1423 0478 01       		.uleb128 0x1
+ 1424 0479 51       		.byte	0x51
+ 1425 047a 02       		.uleb128 0x2
+ 1426 047b 75       		.byte	0x75
+ 1427 047c 00       		.sleb128 0
+ 1428 047d 00       		.byte	0
+ 1429 047e 00       		.byte	0
+ 1430 047f 17       		.uleb128 0x17
+ 1431 0480 7B030000 		.4byte	.LASF55
+ 1432 0484 01       		.byte	0x1
+ 1433 0485 13       		.byte	0x13
+ 1434 0486 AD000000 		.4byte	0xad
+ 1435 048a 05       		.uleb128 0x5
+ 1436 048b 03       		.byte	0x3
+ 1437 048c 00000000 		.4byte	kPosition
+ 1438 0490 17       		.uleb128 0x17
+ 1439 0491 F7000000 		.4byte	.LASF56
+ 1440 0495 01       		.byte	0x1
+ 1441 0496 14       		.byte	0x14
+ 1442 0497 AD000000 		.4byte	0xad
+ 1443 049b 05       		.uleb128 0x5
+ 1444 049c 03       		.byte	0x3
+ 1445 049d 00000000 		.4byte	kIntegral
+ 1446 04a1 17       		.uleb128 0x17
+ 1447 04a2 48020000 		.4byte	.LASF57
+ 1448 04a6 01       		.byte	0x1
+ 1449 04a7 15       		.byte	0x15
+ 1450 04a8 AD000000 		.4byte	0xad
+ 1451 04ac 05       		.uleb128 0x5
+ 1452 04ad 03       		.byte	0x3
+ 1453 04ae 00000000 		.4byte	kDerivative
+ 1454 04b2 17       		.uleb128 0x17
+ 1455 04b3 B5000000 		.4byte	.LASF58
+ 1456 04b7 01       		.byte	0x1
+ 1457 04b8 16       		.byte	0x16
+ 1458 04b9 AD000000 		.4byte	0xad
+ 1459 04bd 05       		.uleb128 0x5
+ 1460 04be 03       		.byte	0x3
+ 1461 04bf 00000000 		.4byte	kPPJR
+ 1462 04c3 18       		.uleb128 0x18
+ 1463 04c4 50574D00 		.ascii	"PWM\000"
+ 1464 04c8 01       		.byte	0x1
+ 1465 04c9 17       		.byte	0x17
+ 1466 04ca AD000000 		.4byte	0xad
+ 1467 04ce 05       		.uleb128 0x5
+ 1468 04cf 03       		.byte	0x3
+ 1469 04d0 00000000 		.4byte	PWM
+ 1470 04d4 19       		.uleb128 0x19
+ 1471 04d5 42040000 		.4byte	.LASF59
+ 1472 04d9 01       		.byte	0x1
+ 1473 04da 18       		.byte	0x18
+ 1474 04db 97000000 		.4byte	0x97
+ 1475 04df 17       		.uleb128 0x17
+ 1476 04e0 6A020000 		.4byte	.LASF60
+ 1477 04e4 01       		.byte	0x1
+ 1478 04e5 1B       		.byte	0x1b
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 30
+
+
+ 1479 04e6 CF000000 		.4byte	0xcf
+ 1480 04ea 05       		.uleb128 0x5
+ 1481 04eb 03       		.byte	0x3
+ 1482 04ec 00000000 		.4byte	flipEncoder
+ 1483 04f0 17       		.uleb128 0x17
+ 1484 04f1 EE000000 		.4byte	.LASF61
+ 1485 04f5 01       		.byte	0x1
+ 1486 04f6 1C       		.byte	0x1c
+ 1487 04f7 97000000 		.4byte	0x97
+ 1488 04fb 05       		.uleb128 0x5
+ 1489 04fc 03       		.byte	0x3
+ 1490 04fd 00000000 		.4byte	usingPot
+ 1491 0501 17       		.uleb128 0x17
+ 1492 0502 35020000 		.4byte	.LASF62
+ 1493 0506 01       		.byte	0x1
+ 1494 0507 1E       		.byte	0x1e
+ 1495 0508 89000000 		.4byte	0x89
+ 1496 050c 05       		.uleb128 0x5
+ 1497 050d 03       		.byte	0x3
+ 1498 050e 00000000 		.4byte	integral
+ 1499 0512 17       		.uleb128 0x17
+ 1500 0513 15010000 		.4byte	.LASF63
+ 1501 0517 01       		.byte	0x1
+ 1502 0518 1F       		.byte	0x1f
+ 1503 0519 89000000 		.4byte	0x89
+ 1504 051d 05       		.uleb128 0x5
+ 1505 051e 03       		.byte	0x3
+ 1506 051f 00000000 		.4byte	lastPosition
+ 1507 0523 17       		.uleb128 0x17
+ 1508 0524 18020000 		.4byte	.LASF64
+ 1509 0528 01       		.byte	0x1
+ 1510 0529 20       		.byte	0x20
+ 1511 052a 89000000 		.4byte	0x89
+ 1512 052e 05       		.uleb128 0x5
+ 1513 052f 03       		.byte	0x3
+ 1514 0530 00000000 		.4byte	integralClamp
+ 1515 0534 17       		.uleb128 0x17
+ 1516 0535 B4030000 		.4byte	.LASF65
+ 1517 0539 01       		.byte	0x1
+ 1518 053a 22       		.byte	0x22
+ 1519 053b EE000000 		.4byte	0xee
+ 1520 053f 05       		.uleb128 0x5
+ 1521 0540 03       		.byte	0x3
+ 1522 0541 00000000 		.4byte	ratio
+ 1523 0545 17       		.uleb128 0x17
+ 1524 0546 41030000 		.4byte	.LASF66
+ 1525 054a 01       		.byte	0x1
+ 1526 054b 23       		.byte	0x23
+ 1527 054c C3000000 		.4byte	0xc3
+ 1528 0550 05       		.uleb128 0x5
+ 1529 0551 03       		.byte	0x3
+ 1530 0552 00000000 		.4byte	complete
+ 1531 0556 17       		.uleb128 0x17
+ 1532 0557 3B040000 		.4byte	.LASF67
+ 1533 055b 01       		.byte	0x1
+ 1534 055c 24       		.byte	0x24
+ 1535 055d DB000000 		.4byte	0xdb
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 31
+
+
+ 1536 0561 05       		.uleb128 0x5
+ 1537 0562 03       		.byte	0x3
+ 1538 0563 00000000 		.4byte	maxPWM
+ 1539 0567 17       		.uleb128 0x17
+ 1540 0568 0D020000 		.4byte	.LASF68
+ 1541 056c 01       		.byte	0x1
+ 1542 056d 26       		.byte	0x26
+ 1543 056e 97000000 		.4byte	0x97
+ 1544 0572 05       		.uleb128 0x5
+ 1545 0573 03       		.byte	0x3
+ 1546 0574 00000000 		.4byte	enabledPID
+ 1547 0578 1A       		.uleb128 0x1a
+ 1548 0579 06000000 		.4byte	.LASF69
+ 1549 057d 06000000 		.4byte	.LASF69
+ 1550 0581 05       		.byte	0x5
+ 1551 0582 4E       		.byte	0x4e
+ 1552 0583 1A       		.uleb128 0x1a
+ 1553 0584 EC010000 		.4byte	.LASF70
+ 1554 0588 EC010000 		.4byte	.LASF70
+ 1555 058c 06       		.byte	0x6
+ 1556 058d 12       		.byte	0x12
+ 1557 058e 1A       		.uleb128 0x1a
+ 1558 058f F8020000 		.4byte	.LASF71
+ 1559 0593 F8020000 		.4byte	.LASF71
+ 1560 0597 07       		.byte	0x7
+ 1561 0598 30       		.byte	0x30
+ 1562 0599 00       		.byte	0
+ 1563              		.section	.debug_abbrev,"",%progbits
+ 1564              	.Ldebug_abbrev0:
+ 1565 0000 01       		.uleb128 0x1
+ 1566 0001 11       		.uleb128 0x11
+ 1567 0002 01       		.byte	0x1
+ 1568 0003 25       		.uleb128 0x25
+ 1569 0004 0E       		.uleb128 0xe
+ 1570 0005 13       		.uleb128 0x13
+ 1571 0006 0B       		.uleb128 0xb
+ 1572 0007 03       		.uleb128 0x3
+ 1573 0008 0E       		.uleb128 0xe
+ 1574 0009 1B       		.uleb128 0x1b
+ 1575 000a 0E       		.uleb128 0xe
+ 1576 000b 55       		.uleb128 0x55
+ 1577 000c 17       		.uleb128 0x17
+ 1578 000d 11       		.uleb128 0x11
+ 1579 000e 01       		.uleb128 0x1
+ 1580 000f 10       		.uleb128 0x10
+ 1581 0010 17       		.uleb128 0x17
+ 1582 0011 00       		.byte	0
+ 1583 0012 00       		.byte	0
+ 1584 0013 02       		.uleb128 0x2
+ 1585 0014 24       		.uleb128 0x24
+ 1586 0015 00       		.byte	0
+ 1587 0016 0B       		.uleb128 0xb
+ 1588 0017 0B       		.uleb128 0xb
+ 1589 0018 3E       		.uleb128 0x3e
+ 1590 0019 0B       		.uleb128 0xb
+ 1591 001a 03       		.uleb128 0x3
+ 1592 001b 0E       		.uleb128 0xe
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 32
+
+
+ 1593 001c 00       		.byte	0
+ 1594 001d 00       		.byte	0
+ 1595 001e 03       		.uleb128 0x3
+ 1596 001f 16       		.uleb128 0x16
+ 1597 0020 00       		.byte	0
+ 1598 0021 03       		.uleb128 0x3
+ 1599 0022 0E       		.uleb128 0xe
+ 1600 0023 3A       		.uleb128 0x3a
+ 1601 0024 0B       		.uleb128 0xb
+ 1602 0025 3B       		.uleb128 0x3b
+ 1603 0026 0B       		.uleb128 0xb
+ 1604 0027 49       		.uleb128 0x49
+ 1605 0028 13       		.uleb128 0x13
+ 1606 0029 00       		.byte	0
+ 1607 002a 00       		.byte	0
+ 1608 002b 04       		.uleb128 0x4
+ 1609 002c 24       		.uleb128 0x24
+ 1610 002d 00       		.byte	0
+ 1611 002e 0B       		.uleb128 0xb
+ 1612 002f 0B       		.uleb128 0xb
+ 1613 0030 3E       		.uleb128 0x3e
+ 1614 0031 0B       		.uleb128 0xb
+ 1615 0032 03       		.uleb128 0x3
+ 1616 0033 08       		.uleb128 0x8
+ 1617 0034 00       		.byte	0
+ 1618 0035 00       		.byte	0
+ 1619 0036 05       		.uleb128 0x5
+ 1620 0037 16       		.uleb128 0x16
+ 1621 0038 00       		.byte	0
+ 1622 0039 03       		.uleb128 0x3
+ 1623 003a 0E       		.uleb128 0xe
+ 1624 003b 3A       		.uleb128 0x3a
+ 1625 003c 0B       		.uleb128 0xb
+ 1626 003d 3B       		.uleb128 0x3b
+ 1627 003e 05       		.uleb128 0x5
+ 1628 003f 49       		.uleb128 0x49
+ 1629 0040 13       		.uleb128 0x13
+ 1630 0041 00       		.byte	0
+ 1631 0042 00       		.byte	0
+ 1632 0043 06       		.uleb128 0x6
+ 1633 0044 2E       		.uleb128 0x2e
+ 1634 0045 00       		.byte	0
+ 1635 0046 3F       		.uleb128 0x3f
+ 1636 0047 19       		.uleb128 0x19
+ 1637 0048 03       		.uleb128 0x3
+ 1638 0049 0E       		.uleb128 0xe
+ 1639 004a 3A       		.uleb128 0x3a
+ 1640 004b 0B       		.uleb128 0xb
+ 1641 004c 3B       		.uleb128 0x3b
+ 1642 004d 0B       		.uleb128 0xb
+ 1643 004e 11       		.uleb128 0x11
+ 1644 004f 01       		.uleb128 0x1
+ 1645 0050 12       		.uleb128 0x12
+ 1646 0051 06       		.uleb128 0x6
+ 1647 0052 40       		.uleb128 0x40
+ 1648 0053 18       		.uleb128 0x18
+ 1649 0054 9742     		.uleb128 0x2117
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 33
+
+
+ 1650 0056 19       		.uleb128 0x19
+ 1651 0057 00       		.byte	0
+ 1652 0058 00       		.byte	0
+ 1653 0059 07       		.uleb128 0x7
+ 1654 005a 2E       		.uleb128 0x2e
+ 1655 005b 00       		.byte	0
+ 1656 005c 3F       		.uleb128 0x3f
+ 1657 005d 19       		.uleb128 0x19
+ 1658 005e 03       		.uleb128 0x3
+ 1659 005f 0E       		.uleb128 0xe
+ 1660 0060 3A       		.uleb128 0x3a
+ 1661 0061 0B       		.uleb128 0xb
+ 1662 0062 3B       		.uleb128 0x3b
+ 1663 0063 0B       		.uleb128 0xb
+ 1664 0064 49       		.uleb128 0x49
+ 1665 0065 13       		.uleb128 0x13
+ 1666 0066 11       		.uleb128 0x11
+ 1667 0067 01       		.uleb128 0x1
+ 1668 0068 12       		.uleb128 0x12
+ 1669 0069 06       		.uleb128 0x6
+ 1670 006a 40       		.uleb128 0x40
+ 1671 006b 18       		.uleb128 0x18
+ 1672 006c 9742     		.uleb128 0x2117
+ 1673 006e 19       		.uleb128 0x19
+ 1674 006f 00       		.byte	0
+ 1675 0070 00       		.byte	0
+ 1676 0071 08       		.uleb128 0x8
+ 1677 0072 2E       		.uleb128 0x2e
+ 1678 0073 01       		.byte	0x1
+ 1679 0074 3F       		.uleb128 0x3f
+ 1680 0075 19       		.uleb128 0x19
+ 1681 0076 03       		.uleb128 0x3
+ 1682 0077 0E       		.uleb128 0xe
+ 1683 0078 3A       		.uleb128 0x3a
+ 1684 0079 0B       		.uleb128 0xb
+ 1685 007a 3B       		.uleb128 0x3b
+ 1686 007b 0B       		.uleb128 0xb
+ 1687 007c 27       		.uleb128 0x27
+ 1688 007d 19       		.uleb128 0x19
+ 1689 007e 11       		.uleb128 0x11
+ 1690 007f 01       		.uleb128 0x1
+ 1691 0080 12       		.uleb128 0x12
+ 1692 0081 06       		.uleb128 0x6
+ 1693 0082 40       		.uleb128 0x40
+ 1694 0083 18       		.uleb128 0x18
+ 1695 0084 9742     		.uleb128 0x2117
+ 1696 0086 19       		.uleb128 0x19
+ 1697 0087 01       		.uleb128 0x1
+ 1698 0088 13       		.uleb128 0x13
+ 1699 0089 00       		.byte	0
+ 1700 008a 00       		.byte	0
+ 1701 008b 09       		.uleb128 0x9
+ 1702 008c 05       		.uleb128 0x5
+ 1703 008d 00       		.byte	0
+ 1704 008e 03       		.uleb128 0x3
+ 1705 008f 08       		.uleb128 0x8
+ 1706 0090 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 34
+
+
+ 1707 0091 0B       		.uleb128 0xb
+ 1708 0092 3B       		.uleb128 0x3b
+ 1709 0093 0B       		.uleb128 0xb
+ 1710 0094 49       		.uleb128 0x49
+ 1711 0095 13       		.uleb128 0x13
+ 1712 0096 02       		.uleb128 0x2
+ 1713 0097 18       		.uleb128 0x18
+ 1714 0098 00       		.byte	0
+ 1715 0099 00       		.byte	0
+ 1716 009a 0A       		.uleb128 0xa
+ 1717 009b 05       		.uleb128 0x5
+ 1718 009c 00       		.byte	0
+ 1719 009d 03       		.uleb128 0x3
+ 1720 009e 0E       		.uleb128 0xe
+ 1721 009f 3A       		.uleb128 0x3a
+ 1722 00a0 0B       		.uleb128 0xb
+ 1723 00a1 3B       		.uleb128 0x3b
+ 1724 00a2 0B       		.uleb128 0xb
+ 1725 00a3 49       		.uleb128 0x49
+ 1726 00a4 13       		.uleb128 0x13
+ 1727 00a5 02       		.uleb128 0x2
+ 1728 00a6 18       		.uleb128 0x18
+ 1729 00a7 00       		.byte	0
+ 1730 00a8 00       		.byte	0
+ 1731 00a9 0B       		.uleb128 0xb
+ 1732 00aa 2E       		.uleb128 0x2e
+ 1733 00ab 01       		.byte	0x1
+ 1734 00ac 3F       		.uleb128 0x3f
+ 1735 00ad 19       		.uleb128 0x19
+ 1736 00ae 03       		.uleb128 0x3
+ 1737 00af 0E       		.uleb128 0xe
+ 1738 00b0 3A       		.uleb128 0x3a
+ 1739 00b1 0B       		.uleb128 0xb
+ 1740 00b2 3B       		.uleb128 0x3b
+ 1741 00b3 0B       		.uleb128 0xb
+ 1742 00b4 49       		.uleb128 0x49
+ 1743 00b5 13       		.uleb128 0x13
+ 1744 00b6 11       		.uleb128 0x11
+ 1745 00b7 01       		.uleb128 0x1
+ 1746 00b8 12       		.uleb128 0x12
+ 1747 00b9 06       		.uleb128 0x6
+ 1748 00ba 40       		.uleb128 0x40
+ 1749 00bb 18       		.uleb128 0x18
+ 1750 00bc 9742     		.uleb128 0x2117
+ 1751 00be 19       		.uleb128 0x19
+ 1752 00bf 01       		.uleb128 0x1
+ 1753 00c0 13       		.uleb128 0x13
+ 1754 00c1 00       		.byte	0
+ 1755 00c2 00       		.byte	0
+ 1756 00c3 0C       		.uleb128 0xc
+ 1757 00c4 898201   		.uleb128 0x4109
+ 1758 00c7 00       		.byte	0
+ 1759 00c8 11       		.uleb128 0x11
+ 1760 00c9 01       		.uleb128 0x1
+ 1761 00ca 31       		.uleb128 0x31
+ 1762 00cb 13       		.uleb128 0x13
+ 1763 00cc 00       		.byte	0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 35
+
+
+ 1764 00cd 00       		.byte	0
+ 1765 00ce 0D       		.uleb128 0xd
+ 1766 00cf 2E       		.uleb128 0x2e
+ 1767 00d0 01       		.byte	0x1
+ 1768 00d1 3F       		.uleb128 0x3f
+ 1769 00d2 19       		.uleb128 0x19
+ 1770 00d3 03       		.uleb128 0x3
+ 1771 00d4 0E       		.uleb128 0xe
+ 1772 00d5 3A       		.uleb128 0x3a
+ 1773 00d6 0B       		.uleb128 0xb
+ 1774 00d7 3B       		.uleb128 0x3b
+ 1775 00d8 0B       		.uleb128 0xb
+ 1776 00d9 11       		.uleb128 0x11
+ 1777 00da 01       		.uleb128 0x1
+ 1778 00db 12       		.uleb128 0x12
+ 1779 00dc 06       		.uleb128 0x6
+ 1780 00dd 40       		.uleb128 0x40
+ 1781 00de 18       		.uleb128 0x18
+ 1782 00df 9742     		.uleb128 0x2117
+ 1783 00e1 19       		.uleb128 0x19
+ 1784 00e2 01       		.uleb128 0x1
+ 1785 00e3 13       		.uleb128 0x13
+ 1786 00e4 00       		.byte	0
+ 1787 00e5 00       		.byte	0
+ 1788 00e6 0E       		.uleb128 0xe
+ 1789 00e7 898201   		.uleb128 0x4109
+ 1790 00ea 01       		.byte	0x1
+ 1791 00eb 11       		.uleb128 0x11
+ 1792 00ec 01       		.uleb128 0x1
+ 1793 00ed 31       		.uleb128 0x31
+ 1794 00ee 13       		.uleb128 0x13
+ 1795 00ef 01       		.uleb128 0x1
+ 1796 00f0 13       		.uleb128 0x13
+ 1797 00f1 00       		.byte	0
+ 1798 00f2 00       		.byte	0
+ 1799 00f3 0F       		.uleb128 0xf
+ 1800 00f4 8A8201   		.uleb128 0x410a
+ 1801 00f7 00       		.byte	0
+ 1802 00f8 02       		.uleb128 0x2
+ 1803 00f9 18       		.uleb128 0x18
+ 1804 00fa 9142     		.uleb128 0x2111
+ 1805 00fc 18       		.uleb128 0x18
+ 1806 00fd 00       		.byte	0
+ 1807 00fe 00       		.byte	0
+ 1808 00ff 10       		.uleb128 0x10
+ 1809 0100 2E       		.uleb128 0x2e
+ 1810 0101 01       		.byte	0x1
+ 1811 0102 3F       		.uleb128 0x3f
+ 1812 0103 19       		.uleb128 0x19
+ 1813 0104 03       		.uleb128 0x3
+ 1814 0105 0E       		.uleb128 0xe
+ 1815 0106 3A       		.uleb128 0x3a
+ 1816 0107 0B       		.uleb128 0xb
+ 1817 0108 3B       		.uleb128 0x3b
+ 1818 0109 0B       		.uleb128 0xb
+ 1819 010a 49       		.uleb128 0x49
+ 1820 010b 13       		.uleb128 0x13
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 36
+
+
+ 1821 010c 11       		.uleb128 0x11
+ 1822 010d 01       		.uleb128 0x1
+ 1823 010e 12       		.uleb128 0x12
+ 1824 010f 06       		.uleb128 0x6
+ 1825 0110 40       		.uleb128 0x40
+ 1826 0111 18       		.uleb128 0x18
+ 1827 0112 9642     		.uleb128 0x2116
+ 1828 0114 19       		.uleb128 0x19
+ 1829 0115 01       		.uleb128 0x1
+ 1830 0116 13       		.uleb128 0x13
+ 1831 0117 00       		.byte	0
+ 1832 0118 00       		.byte	0
+ 1833 0119 11       		.uleb128 0x11
+ 1834 011a 2E       		.uleb128 0x2e
+ 1835 011b 01       		.byte	0x1
+ 1836 011c 3F       		.uleb128 0x3f
+ 1837 011d 19       		.uleb128 0x19
+ 1838 011e 03       		.uleb128 0x3
+ 1839 011f 0E       		.uleb128 0xe
+ 1840 0120 3A       		.uleb128 0x3a
+ 1841 0121 0B       		.uleb128 0xb
+ 1842 0122 3B       		.uleb128 0x3b
+ 1843 0123 0B       		.uleb128 0xb
+ 1844 0124 27       		.uleb128 0x27
+ 1845 0125 19       		.uleb128 0x19
+ 1846 0126 49       		.uleb128 0x49
+ 1847 0127 13       		.uleb128 0x13
+ 1848 0128 11       		.uleb128 0x11
+ 1849 0129 01       		.uleb128 0x1
+ 1850 012a 12       		.uleb128 0x12
+ 1851 012b 06       		.uleb128 0x6
+ 1852 012c 40       		.uleb128 0x40
+ 1853 012d 18       		.uleb128 0x18
+ 1854 012e 9642     		.uleb128 0x2116
+ 1855 0130 19       		.uleb128 0x19
+ 1856 0131 01       		.uleb128 0x1
+ 1857 0132 13       		.uleb128 0x13
+ 1858 0133 00       		.byte	0
+ 1859 0134 00       		.byte	0
+ 1860 0135 12       		.uleb128 0x12
+ 1861 0136 05       		.uleb128 0x5
+ 1862 0137 00       		.byte	0
+ 1863 0138 03       		.uleb128 0x3
+ 1864 0139 0E       		.uleb128 0xe
+ 1865 013a 3A       		.uleb128 0x3a
+ 1866 013b 0B       		.uleb128 0xb
+ 1867 013c 3B       		.uleb128 0x3b
+ 1868 013d 0B       		.uleb128 0xb
+ 1869 013e 49       		.uleb128 0x49
+ 1870 013f 13       		.uleb128 0x13
+ 1871 0140 02       		.uleb128 0x2
+ 1872 0141 17       		.uleb128 0x17
+ 1873 0142 00       		.byte	0
+ 1874 0143 00       		.byte	0
+ 1875 0144 13       		.uleb128 0x13
+ 1876 0145 34       		.uleb128 0x34
+ 1877 0146 00       		.byte	0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 37
+
+
+ 1878 0147 03       		.uleb128 0x3
+ 1879 0148 0E       		.uleb128 0xe
+ 1880 0149 3A       		.uleb128 0x3a
+ 1881 014a 0B       		.uleb128 0xb
+ 1882 014b 3B       		.uleb128 0x3b
+ 1883 014c 0B       		.uleb128 0xb
+ 1884 014d 49       		.uleb128 0x49
+ 1885 014e 13       		.uleb128 0x13
+ 1886 014f 02       		.uleb128 0x2
+ 1887 0150 18       		.uleb128 0x18
+ 1888 0151 00       		.byte	0
+ 1889 0152 00       		.byte	0
+ 1890 0153 14       		.uleb128 0x14
+ 1891 0154 34       		.uleb128 0x34
+ 1892 0155 00       		.byte	0
+ 1893 0156 03       		.uleb128 0x3
+ 1894 0157 0E       		.uleb128 0xe
+ 1895 0158 3A       		.uleb128 0x3a
+ 1896 0159 0B       		.uleb128 0xb
+ 1897 015a 3B       		.uleb128 0x3b
+ 1898 015b 0B       		.uleb128 0xb
+ 1899 015c 49       		.uleb128 0x49
+ 1900 015d 13       		.uleb128 0x13
+ 1901 015e 02       		.uleb128 0x2
+ 1902 015f 17       		.uleb128 0x17
+ 1903 0160 00       		.byte	0
+ 1904 0161 00       		.byte	0
+ 1905 0162 15       		.uleb128 0x15
+ 1906 0163 35       		.uleb128 0x35
+ 1907 0164 00       		.byte	0
+ 1908 0165 49       		.uleb128 0x49
+ 1909 0166 13       		.uleb128 0x13
+ 1910 0167 00       		.byte	0
+ 1911 0168 00       		.byte	0
+ 1912 0169 16       		.uleb128 0x16
+ 1913 016a 898201   		.uleb128 0x4109
+ 1914 016d 01       		.byte	0x1
+ 1915 016e 11       		.uleb128 0x11
+ 1916 016f 01       		.uleb128 0x1
+ 1917 0170 31       		.uleb128 0x31
+ 1918 0171 13       		.uleb128 0x13
+ 1919 0172 00       		.byte	0
+ 1920 0173 00       		.byte	0
+ 1921 0174 17       		.uleb128 0x17
+ 1922 0175 34       		.uleb128 0x34
+ 1923 0176 00       		.byte	0
+ 1924 0177 03       		.uleb128 0x3
+ 1925 0178 0E       		.uleb128 0xe
+ 1926 0179 3A       		.uleb128 0x3a
+ 1927 017a 0B       		.uleb128 0xb
+ 1928 017b 3B       		.uleb128 0x3b
+ 1929 017c 0B       		.uleb128 0xb
+ 1930 017d 49       		.uleb128 0x49
+ 1931 017e 13       		.uleb128 0x13
+ 1932 017f 3F       		.uleb128 0x3f
+ 1933 0180 19       		.uleb128 0x19
+ 1934 0181 02       		.uleb128 0x2
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 38
+
+
+ 1935 0182 18       		.uleb128 0x18
+ 1936 0183 00       		.byte	0
+ 1937 0184 00       		.byte	0
+ 1938 0185 18       		.uleb128 0x18
+ 1939 0186 34       		.uleb128 0x34
+ 1940 0187 00       		.byte	0
+ 1941 0188 03       		.uleb128 0x3
+ 1942 0189 08       		.uleb128 0x8
+ 1943 018a 3A       		.uleb128 0x3a
+ 1944 018b 0B       		.uleb128 0xb
+ 1945 018c 3B       		.uleb128 0x3b
+ 1946 018d 0B       		.uleb128 0xb
+ 1947 018e 49       		.uleb128 0x49
+ 1948 018f 13       		.uleb128 0x13
+ 1949 0190 3F       		.uleb128 0x3f
+ 1950 0191 19       		.uleb128 0x19
+ 1951 0192 02       		.uleb128 0x2
+ 1952 0193 18       		.uleb128 0x18
+ 1953 0194 00       		.byte	0
+ 1954 0195 00       		.byte	0
+ 1955 0196 19       		.uleb128 0x19
+ 1956 0197 34       		.uleb128 0x34
+ 1957 0198 00       		.byte	0
+ 1958 0199 03       		.uleb128 0x3
+ 1959 019a 0E       		.uleb128 0xe
+ 1960 019b 3A       		.uleb128 0x3a
+ 1961 019c 0B       		.uleb128 0xb
+ 1962 019d 3B       		.uleb128 0x3b
+ 1963 019e 0B       		.uleb128 0xb
+ 1964 019f 49       		.uleb128 0x49
+ 1965 01a0 13       		.uleb128 0x13
+ 1966 01a1 3F       		.uleb128 0x3f
+ 1967 01a2 19       		.uleb128 0x19
+ 1968 01a3 3C       		.uleb128 0x3c
+ 1969 01a4 19       		.uleb128 0x19
+ 1970 01a5 00       		.byte	0
+ 1971 01a6 00       		.byte	0
+ 1972 01a7 1A       		.uleb128 0x1a
+ 1973 01a8 2E       		.uleb128 0x2e
+ 1974 01a9 00       		.byte	0
+ 1975 01aa 3F       		.uleb128 0x3f
+ 1976 01ab 19       		.uleb128 0x19
+ 1977 01ac 3C       		.uleb128 0x3c
+ 1978 01ad 19       		.uleb128 0x19
+ 1979 01ae 6E       		.uleb128 0x6e
+ 1980 01af 0E       		.uleb128 0xe
+ 1981 01b0 03       		.uleb128 0x3
+ 1982 01b1 0E       		.uleb128 0xe
+ 1983 01b2 3A       		.uleb128 0x3a
+ 1984 01b3 0B       		.uleb128 0xb
+ 1985 01b4 3B       		.uleb128 0x3b
+ 1986 01b5 0B       		.uleb128 0xb
+ 1987 01b6 00       		.byte	0
+ 1988 01b7 00       		.byte	0
+ 1989 01b8 00       		.byte	0
+ 1990              		.section	.debug_loc,"",%progbits
+ 1991              	.Ldebug_loc0:
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 39
+
+
+ 1992              	.LLST0:
+ 1993 0000 00000000 		.4byte	.LVL12
+ 1994 0004 08000000 		.4byte	.LVL13
+ 1995 0008 0100     		.2byte	0x1
+ 1996 000a 50       		.byte	0x50
+ 1997 000b 08000000 		.4byte	.LVL13
+ 1998 000f 18000000 		.4byte	.LFE55
+ 1999 0013 0400     		.2byte	0x4
+ 2000 0015 F3       		.byte	0xf3
+ 2001 0016 01       		.uleb128 0x1
+ 2002 0017 50       		.byte	0x50
+ 2003 0018 9F       		.byte	0x9f
+ 2004 0019 00000000 		.4byte	0
+ 2005 001d 00000000 		.4byte	0
+ 2006              	.LLST1:
+ 2007 0021 00000000 		.4byte	.LVL15
+ 2008 0025 09000000 		.4byte	.LVL16-1
+ 2009 0029 0100     		.2byte	0x1
+ 2010 002b 50       		.byte	0x50
+ 2011 002c 09000000 		.4byte	.LVL16-1
+ 2012 0030 42000000 		.4byte	.LVL19
+ 2013 0034 0100     		.2byte	0x1
+ 2014 0036 55       		.byte	0x55
+ 2015 0037 42000000 		.4byte	.LVL19
+ 2016 003b 70000000 		.4byte	.LVL25
+ 2017 003f 0400     		.2byte	0x4
+ 2018 0041 F3       		.byte	0xf3
+ 2019 0042 01       		.uleb128 0x1
+ 2020 0043 50       		.byte	0x50
+ 2021 0044 9F       		.byte	0x9f
+ 2022 0045 70000000 		.4byte	.LVL25
+ 2023 0049 76000000 		.4byte	.LVL27
+ 2024 004d 0100     		.2byte	0x1
+ 2025 004f 55       		.byte	0x55
+ 2026 0050 76000000 		.4byte	.LVL27
+ 2027 0054 84000000 		.4byte	.LFE56
+ 2028 0058 0400     		.2byte	0x4
+ 2029 005a F3       		.byte	0xf3
+ 2030 005b 01       		.uleb128 0x1
+ 2031 005c 50       		.byte	0x50
+ 2032 005d 9F       		.byte	0x9f
+ 2033 005e 00000000 		.4byte	0
+ 2034 0062 00000000 		.4byte	0
+ 2035              	.LLST2:
+ 2036 0066 18000000 		.4byte	.LVL18
+ 2037 006a 70000000 		.4byte	.LVL25
+ 2038 006e 0100     		.2byte	0x1
+ 2039 0070 54       		.byte	0x54
+ 2040 0071 74000000 		.4byte	.LVL26
+ 2041 0075 76000000 		.4byte	.LVL27
+ 2042 0079 0100     		.2byte	0x1
+ 2043 007b 54       		.byte	0x54
+ 2044 007c 00000000 		.4byte	0
+ 2045 0080 00000000 		.4byte	0
+ 2046              	.LLST3:
+ 2047 0084 46000000 		.4byte	.LVL20
+ 2048 0088 70000000 		.4byte	.LVL25
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 40
+
+
+ 2049 008c 0100     		.2byte	0x1
+ 2050 008e 57       		.byte	0x57
+ 2051 008f 00000000 		.4byte	0
+ 2052 0093 00000000 		.4byte	0
+ 2053              	.LLST4:
+ 2054 0097 6A000000 		.4byte	.LVL23
+ 2055 009b 6E000000 		.4byte	.LVL24
+ 2056 009f 0600     		.2byte	0x6
+ 2057 00a1 76       		.byte	0x76
+ 2058 00a2 00       		.sleb128 0
+ 2059 00a3 70       		.byte	0x70
+ 2060 00a4 00       		.sleb128 0
+ 2061 00a5 22       		.byte	0x22
+ 2062 00a6 9F       		.byte	0x9f
+ 2063 00a7 6E000000 		.4byte	.LVL24
+ 2064 00ab 70000000 		.4byte	.LVL25
+ 2065 00af 0100     		.2byte	0x1
+ 2066 00b1 50       		.byte	0x50
+ 2067 00b2 00000000 		.4byte	0
+ 2068 00b6 00000000 		.4byte	0
+ 2069              	.LLST5:
+ 2070 00ba 00000000 		.4byte	.LVL28
+ 2071 00be 05000000 		.4byte	.LVL29-1
+ 2072 00c2 0100     		.2byte	0x1
+ 2073 00c4 50       		.byte	0x50
+ 2074 00c5 05000000 		.4byte	.LVL29-1
+ 2075 00c9 68000000 		.4byte	.LFE54
+ 2076 00cd 0400     		.2byte	0x4
+ 2077 00cf F3       		.byte	0xf3
+ 2078 00d0 01       		.uleb128 0x1
+ 2079 00d1 50       		.byte	0x50
+ 2080 00d2 9F       		.byte	0x9f
+ 2081 00d3 00000000 		.4byte	0
+ 2082 00d7 00000000 		.4byte	0
+ 2083              		.section	.debug_aranges,"",%progbits
+ 2084 0000 C4000000 		.4byte	0xc4
+ 2085 0004 0200     		.2byte	0x2
+ 2086 0006 00000000 		.4byte	.Ldebug_info0
+ 2087 000a 04       		.byte	0x4
+ 2088 000b 00       		.byte	0
+ 2089 000c 0000     		.2byte	0
+ 2090 000e 0000     		.2byte	0
+ 2091 0010 00000000 		.4byte	.LFB35
+ 2092 0014 10000000 		.4byte	.LFE35-.LFB35
+ 2093 0018 00000000 		.4byte	.LFB36
+ 2094 001c 0C000000 		.4byte	.LFE36-.LFB36
+ 2095 0020 00000000 		.4byte	.LFB37
+ 2096 0024 0C000000 		.4byte	.LFE37-.LFB37
+ 2097 0028 00000000 		.4byte	.LFB38
+ 2098 002c 0C000000 		.4byte	.LFE38-.LFB38
+ 2099 0030 00000000 		.4byte	.LFB40
+ 2100 0034 0C000000 		.4byte	.LFE40-.LFB40
+ 2101 0038 00000000 		.4byte	.LFB41
+ 2102 003c 0C000000 		.4byte	.LFE41-.LFB41
+ 2103 0040 00000000 		.4byte	.LFB42
+ 2104 0044 0C000000 		.4byte	.LFE42-.LFB42
+ 2105 0048 00000000 		.4byte	.LFB43
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 41
+
+
+ 2106 004c 0C000000 		.4byte	.LFE43-.LFB43
+ 2107 0050 00000000 		.4byte	.LFB44
+ 2108 0054 0C000000 		.4byte	.LFE44-.LFB44
+ 2109 0058 00000000 		.4byte	.LFB45
+ 2110 005c 0C000000 		.4byte	.LFE45-.LFB45
+ 2111 0060 00000000 		.4byte	.LFB46
+ 2112 0064 0C000000 		.4byte	.LFE46-.LFB46
+ 2113 0068 00000000 		.4byte	.LFB47
+ 2114 006c 0C000000 		.4byte	.LFE47-.LFB47
+ 2115 0070 00000000 		.4byte	.LFB48
+ 2116 0074 0C000000 		.4byte	.LFE48-.LFB48
+ 2117 0078 00000000 		.4byte	.LFB49
+ 2118 007c 0C000000 		.4byte	.LFE49-.LFB49
+ 2119 0080 00000000 		.4byte	.LFB50
+ 2120 0084 14000000 		.4byte	.LFE50-.LFB50
+ 2121 0088 00000000 		.4byte	.LFB39
+ 2122 008c 24000000 		.4byte	.LFE39-.LFB39
+ 2123 0090 00000000 		.4byte	.LFB51
+ 2124 0094 0C000000 		.4byte	.LFE51-.LFB51
+ 2125 0098 00000000 		.4byte	.LFB52
+ 2126 009c 0C000000 		.4byte	.LFE52-.LFB52
+ 2127 00a0 00000000 		.4byte	.LFB53
+ 2128 00a4 24000000 		.4byte	.LFE53-.LFB53
+ 2129 00a8 00000000 		.4byte	.LFB55
+ 2130 00ac 18000000 		.4byte	.LFE55-.LFB55
+ 2131 00b0 00000000 		.4byte	.LFB56
+ 2132 00b4 84000000 		.4byte	.LFE56-.LFB56
+ 2133 00b8 00000000 		.4byte	.LFB54
+ 2134 00bc 68000000 		.4byte	.LFE54-.LFB54
+ 2135 00c0 00000000 		.4byte	0
+ 2136 00c4 00000000 		.4byte	0
+ 2137              		.section	.debug_ranges,"",%progbits
+ 2138              	.Ldebug_ranges0:
+ 2139 0000 00000000 		.4byte	.LFB35
+ 2140 0004 10000000 		.4byte	.LFE35
+ 2141 0008 00000000 		.4byte	.LFB36
+ 2142 000c 0C000000 		.4byte	.LFE36
+ 2143 0010 00000000 		.4byte	.LFB37
+ 2144 0014 0C000000 		.4byte	.LFE37
+ 2145 0018 00000000 		.4byte	.LFB38
+ 2146 001c 0C000000 		.4byte	.LFE38
+ 2147 0020 00000000 		.4byte	.LFB40
+ 2148 0024 0C000000 		.4byte	.LFE40
+ 2149 0028 00000000 		.4byte	.LFB41
+ 2150 002c 0C000000 		.4byte	.LFE41
+ 2151 0030 00000000 		.4byte	.LFB42
+ 2152 0034 0C000000 		.4byte	.LFE42
+ 2153 0038 00000000 		.4byte	.LFB43
+ 2154 003c 0C000000 		.4byte	.LFE43
+ 2155 0040 00000000 		.4byte	.LFB44
+ 2156 0044 0C000000 		.4byte	.LFE44
+ 2157 0048 00000000 		.4byte	.LFB45
+ 2158 004c 0C000000 		.4byte	.LFE45
+ 2159 0050 00000000 		.4byte	.LFB46
+ 2160 0054 0C000000 		.4byte	.LFE46
+ 2161 0058 00000000 		.4byte	.LFB47
+ 2162 005c 0C000000 		.4byte	.LFE47
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 42
+
+
+ 2163 0060 00000000 		.4byte	.LFB48
+ 2164 0064 0C000000 		.4byte	.LFE48
+ 2165 0068 00000000 		.4byte	.LFB49
+ 2166 006c 0C000000 		.4byte	.LFE49
+ 2167 0070 00000000 		.4byte	.LFB50
+ 2168 0074 14000000 		.4byte	.LFE50
+ 2169 0078 00000000 		.4byte	.LFB39
+ 2170 007c 24000000 		.4byte	.LFE39
+ 2171 0080 00000000 		.4byte	.LFB51
+ 2172 0084 0C000000 		.4byte	.LFE51
+ 2173 0088 00000000 		.4byte	.LFB52
+ 2174 008c 0C000000 		.4byte	.LFE52
+ 2175 0090 00000000 		.4byte	.LFB53
+ 2176 0094 24000000 		.4byte	.LFE53
+ 2177 0098 00000000 		.4byte	.LFB55
+ 2178 009c 18000000 		.4byte	.LFE55
+ 2179 00a0 00000000 		.4byte	.LFB56
+ 2180 00a4 84000000 		.4byte	.LFE56
+ 2181 00a8 00000000 		.4byte	.LFB54
+ 2182 00ac 68000000 		.4byte	.LFE54
+ 2183 00b0 00000000 		.4byte	0
+ 2184 00b4 00000000 		.4byte	0
+ 2185              		.section	.debug_line,"",%progbits
+ 2186              	.Ldebug_line0:
+ 2187 0000 23030000 		.section	.debug_str,"MS",%progbits,1
+ 2187      02007B01 
+ 2187      00000201 
+ 2187      FB0E0D00 
+ 2187      01010101 
+ 2188              	.LASF49:
+ 2189 0000 7469636B 		.ascii	"ticks\000"
+ 2189      7300
+ 2190              	.LASF69:
+ 2191 0006 51756164 		.ascii	"QuadDec_GetCounter\000"
+ 2191      4465635F 
+ 2191      47657443 
+ 2191      6F756E74 
+ 2191      657200
+ 2192              	.LASF29:
+ 2193 0019 5365746B 		.ascii	"SetkIntegral\000"
+ 2193      496E7465 
+ 2193      6772616C 
+ 2193      00
+ 2194              	.LASF28:
+ 2195 0026 5365746B 		.ascii	"SetkPosition\000"
+ 2195      506F7369 
+ 2195      74696F6E 
+ 2195      00
+ 2196              	.LASF47:
+ 2197 0033 506F7369 		.ascii	"Position_PID\000"
+ 2197      74696F6E 
+ 2197      5F504944 
+ 2197      00
+ 2198              	.LASF54:
+ 2199 0040 53657450 		.ascii	"SetPosition\000"
+ 2199      6F736974 
+ 2199      696F6E00 
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 43
+
+
+ 2200              	.LASF2:
+ 2201 004c 73686F72 		.ascii	"short int\000"
+ 2201      7420696E 
+ 2201      7400
+ 2202              	.LASF74:
+ 2203 0056 433A5C55 		.ascii	"C:\\Users\\kratz\\OneDrive\\Documents\\PSoC Creator"
+ 2203      73657273 
+ 2203      5C6B7261 
+ 2203      747A5C4F 
+ 2203      6E654472 
+ 2204 0084 5C48616E 		.ascii	"\\Hand_Board_PY2023\\HandBoard_Rev1.cydsn\000"
+ 2204      645F426F 
+ 2204      6172645F 
+ 2204      50593230 
+ 2204      32335C48 
+ 2205              	.LASF24:
+ 2206 00ac 73697A65 		.ascii	"sizetype\000"
+ 2206      74797065 
+ 2206      00
+ 2207              	.LASF58:
+ 2208 00b5 6B50504A 		.ascii	"kPPJR\000"
+ 2208      5200
+ 2209              	.LASF73:
+ 2210 00bb 506F7369 		.ascii	"PositionPID.c\000"
+ 2210      74696F6E 
+ 2210      5049442E 
+ 2210      6300
+ 2211              	.LASF38:
+ 2212 00c9 5365744D 		.ascii	"SetMaxPIDPWM\000"
+ 2212      61785049 
+ 2212      4450574D 
+ 2212      00
+ 2213              	.LASF34:
+ 2214 00d6 4765746B 		.ascii	"GetkPosition\000"
+ 2214      506F7369 
+ 2214      74696F6E 
+ 2214      00
+ 2215              	.LASF8:
+ 2216 00e3 5F5F7569 		.ascii	"__uint32_t\000"
+ 2216      6E743332 
+ 2216      5F7400
+ 2217              	.LASF61:
+ 2218 00ee 7573696E 		.ascii	"usingPot\000"
+ 2218      67506F74 
+ 2218      00
+ 2219              	.LASF56:
+ 2220 00f7 6B496E74 		.ascii	"kIntegral\000"
+ 2220      65677261 
+ 2220      6C00
+ 2221              	.LASF4:
+ 2222 0101 5F5F7569 		.ascii	"__uint16_t\000"
+ 2222      6E743136 
+ 2222      5F7400
+ 2223              	.LASF51:
+ 2224 010c 706F7369 		.ascii	"position\000"
+ 2224      74696F6E 
+ 2224      00
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 44
+
+
+ 2225              	.LASF63:
+ 2226 0115 6C617374 		.ascii	"lastPosition\000"
+ 2226      506F7369 
+ 2226      74696F6E 
+ 2226      00
+ 2227              	.LASF30:
+ 2228 0122 5365746B 		.ascii	"SetkDerivative\000"
+ 2228      44657269 
+ 2228      76617469 
+ 2228      766500
+ 2229              	.LASF52:
+ 2230 0131 64657269 		.ascii	"derivative\000"
+ 2230      76617469 
+ 2230      766500
+ 2231              	.LASF26:
+ 2232 013c 44697361 		.ascii	"DisablePID\000"
+ 2232      626C6550 
+ 2232      494400
+ 2233              	.LASF72:
+ 2234 0147 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2234      43313120 
+ 2234      352E342E 
+ 2234      31203230 
+ 2234      31363036 
+ 2235 017a 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 2235      20726576 
+ 2235      6973696F 
+ 2235      6E203233 
+ 2235      37373135 
+ 2236 01ad 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 2236      66756E63 
+ 2236      74696F6E 
+ 2236      2D736563 
+ 2236      74696F6E 
+ 2237              	.LASF13:
+ 2238 01d5 75696E74 		.ascii	"uint8_t\000"
+ 2238      385F7400 
+ 2239              	.LASF17:
+ 2240 01dd 75696E74 		.ascii	"uint8\000"
+ 2240      3800
+ 2241              	.LASF31:
+ 2242 01e3 5365746B 		.ascii	"SetkPPJR\000"
+ 2242      50504A52 
+ 2242      00
+ 2243              	.LASF70:
+ 2244 01ec 7365745F 		.ascii	"set_PWM\000"
+ 2244      50574D00 
+ 2245              	.LASF20:
+ 2246 01f4 666C6F61 		.ascii	"float\000"
+ 2246      7400
+ 2247              	.LASF10:
+ 2248 01fa 6C6F6E67 		.ascii	"long long int\000"
+ 2248      206C6F6E 
+ 2248      6720696E 
+ 2248      7400
+ 2249              	.LASF18:
+ 2250 0208 696E7438 		.ascii	"int8\000"
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 45
+
+
+ 2250      00
+ 2251              	.LASF68:
+ 2252 020d 656E6162 		.ascii	"enabledPID\000"
+ 2252      6C656450 
+ 2252      494400
+ 2253              	.LASF64:
+ 2254 0218 696E7465 		.ascii	"integralClamp\000"
+ 2254      6772616C 
+ 2254      436C616D 
+ 2254      7000
+ 2255              	.LASF7:
+ 2256 0226 6C6F6E67 		.ascii	"long int\000"
+ 2256      20696E74 
+ 2256      00
+ 2257              	.LASF32:
+ 2258 022f 6B70706A 		.ascii	"kppjr\000"
+ 2258      7200
+ 2259              	.LASF62:
+ 2260 0235 696E7465 		.ascii	"integral\000"
+ 2260      6772616C 
+ 2260      00
+ 2261              	.LASF3:
+ 2262 023e 5F5F7569 		.ascii	"__uint8_t\000"
+ 2262      6E74385F 
+ 2262      7400
+ 2263              	.LASF57:
+ 2264 0248 6B446572 		.ascii	"kDerivative\000"
+ 2264      69766174 
+ 2264      69766500 
+ 2265              	.LASF41:
+ 2266 0254 47657445 		.ascii	"GetEncoderValWithFlip\000"
+ 2266      6E636F64 
+ 2266      65725661 
+ 2266      6C576974 
+ 2266      68466C69 
+ 2267              	.LASF60:
+ 2268 026a 666C6970 		.ascii	"flipEncoder\000"
+ 2268      456E636F 
+ 2268      64657200 
+ 2269              	.LASF23:
+ 2270 0276 6C6F6E67 		.ascii	"long double\000"
+ 2270      20646F75 
+ 2270      626C6500 
+ 2271              	.LASF1:
+ 2272 0282 756E7369 		.ascii	"unsigned char\000"
+ 2272      676E6564 
+ 2272      20636861 
+ 2272      7200
+ 2273              	.LASF25:
+ 2274 0290 436C6561 		.ascii	"ClearPIDProgress\000"
+ 2274      72504944 
+ 2274      50726F67 
+ 2274      72657373 
+ 2274      00
+ 2275              	.LASF0:
+ 2276 02a1 7369676E 		.ascii	"signed char\000"
+ 2276      65642063 
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 46
+
+
+ 2276      68617200 
+ 2277              	.LASF15:
+ 2278 02ad 696E7433 		.ascii	"int32_t\000"
+ 2278      325F7400 
+ 2279              	.LASF11:
+ 2280 02b5 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2280      206C6F6E 
+ 2280      6720756E 
+ 2280      7369676E 
+ 2280      65642069 
+ 2281              	.LASF16:
+ 2282 02cc 75696E74 		.ascii	"uint32_t\000"
+ 2282      33325F74 
+ 2282      00
+ 2283              	.LASF12:
+ 2284 02d5 756E7369 		.ascii	"unsigned int\000"
+ 2284      676E6564 
+ 2284      20696E74 
+ 2284      00
+ 2285              	.LASF14:
+ 2286 02e2 75696E74 		.ascii	"uint16_t\000"
+ 2286      31365F74 
+ 2286      00
+ 2287              	.LASF33:
+ 2288 02eb 50494449 		.ascii	"PIDIsEnabled\000"
+ 2288      73456E61 
+ 2288      626C6564 
+ 2288      00
+ 2289              	.LASF71:
+ 2290 02f8 53746174 		.ascii	"Status_Reg_Switches_Read\000"
+ 2290      75735F52 
+ 2290      65675F53 
+ 2290      77697463 
+ 2290      6865735F 
+ 2291              	.LASF50:
+ 2292 0311 63757272 		.ascii	"current\000"
+ 2292      656E7400 
+ 2293              	.LASF43:
+ 2294 0319 53657445 		.ascii	"SetEncoderDirReverse\000"
+ 2294      6E636F64 
+ 2294      65724469 
+ 2294      72526576 
+ 2294      65727365 
+ 2295              	.LASF5:
+ 2296 032e 73686F72 		.ascii	"short unsigned int\000"
+ 2296      7420756E 
+ 2296      7369676E 
+ 2296      65642069 
+ 2296      6E7400
+ 2297              	.LASF66:
+ 2298 0341 636F6D70 		.ascii	"complete\000"
+ 2298      6C657465 
+ 2298      00
+ 2299              	.LASF35:
+ 2300 034a 4765746B 		.ascii	"GetkIntegral\000"
+ 2300      496E7465 
+ 2300      6772616C 
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 47
+
+
+ 2300      00
+ 2301              	.LASF22:
+ 2302 0357 63686172 		.ascii	"char\000"
+ 2302      00
+ 2303              	.LASF39:
+ 2304 035c 73657456 		.ascii	"setValue\000"
+ 2304      616C7565 
+ 2304      00
+ 2305              	.LASF40:
+ 2306 0365 4765744D 		.ascii	"GetMaxPIDPWM\000"
+ 2306      61785049 
+ 2306      4450574D 
+ 2306      00
+ 2307              	.LASF37:
+ 2308 0372 4765746B 		.ascii	"GetkPPJR\000"
+ 2308      50504A52 
+ 2308      00
+ 2309              	.LASF55:
+ 2310 037b 6B506F73 		.ascii	"kPosition\000"
+ 2310      6974696F 
+ 2310      6E00
+ 2311              	.LASF42:
+ 2312 0385 53657445 		.ascii	"SetEncoderDirDefault\000"
+ 2312      6E636F64 
+ 2312      65724469 
+ 2312      72446566 
+ 2312      61756C74 
+ 2313              	.LASF44:
+ 2314 039a 43757272 		.ascii	"CurrentPositionMiliDegree\000"
+ 2314      656E7450 
+ 2314      6F736974 
+ 2314      696F6E4D 
+ 2314      696C6944 
+ 2315              	.LASF65:
+ 2316 03b4 72617469 		.ascii	"ratio\000"
+ 2316      6F00
+ 2317              	.LASF9:
+ 2318 03ba 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2318      20756E73 
+ 2318      69676E65 
+ 2318      6420696E 
+ 2318      7400
+ 2319              	.LASF19:
+ 2320 03cc 696E7433 		.ascii	"int32\000"
+ 2320      3200
+ 2321              	.LASF75:
+ 2322 03d2 496E6974 		.ascii	"InitializePID\000"
+ 2322      69616C69 
+ 2322      7A655049 
+ 2322      4400
+ 2323              	.LASF45:
+ 2324 03e0 6D696C69 		.ascii	"miliDegrees\000"
+ 2324      44656772 
+ 2324      65657300 
+ 2325              	.LASF53:
+ 2326 03ec 50574D4F 		.ascii	"PWMOut\000"
+ 2326      757400
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccYqiIaU.s 			page 48
+
+
+ 2327              	.LASF6:
+ 2328 03f3 5F5F696E 		.ascii	"__int32_t\000"
+ 2328      7433325F 
+ 2328      7400
+ 2329              	.LASF48:
+ 2330 03fd 74617267 		.ascii	"targetTick\000"
+ 2330      65745469 
+ 2330      636B00
+ 2331              	.LASF46:
+ 2332 0408 4D696C69 		.ascii	"MiliDegreesToTicks\000"
+ 2332      44656772 
+ 2332      65657354 
+ 2332      6F546963 
+ 2332      6B7300
+ 2333              	.LASF27:
+ 2334 041b 456E6162 		.ascii	"EnablePID\000"
+ 2334      6C655049 
+ 2334      4400
+ 2335              	.LASF21:
+ 2336 0425 646F7562 		.ascii	"double\000"
+ 2336      6C6500
+ 2337              	.LASF36:
+ 2338 042c 4765746B 		.ascii	"GetkDerivative\000"
+ 2338      44657269 
+ 2338      76617469 
+ 2338      766500
+ 2339              	.LASF67:
+ 2340 043b 6D617850 		.ascii	"maxPWM\000"
+ 2340      574D00
+ 2341              	.LASF59:
+ 2342 0442 69676E6F 		.ascii	"ignoreLimSw\000"
+ 2342      72654C69 
+ 2342      6D537700 
+ 2343              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

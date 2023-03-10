@@ -1,7 +1,20 @@
-#include "PID.h"
+/* ========================================
+ *
+ * Copyright YOUR COMPANY, THE YEAR
+ * All Rights Reserved
+ * UNPUBLISHED, LICENSED SOFTWARE.
+ *
+ * CONFIDENTIAL AND PROPRIETARY INFORMATION
+ * WHICH IS THE PROPERTY OF your company.
+ *
+ * ========================================
+*/
+
+//PID varaibles
+#include <project.h>
+#include "PositionPID.h"
 #include "MotorDrive.h"
 #include "main.h"
-#include <project.h>
 
 int32_t kPosition = 0;
 int32_t kIntegral = 0;
@@ -14,9 +27,8 @@ extern char txData[TX_DATA_SIZE];
 int8 flipEncoder = 1;
 uint8_t usingPot = 0;
 
-// integral and lastPosition need to be reset upon mode change
-int integral = 0;
-int lastPosition = 0;
+int integral = 0;     //needs to be reset upon mode change
+int lastPosition = 0; //needs to be reset upon mode change
 int integralClamp = 500;
 
 double ratio;
@@ -29,19 +41,15 @@ void ClearPIDProgress() {
     integral = 0;
     lastPosition = 0;
 }
-
 void DisablePID() {
     enabledPID = 0;
 }
-
 void EnablePID() {
     enabledPID = 1;
 }
-
 uint8_t PIDIsEnabled() {
     return(enabledPID);
 }
-
 void InitializePID() {
     set_PWM(0, 0, 0);
     ClearPIDProgress();
@@ -49,64 +57,53 @@ void InitializePID() {
     lastPosition = GetEncoderValWithFlip();
 }
 
-void SetkPosition(int32_t kP) {
+void SetkPosition(int32_t kP){
     kPosition = kP;
 }
-
-void SetkIntegral(int32_t kI) {
+void SetkIntegral(int32_t kI){
     kIntegral = kI;
 }
-
-void SetkDerivative(int32_t kD) {
+void SetkDerivative(int32_t kD){
     kDerivative = kD;
 }
-void SetkPPJR(uint32_t kppjr) {
+void SetkPPJR(uint32_t kppjr){
     kPPJR = kppjr;
 }
-
-int32_t GetkPosition() {
+int32_t GetkPosition(){
     return kPosition;
 }
-
-int32_t GetkIntegral() {
+int32_t GetkIntegral(){
     return kIntegral;
 }
-
-int32_t GetkDerivative() {
+int32_t GetkDerivative(){
     return kDerivative;
 }
-
-uint32_t GetkPPJR() {
+uint32_t GetkPPJR(){
     return kPPJR;
 }
 
-void SetMaxPIDPWM(uint16_t setValue) {
+void SetMaxPIDPWM(uint16_t setValue){
     maxPWM = setValue;
 }
-
-int32_t GetMaxPIDPWM() {
+int32_t GetMaxPIDPWM(){
     return maxPWM;
 }
 
 int32_t GetEncoderValWithFlip() {
     return flipEncoder * QuadDec_GetCounter();
 }
-
-void SetEncoderDirDefault() {
+void SetEncoderDirDefault(){
     flipEncoder = 1;
 }
-
-void SetEncoderDirReverse() {
+void SetEncoderDirReverse(){
     flipEncoder = -1;
 }
-
-int32_t CurrentPositionMiliDegree() {
+int32_t CurrentPositionMiliDegree(){
     if(kPPJR == 0){
         return(0);
     }
     return GetEncoderValWithFlip() * (360*1000) / kPPJR;
 }
-
 void SetPosition(int32 miliDegrees) {
         //TODO: Make Potentiometer Compatible
         PWM = Position_PID(MiliDegreesToTicks(miliDegrees));
@@ -121,21 +118,20 @@ void SetPosition(int32 miliDegrees) {
         }
 }
 
-int32_t MiliDegreesToTicks(int32_t miliDegrees) {
+int32_t MiliDegreesToTicks(int32_t miliDegrees){
     int32_t ticks = miliDegrees * kPPJR/(360*1000);// make float
     return(ticks);
 }
 
-int32_t Position_PID(int32 targetTick) {
+int32_t Position_PID(int32 targetTick){
     if(!PIDIsEnabled()){
         return(0);
     }
-    
-    //TODO: Make Potentoimeter Compatible
+    //TODO: Make Potenitometer Compatible
     volatile int32 current =  GetEncoderValWithFlip();
     int32 position = targetTick - current;
     
-    // if within tolerance exit
+    //if within tolerance exit
     if(position <= 5 && position >= -5) {
       return(0);
     }
@@ -161,3 +157,5 @@ int32_t Position_PID(int32 targetTick) {
  
     return (PWMOut);
 }
+
+/* [] END OF FILE */

@@ -1,11 +1,93 @@
 // Main c file for HandBoard 2023
 
-#include "main.h" 
-#include "PID.h" //FIXME: do we need this and PID.c?
+#include "main.h"
+#include "Motor_Unit_Debug.h"
 #include "cyapicallbacks.h"
+#include "MotorDrive.h"
+#include "Motor_Unit_CAN.h"
+#include "Motor_Unit_FSM.h"
+#include "PositionPID.h"
 
 
 
+// TODO: ADD PWM FILES FROM GITHUB AND MAKE SURE TOP DESIGN PWN IS CORRECT
+
+#ifdef RGB_LED_ARRAY
+#include "LED_Array.h"
+extern const uint32 StripLights_CLUT[ ];
+#endif
+
+//LED
+uint8_t CAN_time_LED = 0;
+uint8_t ERRORTimeLED = 0;
+
+int32_t millidegreeTarget = 0;
+
+//Uart variables
+char txData[TX_DATA_SIZE];
+
+//drive varaible
+int16 nextPWM = 0;
+extern uint8 invalidate;
+uint8_t ignoreLimSw = 0;
+uint8_t encoderTimeOut = 0;
+
+uint8 address = 0;
+
+//Status and Data Structs
+volatile uint8 drive = 0;
+uint8_t CAN_check_delay = 0;
+CANPacket can_recieve;
+CANPacket can_send;
+
+CY_ISR(Period_Reset_Handler) {
+    int timer = Timer_PWM_ReadStatusRegister();
+    invalidate++;
+    CAN_time_LED++;
+    CAN_check_delay ++;
+    ERRORTimeLED++;
+    encoderTimeOut++;
+    if(encoderTimeOut >= 2){
+        encoderTimeOut = 0;
+        SendEncoderData(&can_send);
+    }
+    if(invalidate >= 20){
+        set_PWM(0, 0, 0);   
+    }
+    if(ERRORTimeLED >= 3) {
+        #ifdef ERROR_LED
+        ERROR_LED_Write(LED_OFF);
+        #endif
+        #ifdef DEBUG_LED1   
+        Debug_1_Write(LED_OFF);
+        #endif
+        #ifdef DEBUG_LED2
+        Debug_2_Write(LED_OFF);
+        #endif
+    }
+    if(CAN_time_LED >= 3){
+        #ifdef CAN_LED
+        CAN_LED_Write(LED_OFF);
+        #endif
+    }
+}
+  
+CY_ISR(Pin_Limit_Handler){
+    #ifdef PRINT_LIMIT_SW_TRIGGER
+    sprintf(txData,"LimitSW triggerd Stat: %x \r\n", Status_Reg_Switches_Read() & 0b11);
+    UART_UartPutString(txData);
+    #endif
+    
+    set_PWM(GetCurrentPWM(), ignoreLimSw, Status_Reg_Switches_Read());
+    
+    #ifdef CAN_TELEM_SEND
+    AssembleLimitSwitchAlertPacket(&can_send, DEVICE_GROUP_JETSON, 
+        DEVICE_SERIAL_JETSON, Status_Reg_Switches_Read() & 0b11);
+    SendCANPacket(&can_send);
+    #endif
+    //TODO: Select Which Encoder zeros
+    //QuadDec_SetCounter(0);
+}
 int main(void){
   Initialize();
   
@@ -92,59 +174,7 @@ void Initialize(void) {
     isr_period_PWM_StartEx(Period_Reset_Handler);
 } 
 
-CY_ISR(Pin_Limit_Handler){
-    #ifdef PRINT_LIMIT_SW_TRIGGER
-    sprintf(txData,"LimitSW triggerd Stat: %x \r\n", Status_Reg_Switches_Read() & 0b11);
-    UART_UartPutString(txData);
-    #endif
-    
-    set_PWM(GetCurrentPWM(), ignoreLimSw, Status_Reg_Switches_Read());
-    
-    #ifdef CAN_TELEM_SEND
-    AssembleLimitSwitchAlertPacket(&can_send, DEVICE_GROUP_JETSON, 
-        DEVICE_SERIAL_JETSON, Status_Reg_Switches_Read() & 0b11);
-    SendCANPacket(&can_send);
-    #endif
-    //TODO: Select Which Encoder zeros
-    //QuadDec_SetCounter(0);
-    if (bound_set1 && ~Pin_Limit_1_Read()) {
-        QuadDec_SetCounter(enc_lim_1);
-    } else {
-        QuadDec_SetCounter(enc_lim_2);
-    }
-}
 
-CY_ISR(Period_Reset_Handler) {
-    int timer = Timer_PWM_ReadStatusRegister();
-    invalidate++;
-    CAN_time_LED++;
-    CAN_check_delay ++;
-    ERRORTimeLED++;
-    encoderTimeOut++;
-    if (encoderTimeOut >= 2){
-        encoderTimeOut = 0;
-        SendEncoderData(&can_send);
-    }
-    if (invalidate >= 20){
-        set_PWM(0, 0, 0);   
-    }
-    if (ERRORTimeLED >= 3) {
-        #ifdef ERROR_LED
-        ERROR_LED_Write(LED_OFF);
-        #endif
-        #ifdef DEBUG_LED1   
-        Debug_1_Write(LED_OFF);
-        #endif
-        #ifdef DEBUG_LED2
-        Debug_2_Write(LED_OFF);
-        #endif
-    }
-    if (CAN_time_LED >= 3){
-        #ifdef CAN_LED
-        CAN_LED_Write(LED_OFF);
-        #endif
-    }
-}
 
 // FIXME: receivedPacket should really be a refernce to the can packet to avoid the copy
 void PrintCanPacket(CANPacket receivedPacket){

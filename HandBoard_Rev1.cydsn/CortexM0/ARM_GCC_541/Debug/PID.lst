@@ -1,0 +1,413 @@
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\cc0d5Phc.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"PID.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	PWM
+  20              		.global	kPPJR
+  21              		.global	kDerivative
+  22              		.global	kIntegral
+  23              		.global	kPosition
+  24              		.bss
+  25              		.align	2
+  26              		.type	PWM, %object
+  27              		.size	PWM, 4
+  28              	PWM:
+  29 0000 00000000 		.space	4
+  30              		.type	kPPJR, %object
+  31              		.size	kPPJR, 4
+  32              	kPPJR:
+  33 0004 00000000 		.space	4
+  34              		.type	kDerivative, %object
+  35              		.size	kDerivative, 4
+  36              	kDerivative:
+  37 0008 00000000 		.space	4
+  38              		.type	kIntegral, %object
+  39              		.size	kIntegral, 4
+  40              	kIntegral:
+  41 000c 00000000 		.space	4
+  42              		.type	kPosition, %object
+  43              		.size	kPosition, 4
+  44              	kPosition:
+  45 0010 00000000 		.space	4
+  46              		.text
+  47              	.Letext0:
+  48              		.file 1 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+  49              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+  50              		.file 3 "PID.c"
+  51              		.section	.debug_info,"",%progbits
+  52              	.Ldebug_info0:
+  53 0000 EE000000 		.4byte	0xee
+  54 0004 0400     		.2byte	0x4
+  55 0006 00000000 		.4byte	.Ldebug_abbrev0
+  56 000a 04       		.byte	0x4
+  57 000b 01       		.uleb128 0x1
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\cc0d5Phc.s 			page 2
+
+
+  58 000c DD000000 		.4byte	.LASF20
+  59 0010 0C       		.byte	0xc
+  60 0011 A6010000 		.4byte	.LASF21
+  61 0015 0E000000 		.4byte	.LASF22
+  62 0019 00000000 		.4byte	.Ldebug_line0
+  63 001d 02       		.uleb128 0x2
+  64 001e 01       		.byte	0x1
+  65 001f 06       		.byte	0x6
+  66 0020 7E010000 		.4byte	.LASF0
+  67 0024 02       		.uleb128 0x2
+  68 0025 01       		.byte	0x1
+  69 0026 08       		.byte	0x8
+  70 0027 B0000000 		.4byte	.LASF1
+  71 002b 02       		.uleb128 0x2
+  72 002c 02       		.byte	0x2
+  73 002d 05       		.byte	0x5
+  74 002e B2010000 		.4byte	.LASF2
+  75 0032 02       		.uleb128 0x2
+  76 0033 02       		.byte	0x2
+  77 0034 07       		.byte	0x7
+  78 0035 6B010000 		.4byte	.LASF3
+  79 0039 03       		.uleb128 0x3
+  80 003a 96010000 		.4byte	.LASF9
+  81 003e 01       		.byte	0x1
+  82 003f 3F       		.byte	0x3f
+  83 0040 44000000 		.4byte	0x44
+  84 0044 02       		.uleb128 0x2
+  85 0045 04       		.byte	0x4
+  86 0046 05       		.byte	0x5
+  87 0047 C3000000 		.4byte	.LASF4
+  88 004b 02       		.uleb128 0x2
+  89 004c 04       		.byte	0x4
+  90 004d 07       		.byte	0x7
+  91 004e 7B000000 		.4byte	.LASF5
+  92 0052 02       		.uleb128 0x2
+  93 0053 08       		.byte	0x8
+  94 0054 05       		.byte	0x5
+  95 0055 00000000 		.4byte	.LASF6
+  96 0059 02       		.uleb128 0x2
+  97 005a 08       		.byte	0x8
+  98 005b 07       		.byte	0x7
+  99 005c 8D000000 		.4byte	.LASF7
+ 100 0060 04       		.uleb128 0x4
+ 101 0061 04       		.byte	0x4
+ 102 0062 05       		.byte	0x5
+ 103 0063 696E7400 		.ascii	"int\000"
+ 104 0067 02       		.uleb128 0x2
+ 105 0068 04       		.byte	0x4
+ 106 0069 07       		.byte	0x7
+ 107 006a 64000000 		.4byte	.LASF8
+ 108 006e 03       		.uleb128 0x3
+ 109 006f BC010000 		.4byte	.LASF10
+ 110 0073 02       		.byte	0x2
+ 111 0074 2C       		.byte	0x2c
+ 112 0075 39000000 		.4byte	0x39
+ 113 0079 02       		.uleb128 0x2
+ 114 007a 04       		.byte	0x4
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\cc0d5Phc.s 			page 3
+
+
+ 115 007b 04       		.byte	0x4
+ 116 007c AC010000 		.4byte	.LASF11
+ 117 0080 02       		.uleb128 0x2
+ 118 0081 08       		.byte	0x8
+ 119 0082 04       		.byte	0x4
+ 120 0083 CC000000 		.4byte	.LASF12
+ 121 0087 02       		.uleb128 0x2
+ 122 0088 01       		.byte	0x1
+ 123 0089 08       		.byte	0x8
+ 124 008a BE000000 		.4byte	.LASF13
+ 125 008e 02       		.uleb128 0x2
+ 126 008f 08       		.byte	0x8
+ 127 0090 04       		.byte	0x4
+ 128 0091 8A010000 		.4byte	.LASF14
+ 129 0095 02       		.uleb128 0x2
+ 130 0096 04       		.byte	0x4
+ 131 0097 07       		.byte	0x7
+ 132 0098 C4010000 		.4byte	.LASF15
+ 133 009c 05       		.uleb128 0x5
+ 134 009d D3000000 		.4byte	.LASF16
+ 135 00a1 03       		.byte	0x3
+ 136 00a2 06       		.byte	0x6
+ 137 00a3 6E000000 		.4byte	0x6e
+ 138 00a7 05       		.uleb128 0x5
+ 139 00a8 03       		.byte	0x3
+ 140 00a9 00000000 		.4byte	kPosition
+ 141 00ad 05       		.uleb128 0x5
+ 142 00ae 71000000 		.4byte	.LASF17
+ 143 00b2 03       		.byte	0x3
+ 144 00b3 07       		.byte	0x7
+ 145 00b4 6E000000 		.4byte	0x6e
+ 146 00b8 05       		.uleb128 0x5
+ 147 00b9 03       		.byte	0x3
+ 148 00ba 00000000 		.4byte	kIntegral
+ 149 00be 05       		.uleb128 0x5
+ 150 00bf A4000000 		.4byte	.LASF18
+ 151 00c3 03       		.byte	0x3
+ 152 00c4 08       		.byte	0x8
+ 153 00c5 6E000000 		.4byte	0x6e
+ 154 00c9 05       		.uleb128 0x5
+ 155 00ca 03       		.byte	0x3
+ 156 00cb 00000000 		.4byte	kDerivative
+ 157 00cf 05       		.uleb128 0x5
+ 158 00d0 A0010000 		.4byte	.LASF19
+ 159 00d4 03       		.byte	0x3
+ 160 00d5 09       		.byte	0x9
+ 161 00d6 6E000000 		.4byte	0x6e
+ 162 00da 05       		.uleb128 0x5
+ 163 00db 03       		.byte	0x3
+ 164 00dc 00000000 		.4byte	kPPJR
+ 165 00e0 06       		.uleb128 0x6
+ 166 00e1 50574D00 		.ascii	"PWM\000"
+ 167 00e5 03       		.byte	0x3
+ 168 00e6 0A       		.byte	0xa
+ 169 00e7 6E000000 		.4byte	0x6e
+ 170 00eb 05       		.uleb128 0x5
+ 171 00ec 03       		.byte	0x3
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\cc0d5Phc.s 			page 4
+
+
+ 172 00ed 00000000 		.4byte	PWM
+ 173 00f1 00       		.byte	0
+ 174              		.section	.debug_abbrev,"",%progbits
+ 175              	.Ldebug_abbrev0:
+ 176 0000 01       		.uleb128 0x1
+ 177 0001 11       		.uleb128 0x11
+ 178 0002 01       		.byte	0x1
+ 179 0003 25       		.uleb128 0x25
+ 180 0004 0E       		.uleb128 0xe
+ 181 0005 13       		.uleb128 0x13
+ 182 0006 0B       		.uleb128 0xb
+ 183 0007 03       		.uleb128 0x3
+ 184 0008 0E       		.uleb128 0xe
+ 185 0009 1B       		.uleb128 0x1b
+ 186 000a 0E       		.uleb128 0xe
+ 187 000b 10       		.uleb128 0x10
+ 188 000c 17       		.uleb128 0x17
+ 189 000d 00       		.byte	0
+ 190 000e 00       		.byte	0
+ 191 000f 02       		.uleb128 0x2
+ 192 0010 24       		.uleb128 0x24
+ 193 0011 00       		.byte	0
+ 194 0012 0B       		.uleb128 0xb
+ 195 0013 0B       		.uleb128 0xb
+ 196 0014 3E       		.uleb128 0x3e
+ 197 0015 0B       		.uleb128 0xb
+ 198 0016 03       		.uleb128 0x3
+ 199 0017 0E       		.uleb128 0xe
+ 200 0018 00       		.byte	0
+ 201 0019 00       		.byte	0
+ 202 001a 03       		.uleb128 0x3
+ 203 001b 16       		.uleb128 0x16
+ 204 001c 00       		.byte	0
+ 205 001d 03       		.uleb128 0x3
+ 206 001e 0E       		.uleb128 0xe
+ 207 001f 3A       		.uleb128 0x3a
+ 208 0020 0B       		.uleb128 0xb
+ 209 0021 3B       		.uleb128 0x3b
+ 210 0022 0B       		.uleb128 0xb
+ 211 0023 49       		.uleb128 0x49
+ 212 0024 13       		.uleb128 0x13
+ 213 0025 00       		.byte	0
+ 214 0026 00       		.byte	0
+ 215 0027 04       		.uleb128 0x4
+ 216 0028 24       		.uleb128 0x24
+ 217 0029 00       		.byte	0
+ 218 002a 0B       		.uleb128 0xb
+ 219 002b 0B       		.uleb128 0xb
+ 220 002c 3E       		.uleb128 0x3e
+ 221 002d 0B       		.uleb128 0xb
+ 222 002e 03       		.uleb128 0x3
+ 223 002f 08       		.uleb128 0x8
+ 224 0030 00       		.byte	0
+ 225 0031 00       		.byte	0
+ 226 0032 05       		.uleb128 0x5
+ 227 0033 34       		.uleb128 0x34
+ 228 0034 00       		.byte	0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\cc0d5Phc.s 			page 5
+
+
+ 229 0035 03       		.uleb128 0x3
+ 230 0036 0E       		.uleb128 0xe
+ 231 0037 3A       		.uleb128 0x3a
+ 232 0038 0B       		.uleb128 0xb
+ 233 0039 3B       		.uleb128 0x3b
+ 234 003a 0B       		.uleb128 0xb
+ 235 003b 49       		.uleb128 0x49
+ 236 003c 13       		.uleb128 0x13
+ 237 003d 3F       		.uleb128 0x3f
+ 238 003e 19       		.uleb128 0x19
+ 239 003f 02       		.uleb128 0x2
+ 240 0040 18       		.uleb128 0x18
+ 241 0041 00       		.byte	0
+ 242 0042 00       		.byte	0
+ 243 0043 06       		.uleb128 0x6
+ 244 0044 34       		.uleb128 0x34
+ 245 0045 00       		.byte	0
+ 246 0046 03       		.uleb128 0x3
+ 247 0047 08       		.uleb128 0x8
+ 248 0048 3A       		.uleb128 0x3a
+ 249 0049 0B       		.uleb128 0xb
+ 250 004a 3B       		.uleb128 0x3b
+ 251 004b 0B       		.uleb128 0xb
+ 252 004c 49       		.uleb128 0x49
+ 253 004d 13       		.uleb128 0x13
+ 254 004e 3F       		.uleb128 0x3f
+ 255 004f 19       		.uleb128 0x19
+ 256 0050 02       		.uleb128 0x2
+ 257 0051 18       		.uleb128 0x18
+ 258 0052 00       		.byte	0
+ 259 0053 00       		.byte	0
+ 260 0054 00       		.byte	0
+ 261              		.section	.debug_aranges,"",%progbits
+ 262 0000 14000000 		.4byte	0x14
+ 263 0004 0200     		.2byte	0x2
+ 264 0006 00000000 		.4byte	.Ldebug_info0
+ 265 000a 04       		.byte	0x4
+ 266 000b 00       		.byte	0
+ 267 000c 0000     		.2byte	0
+ 268 000e 0000     		.2byte	0
+ 269 0010 00000000 		.4byte	0
+ 270 0014 00000000 		.4byte	0
+ 271              		.section	.debug_line,"",%progbits
+ 272              	.Ldebug_line0:
+ 273 0000 1F010000 		.section	.debug_str,"MS",%progbits,1
+ 273      02001901 
+ 273      00000201 
+ 273      FB0E0D00 
+ 273      01010101 
+ 274              	.LASF6:
+ 275 0000 6C6F6E67 		.ascii	"long long int\000"
+ 275      206C6F6E 
+ 275      6720696E 
+ 275      7400
+ 276              	.LASF22:
+ 277 000e 433A5C55 		.ascii	"C:\\Users\\kratz\\OneDrive\\Documents\\PSoC Creator"
+ 277      73657273 
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\cc0d5Phc.s 			page 6
+
+
+ 277      5C6B7261 
+ 277      747A5C4F 
+ 277      6E654472 
+ 278 003c 5C48616E 		.ascii	"\\Hand_Board_PY2023\\HandBoard_Rev1.cydsn\000"
+ 278      645F426F 
+ 278      6172645F 
+ 278      50593230 
+ 278      32335C48 
+ 279              	.LASF8:
+ 280 0064 756E7369 		.ascii	"unsigned int\000"
+ 280      676E6564 
+ 280      20696E74 
+ 280      00
+ 281              	.LASF17:
+ 282 0071 6B496E74 		.ascii	"kIntegral\000"
+ 282      65677261 
+ 282      6C00
+ 283              	.LASF5:
+ 284 007b 6C6F6E67 		.ascii	"long unsigned int\000"
+ 284      20756E73 
+ 284      69676E65 
+ 284      6420696E 
+ 284      7400
+ 285              	.LASF7:
+ 286 008d 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 286      206C6F6E 
+ 286      6720756E 
+ 286      7369676E 
+ 286      65642069 
+ 287              	.LASF18:
+ 288 00a4 6B446572 		.ascii	"kDerivative\000"
+ 288      69766174 
+ 288      69766500 
+ 289              	.LASF1:
+ 290 00b0 756E7369 		.ascii	"unsigned char\000"
+ 290      676E6564 
+ 290      20636861 
+ 290      7200
+ 291              	.LASF13:
+ 292 00be 63686172 		.ascii	"char\000"
+ 292      00
+ 293              	.LASF4:
+ 294 00c3 6C6F6E67 		.ascii	"long int\000"
+ 294      20696E74 
+ 294      00
+ 295              	.LASF12:
+ 296 00cc 646F7562 		.ascii	"double\000"
+ 296      6C6500
+ 297              	.LASF16:
+ 298 00d3 6B506F73 		.ascii	"kPosition\000"
+ 298      6974696F 
+ 298      6E00
+ 299              	.LASF20:
+ 300 00dd 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 300      43313120 
+ 300      352E342E 
+ 300      31203230 
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\cc0d5Phc.s 			page 7
+
+
+ 300      31363036 
+ 301 0110 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 301      20726576 
+ 301      6973696F 
+ 301      6E203233 
+ 301      37373135 
+ 302 0143 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 302      66756E63 
+ 302      74696F6E 
+ 302      2D736563 
+ 302      74696F6E 
+ 303              	.LASF3:
+ 304 016b 73686F72 		.ascii	"short unsigned int\000"
+ 304      7420756E 
+ 304      7369676E 
+ 304      65642069 
+ 304      6E7400
+ 305              	.LASF0:
+ 306 017e 7369676E 		.ascii	"signed char\000"
+ 306      65642063 
+ 306      68617200 
+ 307              	.LASF14:
+ 308 018a 6C6F6E67 		.ascii	"long double\000"
+ 308      20646F75 
+ 308      626C6500 
+ 309              	.LASF9:
+ 310 0196 5F5F696E 		.ascii	"__int32_t\000"
+ 310      7433325F 
+ 310      7400
+ 311              	.LASF19:
+ 312 01a0 6B50504A 		.ascii	"kPPJR\000"
+ 312      5200
+ 313              	.LASF21:
+ 314 01a6 5049442E 		.ascii	"PID.c\000"
+ 314      6300
+ 315              	.LASF11:
+ 316 01ac 666C6F61 		.ascii	"float\000"
+ 316      7400
+ 317              	.LASF2:
+ 318 01b2 73686F72 		.ascii	"short int\000"
+ 318      7420696E 
+ 318      7400
+ 319              	.LASF10:
+ 320 01bc 696E7433 		.ascii	"int32_t\000"
+ 320      325F7400 
+ 321              	.LASF15:
+ 322 01c4 73697A65 		.ascii	"sizetype\000"
+ 322      74797065 
+ 322      00
+ 323              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

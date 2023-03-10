@@ -1,8 +1,17 @@
-#ifndef PID_H
-#define PID_H
-   
+/* ========================================
+ *
+ * Copyright YOUR COMPANY, THE YEAR
+ * All Rights Reserved
+ * UNPUBLISHED, LICENSED SOFTWARE.
+ *
+ * CONFIDENTIAL AND PROPRIETARY INFORMATION
+ * WHICH IS THE PROPERTY OF your company.
+ *
+ * ========================================
+*/
+
+/* [] END OF FILE */
 #include <project.h>
-    
 void SetPosition(int32 miliDegrees) ;
 int32_t MiliDegreesToTicks(int32_t miliDegrees);
 int32_t Position_PID(int32 targetTick);
@@ -30,6 +39,4 @@ int32_t GetMaxPIDPWM();
 int32_t GetkPosition();
 int32_t GetkIntegral();
 int32_t GetkDerivative();
-uint32_t GetkPPJR();
-
-#endif // PID_H
+uint32_t GetkPPJR();//pulses per joint revolution
