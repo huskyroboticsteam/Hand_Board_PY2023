@@ -320,6 +320,53 @@
 <VisibleNodeIds>
 <v>HandBoard_2023</v>
 <v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_INT.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_intClock.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_IRQ.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\ADC_PM.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\CAN.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\CAN_HFCLK.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\CAN_INT.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\CAN_isr.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\CAN_PM.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\CAN_TX_RX_func.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_1.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\Cm0Start.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\cy_em_eeprom.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\CyDMA.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\cyfitter_cfg.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\CyFlash.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLFClk.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLib.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\cymetadata.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\cyPm.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\cyutils.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\main.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\PWM.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\PWM_OUT.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\PWM_OUT_PM.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\PWM_PM.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\RX.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\RX_PM.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\Switch1.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\Switch1_PM.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\TX.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\TX_PM.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\UART.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_BOOT.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_PM.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_rx.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_rx_PM.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_SCBCLK.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_SPI_UART.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_SPI_UART_INT.lst</v>
+<v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\CortexM0\ARM_GCC_541\Debug\Listing Files\UART_tx.lst</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStates>
