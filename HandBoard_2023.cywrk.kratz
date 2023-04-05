@@ -13,7 +13,7 @@
 <v>Output</v>
 </TreeKeys>
 <TreeStates>
-<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="HandBoard_2023\HandBoard_Rev1\Header Files\Port.h">
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
 <ExpandedNodeIds>
 <v>HandBoard_2023</v>
 <v>HandBoard_2023\CAN_Basic_P4_Example01_Copy_01\TopDesign</v>
@@ -52,6 +52,7 @@
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\CANMotorUnit.h</v>
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\CANPacket.h</v>
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\CANPower.h</v>
+<v>HandBoard_2023\HandBoard_Rev1\Header Files\CANScience.h</v>
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\CANSerialNumbers.h</v>
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\cyapicallbacks.h</v>
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\main.h</v>
@@ -62,10 +63,18 @@
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\Port.h</v>
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\PositionPID.h</v>
 <v>HandBoard_2023\HandBoard_Rev1\Source Files</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\CANCommon.c</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\CANGPIO.c</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\CANLocalization.c</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\CANMotorUnit.c</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\CANPacket.c</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\CANPower.c</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\CANScience.c</v>
 <v>HandBoard_2023\HandBoard_Rev1\Source Files\main.c</v>
 <v>HandBoard_2023\HandBoard_Rev1\Source Files\Motor_Unit_CAN.c</v>
 <v>HandBoard_2023\HandBoard_Rev1\Source Files\Motor_Unit_FSM.c</v>
 <v>HandBoard_2023\HandBoard_Rev1\Source Files\MotorDrive.c</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\PortPSOC_CY8C4248AZI_L485.c</v>
 <v>HandBoard_2023\HandBoard_Rev1\Source Files\PositionPID.c</v>
 <v>HandBoard_2023\HandBoard_Rev1\Generated_Source</v>
 <v>HandBoard_2023\HandBoard_Rev1\Generated_Source\PSoC4</v>
@@ -92,6 +101,7 @@
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\CANMotorUnit.h</v>
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\CANPacket.h</v>
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\CANPower.h</v>
+<v>HandBoard_2023\HandBoard_Rev1\Header Files\CANScience.h</v>
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\CANSerialNumbers.h</v>
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\cyapicallbacks.h</v>
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\main.h</v>
@@ -102,24 +112,23 @@
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\Port.h</v>
 <v>HandBoard_2023\HandBoard_Rev1\Header Files\PositionPID.h</v>
 <v>HandBoard_2023\HandBoard_Rev1\Source Files</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\CANCommon.c</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\CANGPIO.c</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\CANLocalization.c</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\CANMotorUnit.c</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\CANPacket.c</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\CANPower.c</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\CANScience.c</v>
 <v>HandBoard_2023\HandBoard_Rev1\Source Files\main.c</v>
 <v>HandBoard_2023\HandBoard_Rev1\Source Files\Motor_Unit_CAN.c</v>
 <v>HandBoard_2023\HandBoard_Rev1\Source Files\Motor_Unit_FSM.c</v>
 <v>HandBoard_2023\HandBoard_Rev1\Source Files\MotorDrive.c</v>
+<v>HandBoard_2023\HandBoard_Rev1\Source Files\PortPSOC_CY8C4248AZI_L485.c</v>
 <v>HandBoard_2023\HandBoard_Rev1\Source Files\PositionPID.c</v>
 <v>HandBoard_2023\HandBoard_Rev1\Generated_Source</v>
 <v>HandBoard_2023\HandBoard_Rev1\Generated_Source\PSoC4</v>
 <v>HandBoard_2023\HandBoard_Rev1\Generated_Source\PSoC4\ADC_SAR_Seq_1</v>
 <v>HandBoard_2023\HandBoard_Rev1\Generated_Source\PSoC4\ADC_SAR_Seq_1_intClock</v>
-<v>HandBoard_2023\HandBoard_Rev1\Generated_Source\PSoC4\ADC_SAR_Seq_1_IRQ</v>
-<v>HandBoard_2023\HandBoard_Rev1\Generated_Source\PSoC4\CAN</v>
-<v>HandBoard_2023\HandBoard_Rev1\Generated_Source\PSoC4\Can_addr</v>
-<v>HandBoard_2023\HandBoard_Rev1\Generated_Source\PSoC4\CAN_HFCLK</v>
-<v>HandBoard_2023\HandBoard_Rev1\Generated_Source\PSoC4\CAN_isr</v>
-<v>HandBoard_2023\HandBoard_Rev1\Generated_Source\PSoC4\Clock_2</v>
-<v>HandBoard_2023\HandBoard_Rev1\Generated_Source\PSoC4\Clock_PWM_1</v>
-<v>HandBoard_2023\HandBoard_Rev1\Generated_Source\PSoC4\cy_boot</v>
-<v>HandBoard_2023\HandBoard_Rev1\Generated_Source\PSoC4\cy_dmac</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
@@ -229,8 +238,17 @@
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\CAN_HFCLK.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\CAN_INT.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\CAN_isr.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\CAN_LED.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\CAN_LED_PM.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\CAN_PM.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\CAN_TX_RX_func.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\CANCommon.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\CANGPIO.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\CANLocalization.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\CANMotorUnit.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\CANPacket.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\CANPower.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\CANScience.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_2.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\Clock_PWM_1.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\Cm0Start.lst</v>
@@ -244,6 +262,10 @@
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\cymetadata.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\cyPm.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\cyutils.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\DEBUG_LED_1.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\DEBUG_LED_1_PM.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\DEBUG_LED_2.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\DEBUG_LED_2_PM.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\Dip_1.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\Dip_1_PM.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\Dip_2.lst</v>
@@ -252,6 +274,10 @@
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\Dip_3_PM.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\Dip_4.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\Dip_4_PM.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\ERROR_LED.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\ERROR_LED_PM.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\FAULT_MOTOR.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\FAULT_MOTOR_PM.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\isr_Limit_1.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\isr_period_PWM.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\main.lst</v>
@@ -280,9 +306,10 @@
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\Pin_Motor_1_PM.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\Pin_Pot.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\Pin_Pot_PM.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\PortPSOC_CY8C4248AZI_L485.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\PositionPID.lst</v>
-<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\PWM_Motor_1.lst</v>
-<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\PWM_Motor_1_PM.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\PWM_Motor.lst</v>
+<v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\PWM_Motor_PM.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\QuadDec.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\QuadDec_Cnt16.lst</v>
 <v>HandBoard_2023\HandBoard_Rev1\CortexM0\ARM_GCC_541\Debug\Listing Files\QuadDec_Cnt16_PM.lst</v>
@@ -488,15 +515,10 @@
 <name v=".\HandBoard_Rev1.cydsn\main.c" />
 <name v=".\HandBoard_Rev1.cydsn\main.h" />
 <name v=".\HandBoard_Rev1.cydsn\HandBoard_Rev1.cydwr" />
-<name v=".\HandBoard_Rev1.cydsn\Generated_Source\PSoC4\Pin_Encoder_A.h" />
-<name v=".\HandBoard_Rev1.cydsn\Motor_Unit_CAN.h" />
+<name v=".\HindsightCAN\PortFiles\PortPSOC_CY8C4248AZI_L485.c" />
+<name v=".\HindsightCAN\Port.h" />
 <name v=".\HandBoard_Rev1.cydsn\Motor_Unit_CAN.c" />
-<name v=".\HandBoard_Rev1.cydsn\PositionPID.c" />
-<name v=".\HandBoard_Rev1.cydsn\Motor_Unit_FSM.c" />
-<name v=".\HandBoard_Rev1.cydsn\PositionPID.h" />
-<name v=".\HandBoard_Rev1.cydsn\MotorDrive.c" />
-<name v=".\HandBoard_Rev1.cydsn\MotorDrive.h" />
-<name v=".\HandBoard_Rev1.cydsn\Port.h" />
+<name v=".\HandBoard_Rev1.cydsn\Generated_Source\PSoC4\CAN.h" />
 </OpenDocs>
 <OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
 
@@ -504,7 +526,7 @@
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1033, 640" SelectedTabbedMdiWindow="d19146aa-2590-4490-a85d-3d5cf9c29cb9"><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\TopDesign\TopDesign.cysch" Guid="2d046ed7-feda-4290-ab59-69b0f2d7b56b" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\main.c" Guid="d19146aa-2590-4490-a85d-3d5cf9c29cb9" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\main.h" Guid="8edda119-8d31-44ed-b554-0b01a1607901" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\HandBoard_Rev1.cydwr" Guid="a9732184-fc53-455f-b9cf-ae592a5d4d96" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\Generated_Source\PSoC4\Pin_Encoder_A.h" Guid="3b9f8a3d-d124-4e28-b98c-1d43c14906a3" /><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="d23a7998-9350-48bf-a995-666d76521176" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\Motor_Unit_CAN.h" Guid="c3713778-b0c5-43f0-9fa2-8ee92b26dbf8" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\Motor_Unit_CAN.c" Guid="e0635c0d-fffc-452d-9629-51e24e5c5fb1" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\PositionPID.c" Guid="26be8594-9c78-46da-bbe2-62ef6ab8fbdb" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\Motor_Unit_FSM.c" Guid="d1f87a5f-c1f3-47e3-95c3-63f6ec67b1e8" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\PositionPID.h" Guid="d20ee701-0455-40dc-a28a-b0fee1525264" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\MotorDrive.c" Guid="b776cecf-5817-4bf5-b404-4950fdfde214" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\MotorDrive.h" Guid="a32c5b4c-c492-4378-a5e3-e1488108eb72" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\Port.h" Guid="3b5ad1d3-388b-44f8-b521-c59e1fcf470a" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1033, 705" SelectedTabbedMdiWindow="d19146aa-2590-4490-a85d-3d5cf9c29cb9"><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\TopDesign\TopDesign.cysch" Guid="2d046ed7-feda-4290-ab59-69b0f2d7b56b" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\main.c" Guid="d19146aa-2590-4490-a85d-3d5cf9c29cb9" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\main.h" Guid="8edda119-8d31-44ed-b554-0b01a1607901" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\HandBoard_Rev1.cydwr" Guid="a9732184-fc53-455f-b9cf-ae592a5d4d96" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HindsightCAN\PortFiles\PortPSOC_CY8C4248AZI_L485.c" Guid="c087885d-3dee-42af-82e4-7af5fd69c122" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HindsightCAN\Port.h" Guid="97399bee-9daf-471c-b928-ca67209d991e" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\Motor_Unit_CAN.c" Guid="39a30cf3-6733-4e1e-b95b-a987bcfa13da" /><DocumentWindow Key="C:\Users\kratz\OneDrive\Documents\PSoC Creator\Hand_Board_PY2023\HandBoard_Rev1.cydsn\Generated_Source\PSoC4\CAN.h" Guid="473dd458-e08b-4351-89e2-a65d515f7a5f" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>

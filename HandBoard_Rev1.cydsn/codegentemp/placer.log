@@ -6,7 +6,7 @@
 
 #Build Date:         Sep  9 2019 11:47:43
 
-#File Generated:     Mar 9 2023 18:42:48
+#File Generated:     Mar 30 2023 18:45:01
 
 #Purpose:            
 
@@ -55,7 +55,7 @@ Design Statistics after Packing
 Device Utilization Summary after Packing
     Macrocells                  :	30/64
     UDBS                        :	8/8
-    IOs                         :	19/99
+    IOs                         :	24/99
 
 
 D2088: Phase 3, elapsed time : 0.0 (sec)
@@ -123,7 +123,7 @@ Clock: timer_clock          | Frequency:  32.6 MHz | Target:  24.0 MHz
 ======================================================================
                      End of Clock Summary
 ######################################################################
-D2088: Phase 7, elapsed time : 0.1 (sec)
+D2088: Phase 7, elapsed time : 0.2 (sec)
 
 Final Design Statistics
     Number of Combinational MCs 	:	14
@@ -133,11 +133,11 @@ Final Design Statistics
     Number of Status            	:	5
     Number of SyncCells         	:	0
     Number of count7cells       	:	0
-    Number of IOs       	:	19
+    Number of IOs       	:	24
 
 Device Utilization Summary
     Macrocells                  :	30/64
-    IOs                         :	19/99
+    IOs                         :	24/99
 
 
 
@@ -208,7 +208,7 @@ Clock: timer_clock          | Frequency:  32.6 MHz | Target:  26.3 MHz
                      End of Clock Summary
 ######################################################################
 
-D2088: Phase 6, elapsed time : 0.1 (sec)
+D2088: Phase 6, elapsed time : 0.0 (sec)
 
 Phase 7
 ######################################################################
@@ -234,7 +234,7 @@ Clock: timer_clock          | Frequency:  32.6 MHz | Target:  28.6 MHz
 ======================================================================
                      End of Clock Summary
 ######################################################################
-D2088: Phase 7, elapsed time : 0.4 (sec)
+D2088: Phase 7, elapsed time : 0.2 (sec)
 
 Final Design Statistics
     Number of Combinational MCs 	:	14
@@ -244,11 +244,11 @@ Final Design Statistics
     Number of Status            	:	5
     Number of SyncCells         	:	0
     Number of count7cells       	:	0
-    Number of IOs       	:	19
+    Number of IOs       	:	24
 
 Device Utilization Summary
     Macrocells                  :	30/64
-    IOs                         :	19/99
+    IOs                         :	24/99
 
 
 
@@ -279,7 +279,7 @@ Clock: CySysClk             | Frequency: N/A       | Target:  48.0 MHz
 Clock: CyWCO                | Frequency: N/A       | Target:   0.0 MHz
 Clock: UART_SCBCLK          | Frequency: N/A       | Target:   0.1 MHz
 Clock: UART_SCBCLK(FFB)     | Frequency: N/A       | Target:   0.1 MHz
-Clock: timer_clock          | Frequency:  32.6 MHz | Target:  31.3 MHz
+Clock: timer_clock          | Frequency:  32.9 MHz | Target:  31.3 MHz
 
 ======================================================================
                      End of Clock Summary
@@ -290,5 +290,5 @@ D2088: Phase 8, elapsed time : 0.0 (sec)
 
 D2054: Placement of the design completed successfully
 
-I2076: Total run-time: 1.3 sec.
+I2076: Total run-time: 1.0 sec.
 

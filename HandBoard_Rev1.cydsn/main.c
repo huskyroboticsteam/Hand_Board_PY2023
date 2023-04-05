@@ -9,8 +9,7 @@
 #include "PositionPID.h"
 
 
-
-// TODO: ADD PWM FILES FROM GITHUB AND MAKE SURE TOP DESIGN PWN IS CORRECT
+// TODO: add I^2C block, integrate PCA6835... driver 
 
 #ifdef RGB_LED_ARRAY
 #include "LED_Array.h"
@@ -198,5 +197,52 @@ uint16_t ReadCAN(CANPacket *receivedPacket){
         return receivedPacket->data[0];
     }
     return NO_NEW_CAN_PACKET; //Means no Packet
+}
+
+void DisplayErrorCode(uint8_t code) 
+{    
+    #ifdef ERROR_LED
+    ERROR_LED_Write(LED_OFF);
+    #endif
+    #ifdef DEBUG_LED1   
+    DEBUG_LED_1_Write(LED_OFF);
+    #endif
+    #ifdef DEBUG_LED2
+    DEBUG_LED_2_Write(LED_OFF);
+    #endif
+    
+    ERRORTimeLED = 0;
+    ERROR_LED_Write(LED_ON);
+    
+    #ifdef PRINT_MOTOR_ERROR
+        //TODO: PRINT ERROR
+    #endif
+
+    switch(code)
+    {   
+        //case0: CAN Packet ERROR
+        case 1://Mode Error
+            #ifdef DEBUG_LED1
+            DEBUG_LED_1_Write(LED_ON);
+            #endif
+            break;
+        case 2:
+            #ifdef DEBUG_LED2
+            DEBUG_LED_2_Write(LED_ON);
+            #endif
+            break;
+        case 3:
+            #ifdef DEBUG_LED1
+            DEBUG_LED_1_Write(LED_ON);
+            #endif
+            #ifdef DEBUG_LED2
+            DEBUG_LED_2_Write(LED_ON);
+            #endif
+            break;
+        default:
+            //some error
+            break;
+    }
+
 }
 
