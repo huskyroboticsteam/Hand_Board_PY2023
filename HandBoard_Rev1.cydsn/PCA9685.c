@@ -18,6 +18,9 @@ void pca_init(){
     I2C_Enable();
     uint8 mode_buf[2] = {0,0b10000000};
     writeBuffer(mode_buf, PCA9685ADDY);
+    
+    uint8 freq_buf[2] = {254, 121};
+    writeBuffer(freq_buf, PCA9685ADDY);
 }
 
 /*Writes a single byte over i2c*/
@@ -114,4 +117,3 @@ void setPWMFromDutyCycle(int pinN, int dutyCycle){
     writeByte(registerNum+2, TurnOffTimeL(dutyCycle));
     writeByte(registerNum+3, TurnOffTimeH(dutyCycle));
 }
-

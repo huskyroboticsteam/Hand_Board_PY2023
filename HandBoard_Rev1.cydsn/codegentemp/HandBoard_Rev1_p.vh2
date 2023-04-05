@@ -1,5 +1,5 @@
 -- Project:   HandBoard_Rev1
--- Generated: 03/30/2023 18:45:01
+-- Generated: 04/04/2023 18:25:19
 -- PSoC Creator  4.4
 
 ENTITY HandBoard_Rev1 IS
@@ -26,14 +26,14 @@ ENTITY HandBoard_Rev1 IS
         DEBUG_LED_1(0)_PAD : OUT std_ulogic;
         CAN_LED(0)_PAD : OUT std_ulogic;
         FAULT_MOTOR(0)_PAD : OUT std_ulogic;
-        DEBUG_LED_2(0)_PAD : OUT std_ulogic);
+        DEBUG_LED_2(0)_PAD : OUT std_ulogic;
+        \I2C:sda(0)_PAD\ : INOUT std_ulogic;
+        \I2C:scl(0)_PAD\ : INOUT std_ulogic);
     ATTRIBUTE voltage_VDDIO_A_1 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDA_0 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDA_CTB OF __DEFAULT__ : ENTITY IS 3.3e0;
-    ATTRIBUTE voltage_VDDA_1 OF __DEFAULT__ : ENTITY IS 3.3e0;
-    ATTRIBUTE voltage_VDDIO_0 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDD OF __DEFAULT__ : ENTITY IS 3.3e0;
-    ATTRIBUTE voltage_VDDIO_1 OF __DEFAULT__ : ENTITY IS 3.3e0;
+    ATTRIBUTE voltage_VDDIO_0 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDIO_2 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDIO_3 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDIO_4 OF __DEFAULT__ : ENTITY IS 3.3e0;
@@ -72,6 +72,11 @@ ARCHITECTURE __DEFAULT__ OF HandBoard_Rev1 IS
     SIGNAL Net_1052 : bit;
     SIGNAL Net_1063 : bit;
     SIGNAL Net_1064 : bit;
+    SIGNAL Net_1069 : bit;
+    SIGNAL Net_1078 : bit;
+    SIGNAL Net_1085 : bit;
+    SIGNAL Net_1086 : bit;
+    SIGNAL Net_1087 : bit;
     SIGNAL Net_10_digital : bit;
     ATTRIBUTE udbclken_assigned OF Net_10_digital : SIGNAL IS "True";
     ATTRIBUTE global_signal OF Net_10_digital : SIGNAL IS true;
@@ -119,6 +124,7 @@ ARCHITECTURE __DEFAULT__ OF HandBoard_Rev1 IS
     SIGNAL Pin_Pot(0)__PA : bit;
     SIGNAL RX_1(0)__PA : bit;
     SIGNAL TX_1(0)__PA : bit;
+    SIGNAL \\\ADC_SAR_Seq_1:Bypass(0)\\__PA\ : bit;
     SIGNAL \ADC_SAR_Seq_1:Net_1845_ff10\ : bit;
     ATTRIBUTE global_signal OF \ADC_SAR_Seq_1:Net_1845_ff10\ : SIGNAL IS true;
     SIGNAL \ADC_SAR_Seq_1:Net_3108\ : bit;
@@ -140,6 +146,19 @@ ARCHITECTURE __DEFAULT__ OF HandBoard_Rev1 IS
     SIGNAL \ADC_SAR_Seq_1:Net_3111_8\ : bit;
     SIGNAL \ADC_SAR_Seq_1:Net_3111_9\ : bit;
     SIGNAL \ADC_SAR_Seq_1:Net_3112\ : bit;
+    SIGNAL \I2C:Net_847_ff2\ : bit;
+    ATTRIBUTE global_signal OF \I2C:Net_847_ff2\ : SIGNAL IS true;
+    SIGNAL \I2C:miso_s_wire\ : bit;
+    SIGNAL \I2C:mosi_m_wire\ : bit;
+    SIGNAL \I2C:rts_wire\ : bit;
+    SIGNAL \\\I2C:scl(0)\\__PA\ : bit;
+    SIGNAL \I2C:sclk_m_wire\ : bit;
+    SIGNAL \\\I2C:sda(0)\\__PA\ : bit;
+    SIGNAL \I2C:select_m_wire_0\ : bit;
+    SIGNAL \I2C:select_m_wire_1\ : bit;
+    SIGNAL \I2C:select_m_wire_2\ : bit;
+    SIGNAL \I2C:select_m_wire_3\ : bit;
+    SIGNAL \I2C:tx_wire\ : bit;
     SIGNAL \QuadDec:Cnt16:CounterUDB:cmp_out_i\ : bit;
     SIGNAL \QuadDec:Cnt16:CounterUDB:control_0\ : bit;
     SIGNAL \QuadDec:Cnt16:CounterUDB:control_1\ : bit;
@@ -189,8 +208,8 @@ ARCHITECTURE __DEFAULT__ OF HandBoard_Rev1 IS
     SIGNAL \Timer_PWM:TimerUDB:status_2\ : bit;
     SIGNAL \Timer_PWM:TimerUDB:status_3\ : bit;
     SIGNAL \Timer_PWM:TimerUDB:status_tc\ : bit;
-    SIGNAL \UART:Net_847_ff2\ : bit;
-    ATTRIBUTE global_signal OF \UART:Net_847_ff2\ : SIGNAL IS true;
+    SIGNAL \UART:Net_847_ff3\ : bit;
+    ATTRIBUTE global_signal OF \UART:Net_847_ff3\ : SIGNAL IS true;
     SIGNAL \UART:miso_s_wire\ : bit;
     SIGNAL \UART:mosi_m_wire\ : bit;
     SIGNAL \UART:rts_wire\ : bit;
@@ -266,17 +285,21 @@ ARCHITECTURE __DEFAULT__ OF HandBoard_Rev1 IS
     ATTRIBUTE lib_model OF Dip_4(0) : LABEL IS "iocell12";
     ATTRIBUTE lib_model OF Pin_Limit_3(0) : LABEL IS "iocell13";
     ATTRIBUTE lib_model OF Pin_Motor_1(0) : LABEL IS "iocell14";
-    ATTRIBUTE lib_model OF Pin_Pot(0) : LABEL IS "iocell15";
-    ATTRIBUTE Location OF Pin_Pot(0) : LABEL IS "P2[4]";
-    ATTRIBUTE lib_model OF Pin_Encoder_A_1(0) : LABEL IS "iocell16";
-    ATTRIBUTE lib_model OF Pin_Encoder_B(0) : LABEL IS "iocell17";
-    ATTRIBUTE lib_model OF Pin_Encoder_Z(0) : LABEL IS "iocell18";
-    ATTRIBUTE lib_model OF Pin_Direction_1(0) : LABEL IS "iocell19";
-    ATTRIBUTE lib_model OF ERROR_LED(0) : LABEL IS "iocell20";
-    ATTRIBUTE lib_model OF DEBUG_LED_1(0) : LABEL IS "iocell21";
-    ATTRIBUTE lib_model OF CAN_LED(0) : LABEL IS "iocell22";
-    ATTRIBUTE lib_model OF FAULT_MOTOR(0) : LABEL IS "iocell23";
-    ATTRIBUTE lib_model OF DEBUG_LED_2(0) : LABEL IS "iocell24";
+    ATTRIBUTE lib_model OF \ADC_SAR_Seq_1:Bypass(0)\ : LABEL IS "iocell15";
+    ATTRIBUTE Location OF \ADC_SAR_Seq_1:Bypass(0)\ : LABEL IS "P1[7]";
+    ATTRIBUTE lib_model OF Pin_Pot(0) : LABEL IS "iocell16";
+    ATTRIBUTE Location OF Pin_Pot(0) : LABEL IS "P2[3]";
+    ATTRIBUTE lib_model OF Pin_Encoder_A_1(0) : LABEL IS "iocell17";
+    ATTRIBUTE lib_model OF Pin_Encoder_B(0) : LABEL IS "iocell18";
+    ATTRIBUTE lib_model OF Pin_Encoder_Z(0) : LABEL IS "iocell19";
+    ATTRIBUTE lib_model OF Pin_Direction_1(0) : LABEL IS "iocell20";
+    ATTRIBUTE lib_model OF ERROR_LED(0) : LABEL IS "iocell21";
+    ATTRIBUTE lib_model OF DEBUG_LED_1(0) : LABEL IS "iocell22";
+    ATTRIBUTE lib_model OF CAN_LED(0) : LABEL IS "iocell23";
+    ATTRIBUTE lib_model OF FAULT_MOTOR(0) : LABEL IS "iocell24";
+    ATTRIBUTE lib_model OF DEBUG_LED_2(0) : LABEL IS "iocell25";
+    ATTRIBUTE lib_model OF \I2C:sda(0)\ : LABEL IS "iocell26";
+    ATTRIBUTE lib_model OF \I2C:scl(0)\ : LABEL IS "iocell27";
     ATTRIBUTE lib_model OF Net_594 : LABEL IS "macrocell2";
     ATTRIBUTE lib_model OF Net_592 : LABEL IS "macrocell3";
     ATTRIBUTE lib_model OF Net_590 : LABEL IS "macrocell4";
@@ -819,7 +842,8 @@ BEGIN
             udb_div_0 => dclk_to_genclk,
             ff_div_11 => Net_1309_ff11,
             ff_div_10 => \ADC_SAR_Seq_1:Net_1845_ff10\,
-            ff_div_2 => \UART:Net_847_ff2\,
+            ff_div_2 => \I2C:Net_847_ff2\,
+            ff_div_3 => \UART:Net_847_ff3\,
             udb_div_1 => dclk_to_genclk_1);
 
     Pin_Direction:logicalport
@@ -2097,6 +2121,95 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
+    \ADC_SAR_Seq_1:Bypass\:logicalport
+        GENERIC MAP(
+            drive_mode => "000",
+            ibuf_enabled => "0",
+            id => "2ea4cae8-6b43-4be4-95d6-04d6edcceeb0/16a808f6-2e13-45b9-bce0-b001c8655113",
+            init_dr_st => "0",
+            input_buffer_sel => "00",
+            input_clk_en => 0,
+            input_sync => "1",
+            input_sync_mode => "0",
+            intr_mode => "00",
+            invert_in_clock => 0,
+            invert_in_clock_en => 0,
+            invert_in_reset => 0,
+            invert_out_clock => 0,
+            invert_out_clock_en => 0,
+            invert_out_reset => 0,
+            io_voltage => "",
+            layout_mode => "CONTIGUOUS",
+            oe_conn => "0",
+            oe_reset => 0,
+            oe_sync => "0",
+            output_clk_en => 0,
+            output_clock_mode => "0",
+            output_conn => "0",
+            output_mode => "0",
+            output_reset => 0,
+            output_sync => "0",
+            ovt_hyst_trim => "0",
+            ovt_needed => "0",
+            ovt_slew_control => "00",
+            pa_in_clock => -1,
+            pa_in_clock_en => -1,
+            pa_in_reset => -1,
+            pa_out_clock => -1,
+            pa_out_clock_en => -1,
+            pa_out_reset => -1,
+            pin_aliases => "",
+            pin_mode => "A",
+            por_state => 4,
+            port_alias_group => "",
+            port_alias_required => 0,
+            sio_group_cnt => 0,
+            sio_hifreq => "00000000",
+            sio_hyst => "1",
+            sio_ibuf => "00000000",
+            sio_info => "00",
+            sio_obuf => "00000000",
+            sio_refsel => "00000000",
+            sio_vohsel => "00000000",
+            sio_vtrip => "00000000",
+            slew_rate => "0",
+            spanning => 0,
+            sw_only => 0,
+            use_annotation => "0",
+            vtrip => "10",
+            width => 1,
+            in_clk_inv => 0,
+            in_clken_inv => 0,
+            in_clken_mode => 1,
+            in_rst_inv => 0,
+            out_clk_inv => 0,
+            out_clken_inv => 0,
+            out_clken_mode => 1,
+            out_rst_inv => 0)
+        PORT MAP(
+            in_clock_en => open,
+            in_reset => open,
+            out_clock_en => open,
+            out_reset => open);
+
+    \ADC_SAR_Seq_1:Bypass(0)\:iocell
+        GENERIC MAP(
+            in_sync_mode => 0,
+            out_sync_mode => 0,
+            oe_sync_mode => 0,
+            logicalport => "\ADC_SAR_Seq_1:Bypass\",
+            logicalport_pin_id => 0,
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000000")
+        PORT MAP(
+            pa_out => \\\ADC_SAR_Seq_1:Bypass(0)\\__PA\,
+            oe => open,
+            in_clock => open,
+            in_clock_en => '1',
+            in_reset => '0',
+            out_clock => open,
+            out_clock_en => '1',
+            out_reset => '0');
+
     Pin_Pot:logicalport
         GENERIC MAP(
             drive_mode => "000",
@@ -2998,6 +3111,190 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
+    \I2C:sda\:logicalport
+        GENERIC MAP(
+            drive_mode => "100",
+            ibuf_enabled => "1",
+            id => "3dbba19d-7851-4a83-b204-a0a386fe8d68/5382e105-1382-4a2e-b9f4-3bb2feba71e0",
+            init_dr_st => "1",
+            input_buffer_sel => "00",
+            input_clk_en => 0,
+            input_sync => "0",
+            input_sync_mode => "0",
+            intr_mode => "00",
+            invert_in_clock => 0,
+            invert_in_clock_en => 0,
+            invert_in_reset => 0,
+            invert_out_clock => 0,
+            invert_out_clock_en => 0,
+            invert_out_reset => 0,
+            io_voltage => "",
+            layout_mode => "CONTIGUOUS",
+            oe_conn => "0",
+            oe_reset => 0,
+            oe_sync => "0",
+            output_clk_en => 0,
+            output_clock_mode => "0",
+            output_conn => "0",
+            output_mode => "0",
+            output_reset => 0,
+            output_sync => "0",
+            ovt_hyst_trim => "0",
+            ovt_needed => "0",
+            ovt_slew_control => "00",
+            pa_in_clock => -1,
+            pa_in_clock_en => -1,
+            pa_in_reset => -1,
+            pa_out_clock => -1,
+            pa_out_clock_en => -1,
+            pa_out_reset => -1,
+            pin_aliases => "",
+            pin_mode => "B",
+            por_state => 4,
+            port_alias_group => "",
+            port_alias_required => 0,
+            sio_group_cnt => 0,
+            sio_hifreq => "00000000",
+            sio_hyst => "1",
+            sio_ibuf => "00000000",
+            sio_info => "00",
+            sio_obuf => "00000000",
+            sio_refsel => "00000000",
+            sio_vohsel => "00000000",
+            sio_vtrip => "00000000",
+            slew_rate => "0",
+            spanning => 0,
+            sw_only => 0,
+            use_annotation => "0",
+            vtrip => "00",
+            width => 1,
+            in_clk_inv => 0,
+            in_clken_inv => 0,
+            in_clken_mode => 1,
+            in_rst_inv => 0,
+            out_clk_inv => 0,
+            out_clken_inv => 0,
+            out_clken_mode => 1,
+            out_rst_inv => 0)
+        PORT MAP(
+            in_clock_en => open,
+            in_reset => open,
+            out_clock_en => open,
+            out_reset => open);
+
+    \I2C:sda(0)\:iocell
+        GENERIC MAP(
+            in_sync_mode => 0,
+            out_sync_mode => 0,
+            oe_sync_mode => 0,
+            logicalport => "\I2C:sda\",
+            logicalport_pin_id => 0,
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
+        PORT MAP(
+            pa_out => \\\I2C:sda(0)\\__PA\,
+            oe => open,
+            fb => Net_1086,
+            pin_input => open,
+            pad_in => \I2C:sda(0)_PAD\,
+            in_clock => open,
+            in_clock_en => '1',
+            in_reset => '0',
+            out_clock => open,
+            out_clock_en => '1',
+            out_reset => '0');
+
+    \I2C:scl\:logicalport
+        GENERIC MAP(
+            drive_mode => "100",
+            ibuf_enabled => "1",
+            id => "3dbba19d-7851-4a83-b204-a0a386fe8d68/22863ebe-a37b-476f-b252-6e49a8c00b12",
+            init_dr_st => "1",
+            input_buffer_sel => "00",
+            input_clk_en => 0,
+            input_sync => "0",
+            input_sync_mode => "0",
+            intr_mode => "00",
+            invert_in_clock => 0,
+            invert_in_clock_en => 0,
+            invert_in_reset => 0,
+            invert_out_clock => 0,
+            invert_out_clock_en => 0,
+            invert_out_reset => 0,
+            io_voltage => "",
+            layout_mode => "CONTIGUOUS",
+            oe_conn => "0",
+            oe_reset => 0,
+            oe_sync => "0",
+            output_clk_en => 0,
+            output_clock_mode => "0",
+            output_conn => "0",
+            output_mode => "0",
+            output_reset => 0,
+            output_sync => "0",
+            ovt_hyst_trim => "0",
+            ovt_needed => "0",
+            ovt_slew_control => "00",
+            pa_in_clock => -1,
+            pa_in_clock_en => -1,
+            pa_in_reset => -1,
+            pa_out_clock => -1,
+            pa_out_clock_en => -1,
+            pa_out_reset => -1,
+            pin_aliases => "",
+            pin_mode => "B",
+            por_state => 4,
+            port_alias_group => "",
+            port_alias_required => 0,
+            sio_group_cnt => 0,
+            sio_hifreq => "00000000",
+            sio_hyst => "1",
+            sio_ibuf => "00000000",
+            sio_info => "00",
+            sio_obuf => "00000000",
+            sio_refsel => "00000000",
+            sio_vohsel => "00000000",
+            sio_vtrip => "00000000",
+            slew_rate => "0",
+            spanning => 0,
+            sw_only => 0,
+            use_annotation => "0",
+            vtrip => "00",
+            width => 1,
+            in_clk_inv => 0,
+            in_clken_inv => 0,
+            in_clken_mode => 1,
+            in_rst_inv => 0,
+            out_clk_inv => 0,
+            out_clken_inv => 0,
+            out_clken_mode => 1,
+            out_rst_inv => 0)
+        PORT MAP(
+            in_clock_en => open,
+            in_reset => open,
+            out_clock_en => open,
+            out_reset => open);
+
+    \I2C:scl(0)\:iocell
+        GENERIC MAP(
+            in_sync_mode => 0,
+            out_sync_mode => 0,
+            oe_sync_mode => 0,
+            logicalport => "\I2C:scl\",
+            logicalport_pin_id => 0,
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
+        PORT MAP(
+            pa_out => \\\I2C:scl(0)\\__PA\,
+            oe => open,
+            fb => Net_1085,
+            pin_input => open,
+            pad_in => \I2C:scl(0)_PAD\,
+            in_clock => open,
+            in_clock_en => '1',
+            in_reset => '0',
+            out_clock => open,
+            out_clock_en => '1',
+            out_reset => '0');
+
     Net_594:macrocell
         GENERIC MAP(
             eqn_main => "(!main_0)",
@@ -3173,7 +3470,7 @@ BEGIN
             cy_registers => "",
             scb_mode => 2)
         PORT MAP(
-            clock => \UART:Net_847_ff2\,
+            clock => \UART:Net_847_ff3\,
             interrupt => Net_1009,
             uart_rx => \UART:rx_wire\,
             uart_tx => \UART:tx_wire\,
@@ -3656,6 +3953,41 @@ BEGIN
         PORT MAP(
             interrupt => Net_1617,
             clock => ClockBlock_HFClk);
+
+    \I2C:SCB_IRQ\:interrupt
+        GENERIC MAP(
+            int_type => "10",
+            is_nmi => 0)
+        PORT MAP(
+            interrupt => Net_1069,
+            clock => ClockBlock_HFClk);
+
+    \I2C:SCB\:m0s8scbcell
+        GENERIC MAP(
+            cy_registers => "",
+            scb_mode => 0)
+        PORT MAP(
+            clock => \I2C:Net_847_ff2\,
+            interrupt => Net_1069,
+            uart_rx => open,
+            uart_tx => \I2C:tx_wire\,
+            uart_cts => open,
+            uart_rts => \I2C:rts_wire\,
+            mosi_m => \I2C:mosi_m_wire\,
+            miso_m => open,
+            select_m_3 => \I2C:select_m_wire_3\,
+            select_m_2 => \I2C:select_m_wire_2\,
+            select_m_1 => \I2C:select_m_wire_1\,
+            select_m_0 => \I2C:select_m_wire_0\,
+            sclk_m => \I2C:sclk_m_wire\,
+            mosi_s => open,
+            miso_s => \I2C:miso_s_wire\,
+            select_s => open,
+            sclk_s => open,
+            i2c_scl => Net_1085,
+            i2c_sda => Net_1086,
+            tr_tx_req => Net_1087,
+            tr_rx_req => Net_1078);
 
     Net_966_0:macrocell
         GENERIC MAP(

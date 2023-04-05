@@ -7,6 +7,7 @@
 #include "Motor_Unit_CAN.h"
 #include "Motor_Unit_FSM.h"
 #include "PositionPID.h"
+#include "PCA9685.h"
 
 
 // TODO: add I^2C block, integrate PCA6835... driver 
@@ -135,10 +136,6 @@ int main(void){
         UART_UartPutString(txData);
         #endif
     }
-
-
-    
-  
 }
 
 void Initialize(void) {

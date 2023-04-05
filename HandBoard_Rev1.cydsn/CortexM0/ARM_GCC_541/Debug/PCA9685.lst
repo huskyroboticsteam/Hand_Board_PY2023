@@ -1,0 +1,2483 @@
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"PCA9685.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.TurnOnTimeL,"ax",%progbits
+  20              		.align	2
+  21              		.global	TurnOnTimeL
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	TurnOnTimeL, %function
+  25              	TurnOnTimeL:
+  26              	.LFB36:
+  27              		.file 1 "PCA9685.c"
+   1:PCA9685.c     **** /* ========================================
+   2:PCA9685.c     ****  *
+   3:PCA9685.c     ****  * Driver for PCA9685
+   4:PCA9685.c     ****  * 
+   5:PCA9685.c     ****  * Name I2C Block in Top Design "I2C"
+   6:PCA9685.c     ****  *
+   7:PCA9685.c     ****  * Written by Dupri Chipman and Davis Sauer
+   8:PCA9685.c     ****  * 
+   9:PCA9685.c     ****  *
+  10:PCA9685.c     ****  * ========================================
+  11:PCA9685.c     **** */
+  12:PCA9685.c     **** 
+  13:PCA9685.c     **** #include "project.h"
+  14:PCA9685.c     **** #include "PCA9685.h"
+  15:PCA9685.c     **** 
+  16:PCA9685.c     **** void pca_init(){
+  17:PCA9685.c     ****     I2C_Start();
+  18:PCA9685.c     ****     I2C_Enable();
+  19:PCA9685.c     ****     uint8 mode_buf[2] = {0,0b10000000};
+  20:PCA9685.c     ****     writeBuffer(mode_buf, PCA9685ADDY);
+  21:PCA9685.c     ****     
+  22:PCA9685.c     ****     uint8 freq_buf[2] = {254, 121};
+  23:PCA9685.c     ****     writeBuffer(freq_buf, PCA9685ADDY);
+  24:PCA9685.c     **** }
+  25:PCA9685.c     **** 
+  26:PCA9685.c     **** /*Writes a single byte over i2c*/
+  27:PCA9685.c     **** void writeByte(uint8 chip_register, uint8 value){
+  28:PCA9685.c     ****      uint8 buf[2] = {chip_register, value};
+  29:PCA9685.c     ****      writeBuffer(buf, PCA9685ADDY);
+  30:PCA9685.c     **** }
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 2
+
+
+  31:PCA9685.c     **** 
+  32:PCA9685.c     **** /*Casting delayTime as uint8_t gets rid of the four left most significant bits*/
+  33:PCA9685.c     **** uint8 TurnOnTimeL(){
+  28              		.loc 1 33 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+  34:PCA9685.c     ****            int delayTime = DELAYTIME; /*This ammounts to 41 ticks before turn on*/
+  35:PCA9685.c     ****            //dutyCycle = (4095*dutyCycle)/100;
+  36:PCA9685.c     ****             delayTime = (4095*delayTime)/100 - 1;
+  37:PCA9685.c     ****         return delayTime;
+  38:PCA9685.c     **** }
+  34              		.loc 1 38 0
+  35 0000 2720     		movs	r0, #39
+  36              		@ sp needed
+  37 0002 7047     		bx	lr
+  38              		.cfi_endproc
+  39              	.LFE36:
+  40              		.size	TurnOnTimeL, .-TurnOnTimeL
+  41              		.section	.text.TurnOnTimeH,"ax",%progbits
+  42              		.align	2
+  43              		.global	TurnOnTimeH
+  44              		.code	16
+  45              		.thumb_func
+  46              		.type	TurnOnTimeH, %function
+  47              	TurnOnTimeH:
+  48              	.LFB37:
+  39:PCA9685.c     **** 
+  40:PCA9685.c     **** /*Shifting to the right keeps the four most signifcant bits but gets rid of 8 least significant dig
+  41:PCA9685.c     **** uint8 TurnOnTimeH(){
+  49              		.loc 1 41 0
+  50              		.cfi_startproc
+  51              		@ args = 0, pretend = 0, frame = 0
+  52              		@ frame_needed = 0, uses_anonymous_args = 0
+  53              		@ link register save eliminated.
+  54              	.LVL1:
+  42:PCA9685.c     ****     int delayTime = DELAYTIME;
+  43:PCA9685.c     ****     delayTime = (4095*delayTime)/100 - 1;
+  44:PCA9685.c     ****     delayTime = delayTime >> 8;
+  45:PCA9685.c     ****         return delayTime;
+  46:PCA9685.c     **** }
+  55              		.loc 1 46 0
+  56 0000 0020     		movs	r0, #0
+  57              		@ sp needed
+  58 0002 7047     		bx	lr
+  59              		.cfi_endproc
+  60              	.LFE37:
+  61              		.size	TurnOnTimeH, .-TurnOnTimeH
+  62              		.global	__aeabi_idiv
+  63              		.section	.text.TurnOffTimeL,"ax",%progbits
+  64              		.align	2
+  65              		.global	TurnOffTimeL
+  66              		.code	16
+  67              		.thumb_func
+  68              		.type	TurnOffTimeL, %function
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 3
+
+
+  69              	TurnOffTimeL:
+  70              	.LFB38:
+  47:PCA9685.c     **** 
+  48:PCA9685.c     **** uint8 TurnOffTimeL(int dutyCycle){
+  71              		.loc 1 48 0
+  72              		.cfi_startproc
+  73              		@ args = 0, pretend = 0, frame = 0
+  74              		@ frame_needed = 0, uses_anonymous_args = 0
+  75              	.LVL2:
+  76 0000 10B5     		push	{r4, lr}
+  77              		.cfi_def_cfa_offset 8
+  78              		.cfi_offset 4, -8
+  79              		.cfi_offset 14, -4
+  80              	.LVL3:
+  49:PCA9685.c     ****     int delayTime = DELAYTIME;
+  50:PCA9685.c     ****     int offTime=0;
+  51:PCA9685.c     ****     if(delayTime+dutyCycle<=100){
+  81              		.loc 1 51 0
+  82 0002 431C     		adds	r3, r0, #1
+  83 0004 642B     		cmp	r3, #100
+  84 0006 06DC     		bgt	.L4
+  85              	.LVL4:
+  52:PCA9685.c     ****     delayTime = (4095*delayTime)/100 - 1;
+  53:PCA9685.c     ****     dutyCycle = (4095*dutyCycle)/100;
+  86              		.loc 1 53 0
+  87 0008 0303     		lsls	r3, r0, #12
+  88 000a 181A     		subs	r0, r3, r0
+  89              	.LVL5:
+  90 000c 6421     		movs	r1, #100
+  91 000e FFF7FEFF 		bl	__aeabi_idiv
+  92              	.LVL6:
+  54:PCA9685.c     ****     offTime = delayTime + dutyCycle;
+  93              		.loc 1 54 0
+  94 0012 2730     		adds	r0, r0, #39
+  95              	.LVL7:
+  96 0014 07E0     		b	.L5
+  97              	.LVL8:
+  98              	.L4:
+  55:PCA9685.c     ****     } else {
+  56:PCA9685.c     ****     delayTime = (4095*delayTime)/100 - 1;
+  57:PCA9685.c     ****     dutyCycle = (4095*dutyCycle)/100;
+  99              		.loc 1 57 0
+ 100 0016 0303     		lsls	r3, r0, #12
+ 101 0018 181A     		subs	r0, r3, r0
+ 102              	.LVL9:
+ 103 001a 6421     		movs	r1, #100
+ 104 001c FFF7FEFF 		bl	__aeabi_idiv
+ 105              	.LVL10:
+  58:PCA9685.c     ****     offTime = delayTime + dutyCycle - 4096;
+ 106              		.loc 1 58 0
+ 107 0020 024B     		ldr	r3, .L6
+ 108 0022 9C46     		mov	ip, r3
+ 109 0024 6044     		add	r0, r0, ip
+ 110              	.LVL11:
+ 111              	.L5:
+  59:PCA9685.c     ****     offTime = offTime;
+  60:PCA9685.c     ****     }
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 4
+
+
+  61:PCA9685.c     ****        return offTime;}
+ 112              		.loc 1 61 0
+ 113 0026 C0B2     		uxtb	r0, r0
+ 114              	.LVL12:
+ 115              		@ sp needed
+ 116 0028 10BD     		pop	{r4, pc}
+ 117              	.L7:
+ 118 002a C046     		.align	2
+ 119              	.L6:
+ 120 002c 27F0FFFF 		.word	-4057
+ 121              		.cfi_endproc
+ 122              	.LFE38:
+ 123              		.size	TurnOffTimeL, .-TurnOffTimeL
+ 124              		.section	.text.TurnOffTimeH,"ax",%progbits
+ 125              		.align	2
+ 126              		.global	TurnOffTimeH
+ 127              		.code	16
+ 128              		.thumb_func
+ 129              		.type	TurnOffTimeH, %function
+ 130              	TurnOffTimeH:
+ 131              	.LFB39:
+  62:PCA9685.c     **** 
+  63:PCA9685.c     **** uint8 TurnOffTimeH(int dutyCycle){
+ 132              		.loc 1 63 0
+ 133              		.cfi_startproc
+ 134              		@ args = 0, pretend = 0, frame = 0
+ 135              		@ frame_needed = 0, uses_anonymous_args = 0
+ 136              	.LVL13:
+ 137 0000 10B5     		push	{r4, lr}
+ 138              		.cfi_def_cfa_offset 8
+ 139              		.cfi_offset 4, -8
+ 140              		.cfi_offset 14, -4
+ 141              	.LVL14:
+  64:PCA9685.c     ****     int delayTime = DELAYTIME;
+  65:PCA9685.c     ****     int offTime = 0; //initialized because program giving a warning
+  66:PCA9685.c     ****     if(delayTime+dutyCycle<=100){
+ 142              		.loc 1 66 0
+ 143 0002 431C     		adds	r3, r0, #1
+ 144 0004 642B     		cmp	r3, #100
+ 145 0006 06DC     		bgt	.L9
+ 146              	.LVL15:
+  67:PCA9685.c     ****     delayTime = (4095*delayTime)/100 - 1;
+  68:PCA9685.c     ****     dutyCycle = (4095*dutyCycle)/100;
+ 147              		.loc 1 68 0
+ 148 0008 0303     		lsls	r3, r0, #12
+ 149 000a 181A     		subs	r0, r3, r0
+ 150              	.LVL16:
+ 151 000c 6421     		movs	r1, #100
+ 152 000e FFF7FEFF 		bl	__aeabi_idiv
+ 153              	.LVL17:
+  69:PCA9685.c     ****     offTime = delayTime + dutyCycle;
+ 154              		.loc 1 69 0
+ 155 0012 2730     		adds	r0, r0, #39
+ 156              	.LVL18:
+ 157 0014 05E0     		b	.L10
+ 158              	.LVL19:
+ 159              	.L9:
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 5
+
+
+  70:PCA9685.c     ****     } else {
+  71:PCA9685.c     ****     delayTime = (4095*delayTime)/100 - 1;
+  72:PCA9685.c     ****     dutyCycle = (4095*dutyCycle)/100;
+ 160              		.loc 1 72 0
+ 161 0016 0303     		lsls	r3, r0, #12
+ 162 0018 181A     		subs	r0, r3, r0
+ 163              	.LVL20:
+ 164 001a 6421     		movs	r1, #100
+ 165 001c FFF7FEFF 		bl	__aeabi_idiv
+ 166              	.LVL21:
+  73:PCA9685.c     ****     offTime = delayTime + dutyCycle - offTime;
+ 167              		.loc 1 73 0
+ 168 0020 2730     		adds	r0, r0, #39
+ 169              	.LVL22:
+ 170              	.L10:
+  74:PCA9685.c     ****     }
+  75:PCA9685.c     ****        return offTime >> 8;}
+ 171              		.loc 1 75 0
+ 172 0022 0012     		asrs	r0, r0, #8
+ 173              	.LVL23:
+ 174 0024 C0B2     		uxtb	r0, r0
+ 175              		@ sp needed
+ 176 0026 10BD     		pop	{r4, pc}
+ 177              		.cfi_endproc
+ 178              	.LFE39:
+ 179              		.size	TurnOffTimeH, .-TurnOffTimeH
+ 180              		.section	.text.writeBuffer,"ax",%progbits
+ 181              		.align	2
+ 182              		.global	writeBuffer
+ 183              		.code	16
+ 184              		.thumb_func
+ 185              		.type	writeBuffer, %function
+ 186              	writeBuffer:
+ 187              	.LFB40:
+  76:PCA9685.c     **** 
+  77:PCA9685.c     **** uint32 writeBuffer(uint8 *buff, uint32_t PCA9685Address){
+ 188              		.loc 1 77 0
+ 189              		.cfi_startproc
+ 190              		@ args = 0, pretend = 0, frame = 0
+ 191              		@ frame_needed = 0, uses_anonymous_args = 0
+ 192              	.LVL24:
+ 193 0000 70B5     		push	{r4, r5, r6, lr}
+ 194              		.cfi_def_cfa_offset 16
+ 195              		.cfi_offset 4, -16
+ 196              		.cfi_offset 5, -12
+ 197              		.cfi_offset 6, -8
+ 198              		.cfi_offset 14, -4
+ 199 0002 0500     		movs	r5, r0
+ 200 0004 0C00     		movs	r4, r1
+ 201              	.LVL25:
+  78:PCA9685.c     ****      uint32 status = TRANSFER_ERROR;
+  79:PCA9685.c     ****     
+  80:PCA9685.c     ****     (void) I2C_I2CMasterClearStatus();
+ 202              		.loc 1 80 0
+ 203 0006 FFF7FEFF 		bl	I2C_I2CMasterClearStatus
+ 204              	.LVL26:
+  81:PCA9685.c     ****          if( I2C_I2C_MSTR_NO_ERROR ==  I2C_I2CMasterWriteBuf(PCA9685Address, buff,
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 6
+
+
+ 205              		.loc 1 81 0
+ 206 000a 0023     		movs	r3, #0
+ 207 000c 0222     		movs	r2, #2
+ 208 000e 2900     		movs	r1, r5
+ 209 0010 2000     		movs	r0, r4
+ 210 0012 FFF7FEFF 		bl	I2C_I2CMasterWriteBuf
+ 211              	.LVL27:
+ 212 0016 0028     		cmp	r0, #0
+ 213 0018 0DD1     		bne	.L14
+ 214              	.L13:
+  82:PCA9685.c     ****                                                             bufferSize, I2C_I2C_MODE_COMPLETE_XFER)
+  83:PCA9685.c     ****      /* If I2C write started without errors, 
+  84:PCA9685.c     ****          * wait until I2C Master completes write transfer */
+  85:PCA9685.c     ****         while (0u == (I2C_I2CMasterStatus() & I2C_I2C_MSTAT_WR_CMPLT))
+ 215              		.loc 1 85 0 discriminator 1
+ 216 001a FFF7FEFF 		bl	I2C_I2CMasterStatus
+ 217              	.LVL28:
+ 218 001e 8307     		lsls	r3, r0, #30
+ 219 0020 FBD5     		bpl	.L13
+  86:PCA9685.c     ****         {
+  87:PCA9685.c     ****         }
+  88:PCA9685.c     ****         
+  89:PCA9685.c     ****         /* Report transfer status */
+  90:PCA9685.c     ****         if (0u == (I2C_I2CMasterStatus() & I2C_I2C_MSTAT_ERR_XFER))
+ 220              		.loc 1 90 0
+ 221 0022 FFF7FEFF 		bl	I2C_I2CMasterStatus
+ 222              	.LVL29:
+ 223 0026 8305     		lsls	r3, r0, #22
+ 224 0028 07D4     		bmi	.L15
+  91:PCA9685.c     ****         {
+  92:PCA9685.c     ****             /* Check if all bytes were written */
+  93:PCA9685.c     ****             if (I2C_I2CMasterGetWriteBufSize() == bufferSize)
+ 225              		.loc 1 93 0
+ 226 002a FFF7FEFF 		bl	I2C_I2CMasterGetWriteBufSize
+ 227              	.LVL30:
+ 228 002e 0228     		cmp	r0, #2
+ 229 0030 05D0     		beq	.L16
+  78:PCA9685.c     ****     
+ 230              		.loc 1 78 0
+ 231 0032 FF20     		movs	r0, #255
+ 232 0034 04E0     		b	.L12
+ 233              	.L14:
+ 234 0036 FF20     		movs	r0, #255
+ 235 0038 02E0     		b	.L12
+ 236              	.L15:
+ 237 003a FF20     		movs	r0, #255
+ 238 003c 00E0     		b	.L12
+ 239              	.L16:
+  94:PCA9685.c     ****             {
+  95:PCA9685.c     ****                 status = TRANSFER_CMPLT;
+ 240              		.loc 1 95 0
+ 241 003e 0020     		movs	r0, #0
+ 242              	.L12:
+ 243              	.LVL31:
+  96:PCA9685.c     ****             }
+  97:PCA9685.c     ****         }
+  98:PCA9685.c     ****     }
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 7
+
+
+  99:PCA9685.c     ****     
+ 100:PCA9685.c     ****     return status;}
+ 244              		.loc 1 100 0
+ 245              		@ sp needed
+ 246              	.LVL32:
+ 247              	.LVL33:
+ 248 0040 70BD     		pop	{r4, r5, r6, pc}
+ 249              		.cfi_endproc
+ 250              	.LFE40:
+ 251              		.size	writeBuffer, .-writeBuffer
+ 252 0042 C046     		.section	.text.pca_init,"ax",%progbits
+ 253              		.align	2
+ 254              		.global	pca_init
+ 255              		.code	16
+ 256              		.thumb_func
+ 257              		.type	pca_init, %function
+ 258              	pca_init:
+ 259              	.LFB34:
+  16:PCA9685.c     ****     I2C_Start();
+ 260              		.loc 1 16 0
+ 261              		.cfi_startproc
+ 262              		@ args = 0, pretend = 0, frame = 8
+ 263              		@ frame_needed = 0, uses_anonymous_args = 0
+ 264 0000 00B5     		push	{lr}
+ 265              		.cfi_def_cfa_offset 4
+ 266              		.cfi_offset 14, -4
+ 267 0002 83B0     		sub	sp, sp, #12
+ 268              		.cfi_def_cfa_offset 16
+  17:PCA9685.c     ****     I2C_Enable();
+ 269              		.loc 1 17 0
+ 270 0004 FFF7FEFF 		bl	I2C_Start
+ 271              	.LVL34:
+  18:PCA9685.c     ****     uint8 mode_buf[2] = {0,0b10000000};
+ 272              		.loc 1 18 0
+ 273 0008 FFF7FEFF 		bl	I2C_Enable
+ 274              	.LVL35:
+  19:PCA9685.c     ****     writeBuffer(mode_buf, PCA9685ADDY);
+ 275              		.loc 1 19 0
+ 276 000c 01A8     		add	r0, sp, #4
+ 277 000e 0023     		movs	r3, #0
+ 278 0010 0370     		strb	r3, [r0]
+ 279 0012 8033     		adds	r3, r3, #128
+ 280 0014 4370     		strb	r3, [r0, #1]
+  20:PCA9685.c     ****     
+ 281              		.loc 1 20 0
+ 282 0016 4021     		movs	r1, #64
+ 283 0018 FFF7FEFF 		bl	writeBuffer
+ 284              	.LVL36:
+  22:PCA9685.c     ****     writeBuffer(freq_buf, PCA9685ADDY);
+ 285              		.loc 1 22 0
+ 286 001c 0222     		movs	r2, #2
+ 287 001e 0549     		ldr	r1, .L18
+ 288 0020 6846     		mov	r0, sp
+ 289 0022 FFF7FEFF 		bl	memcpy
+ 290              	.LVL37:
+  23:PCA9685.c     **** }
+ 291              		.loc 1 23 0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 8
+
+
+ 292 0026 4021     		movs	r1, #64
+ 293 0028 6846     		mov	r0, sp
+ 294 002a FFF7FEFF 		bl	writeBuffer
+ 295              	.LVL38:
+  24:PCA9685.c     **** 
+ 296              		.loc 1 24 0
+ 297 002e 03B0     		add	sp, sp, #12
+ 298              		@ sp needed
+ 299 0030 00BD     		pop	{pc}
+ 300              	.L19:
+ 301 0032 C046     		.align	2
+ 302              	.L18:
+ 303 0034 00000000 		.word	.LANCHOR0
+ 304              		.cfi_endproc
+ 305              	.LFE34:
+ 306              		.size	pca_init, .-pca_init
+ 307              		.section	.text.writeByte,"ax",%progbits
+ 308              		.align	2
+ 309              		.global	writeByte
+ 310              		.code	16
+ 311              		.thumb_func
+ 312              		.type	writeByte, %function
+ 313              	writeByte:
+ 314              	.LFB35:
+  27:PCA9685.c     ****      uint8 buf[2] = {chip_register, value};
+ 315              		.loc 1 27 0
+ 316              		.cfi_startproc
+ 317              		@ args = 0, pretend = 0, frame = 8
+ 318              		@ frame_needed = 0, uses_anonymous_args = 0
+ 319              	.LVL39:
+ 320 0000 00B5     		push	{lr}
+ 321              		.cfi_def_cfa_offset 4
+ 322              		.cfi_offset 14, -4
+ 323 0002 83B0     		sub	sp, sp, #12
+ 324              		.cfi_def_cfa_offset 16
+  28:PCA9685.c     ****      writeBuffer(buf, PCA9685ADDY);
+ 325              		.loc 1 28 0
+ 326 0004 01AB     		add	r3, sp, #4
+ 327 0006 1870     		strb	r0, [r3]
+ 328 0008 5970     		strb	r1, [r3, #1]
+  29:PCA9685.c     **** }
+ 329              		.loc 1 29 0
+ 330 000a 4021     		movs	r1, #64
+ 331              	.LVL40:
+ 332 000c 1800     		movs	r0, r3
+ 333              	.LVL41:
+ 334 000e FFF7FEFF 		bl	writeBuffer
+ 335              	.LVL42:
+  30:PCA9685.c     **** 
+ 336              		.loc 1 30 0
+ 337 0012 03B0     		add	sp, sp, #12
+ 338              		@ sp needed
+ 339 0014 00BD     		pop	{pc}
+ 340              		.cfi_endproc
+ 341              	.LFE35:
+ 342              		.size	writeByte, .-writeByte
+ 343 0016 C046     		.section	.text.setPWMFromBytes,"ax",%progbits
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 9
+
+
+ 344              		.align	2
+ 345              		.global	setPWMFromBytes
+ 346              		.code	16
+ 347              		.thumb_func
+ 348              		.type	setPWMFromBytes, %function
+ 349              	setPWMFromBytes:
+ 350              	.LFB41:
+ 101:PCA9685.c     **** 
+ 102:PCA9685.c     **** void setPWMFromBytes(int pinN, uint8 onTimeL, uint8 onTimeH, uint8 offTimeL, uint8 offTimeH){
+ 351              		.loc 1 102 0
+ 352              		.cfi_startproc
+ 353              		@ args = 4, pretend = 0, frame = 0
+ 354              		@ frame_needed = 0, uses_anonymous_args = 0
+ 355              	.LVL43:
+ 356 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 357              		.cfi_def_cfa_offset 24
+ 358              		.cfi_offset 3, -24
+ 359              		.cfi_offset 4, -20
+ 360              		.cfi_offset 5, -16
+ 361              		.cfi_offset 6, -12
+ 362              		.cfi_offset 7, -8
+ 363              		.cfi_offset 14, -4
+ 364 0002 1700     		movs	r7, r2
+ 365 0004 1D00     		movs	r5, r3
+ 366 0006 06AB     		add	r3, sp, #24
+ 367              	.LVL44:
+ 368 0008 1E78     		ldrb	r6, [r3]
+ 369              	.LVL45:
+ 103:PCA9685.c     ****     uint8 registerNum = 0;
+ 104:PCA9685.c     ****     registerNum = 0x06 + pinN * 4;
+ 370              		.loc 1 104 0
+ 371 000a 8000     		lsls	r0, r0, #2
+ 372              	.LVL46:
+ 373 000c C4B2     		uxtb	r4, r0
+ 374 000e A01D     		adds	r0, r4, #6
+ 375 0010 C0B2     		uxtb	r0, r0
+ 376              	.LVL47:
+ 105:PCA9685.c     ****     writeByte(registerNum, onTimeL);
+ 377              		.loc 1 105 0
+ 378 0012 FFF7FEFF 		bl	writeByte
+ 379              	.LVL48:
+ 106:PCA9685.c     ****     writeByte(registerNum+1, onTimeH);
+ 380              		.loc 1 106 0
+ 381 0016 E01D     		adds	r0, r4, #7
+ 382 0018 C0B2     		uxtb	r0, r0
+ 383 001a 3900     		movs	r1, r7
+ 384 001c FFF7FEFF 		bl	writeByte
+ 385              	.LVL49:
+ 107:PCA9685.c     ****     writeByte(registerNum+2, offTimeL);
+ 386              		.loc 1 107 0
+ 387 0020 2000     		movs	r0, r4
+ 388 0022 0830     		adds	r0, r0, #8
+ 389 0024 C0B2     		uxtb	r0, r0
+ 390 0026 2900     		movs	r1, r5
+ 391 0028 FFF7FEFF 		bl	writeByte
+ 392              	.LVL50:
+ 108:PCA9685.c     ****     writeByte(registerNum+3, offTimeH);
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 10
+
+
+ 393              		.loc 1 108 0
+ 394 002c 0934     		adds	r4, r4, #9
+ 395              	.LVL51:
+ 396 002e E0B2     		uxtb	r0, r4
+ 397 0030 3100     		movs	r1, r6
+ 398 0032 FFF7FEFF 		bl	writeByte
+ 399              	.LVL52:
+ 109:PCA9685.c     **** }
+ 400              		.loc 1 109 0
+ 401              		@ sp needed
+ 402              	.LVL53:
+ 403 0036 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 404              		.cfi_endproc
+ 405              	.LFE41:
+ 406              		.size	setPWMFromBytes, .-setPWMFromBytes
+ 407              		.section	.text.setPWMFromDutyCycle,"ax",%progbits
+ 408              		.align	2
+ 409              		.global	setPWMFromDutyCycle
+ 410              		.code	16
+ 411              		.thumb_func
+ 412              		.type	setPWMFromDutyCycle, %function
+ 413              	setPWMFromDutyCycle:
+ 414              	.LFB42:
+ 110:PCA9685.c     **** 
+ 111:PCA9685.c     **** void setPWMFromDutyCycle(int pinN, int dutyCycle){
+ 415              		.loc 1 111 0
+ 416              		.cfi_startproc
+ 417              		@ args = 0, pretend = 0, frame = 0
+ 418              		@ frame_needed = 0, uses_anonymous_args = 0
+ 419              	.LVL54:
+ 420 0000 70B5     		push	{r4, r5, r6, lr}
+ 421              		.cfi_def_cfa_offset 16
+ 422              		.cfi_offset 4, -16
+ 423              		.cfi_offset 5, -12
+ 424              		.cfi_offset 6, -8
+ 425              		.cfi_offset 14, -4
+ 426 0002 0D00     		movs	r5, r1
+ 427              	.LVL55:
+ 112:PCA9685.c     ****     uint8 registerNum = 0;
+ 113:PCA9685.c     ****     registerNum = 0x06 + pinN * 4;
+ 428              		.loc 1 113 0
+ 429 0004 8000     		lsls	r0, r0, #2
+ 430              	.LVL56:
+ 431 0006 C4B2     		uxtb	r4, r0
+ 432 0008 A61D     		adds	r6, r4, #6
+ 433 000a F6B2     		uxtb	r6, r6
+ 434              	.LVL57:
+ 114:PCA9685.c     ****        
+ 115:PCA9685.c     ****     writeByte(registerNum, TurnOnTimeL());
+ 435              		.loc 1 115 0
+ 436 000c FFF7FEFF 		bl	TurnOnTimeL
+ 437              	.LVL58:
+ 438 0010 0100     		movs	r1, r0
+ 439 0012 3000     		movs	r0, r6
+ 440 0014 FFF7FEFF 		bl	writeByte
+ 441              	.LVL59:
+ 116:PCA9685.c     ****     writeByte(registerNum+1, TurnOnTimeH());
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 11
+
+
+ 442              		.loc 1 116 0
+ 443 0018 FFF7FEFF 		bl	TurnOnTimeH
+ 444              	.LVL60:
+ 445 001c 0100     		movs	r1, r0
+ 446 001e E31D     		adds	r3, r4, #7
+ 447 0020 D8B2     		uxtb	r0, r3
+ 448 0022 FFF7FEFF 		bl	writeByte
+ 449              	.LVL61:
+ 117:PCA9685.c     ****     writeByte(registerNum+2, TurnOffTimeL(dutyCycle));
+ 450              		.loc 1 117 0
+ 451 0026 2800     		movs	r0, r5
+ 452 0028 FFF7FEFF 		bl	TurnOffTimeL
+ 453              	.LVL62:
+ 454 002c 0100     		movs	r1, r0
+ 455 002e 2300     		movs	r3, r4
+ 456 0030 0833     		adds	r3, r3, #8
+ 457 0032 D8B2     		uxtb	r0, r3
+ 458 0034 FFF7FEFF 		bl	writeByte
+ 459              	.LVL63:
+ 118:PCA9685.c     ****     writeByte(registerNum+3, TurnOffTimeH(dutyCycle));
+ 460              		.loc 1 118 0
+ 461 0038 2800     		movs	r0, r5
+ 462 003a FFF7FEFF 		bl	TurnOffTimeH
+ 463              	.LVL64:
+ 464 003e 0100     		movs	r1, r0
+ 465 0040 0934     		adds	r4, r4, #9
+ 466 0042 E0B2     		uxtb	r0, r4
+ 467 0044 FFF7FEFF 		bl	writeByte
+ 468              	.LVL65:
+ 119:PCA9685.c     **** }
+ 469              		.loc 1 119 0
+ 470              		@ sp needed
+ 471              	.LVL66:
+ 472              	.LVL67:
+ 473 0048 70BD     		pop	{r4, r5, r6, pc}
+ 474              		.cfi_endproc
+ 475              	.LFE42:
+ 476              		.size	setPWMFromDutyCycle, .-setPWMFromDutyCycle
+ 477 004a C046     		.section	.rodata
+ 478              		.align	2
+ 479              		.set	.LANCHOR0,. + 0
+ 480              	.LC0:
+ 481 0000 FE       		.byte	-2
+ 482 0001 79       		.byte	121
+ 483              		.text
+ 484              	.Letext0:
+ 485              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 486              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 487              		.file 4 "Generated_Source\\PSoC4/cytypes.h"
+ 488              		.file 5 "Generated_Source\\PSoC4/I2C_I2C.h"
+ 489              		.file 6 "Generated_Source\\PSoC4/I2C.h"
+ 490              		.section	.debug_info,"",%progbits
+ 491              	.Ldebug_info0:
+ 492 0000 18050000 		.4byte	0x518
+ 493 0004 0400     		.2byte	0x4
+ 494 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 495 000a 04       		.byte	0x4
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 12
+
+
+ 496 000b 01       		.uleb128 0x1
+ 497 000c 9B010000 		.4byte	.LASF49
+ 498 0010 0C       		.byte	0xc
+ 499 0011 23010000 		.4byte	.LASF50
+ 500 0015 B6020000 		.4byte	.LASF51
+ 501 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 502 001d 00000000 		.4byte	0
+ 503 0021 00000000 		.4byte	.Ldebug_line0
+ 504 0025 02       		.uleb128 0x2
+ 505 0026 01       		.byte	0x1
+ 506 0027 06       		.byte	0x6
+ 507 0028 8F010000 		.4byte	.LASF0
+ 508 002c 02       		.uleb128 0x2
+ 509 002d 01       		.byte	0x1
+ 510 002e 08       		.byte	0x8
+ 511 002f AD000000 		.4byte	.LASF1
+ 512 0033 02       		.uleb128 0x2
+ 513 0034 02       		.byte	0x2
+ 514 0035 05       		.byte	0x5
+ 515 0036 72020000 		.4byte	.LASF2
+ 516 003a 02       		.uleb128 0x2
+ 517 003b 02       		.byte	0x2
+ 518 003c 07       		.byte	0x7
+ 519 003d E3000000 		.4byte	.LASF3
+ 520 0041 02       		.uleb128 0x2
+ 521 0042 04       		.byte	0x4
+ 522 0043 05       		.byte	0x5
+ 523 0044 94020000 		.4byte	.LASF4
+ 524 0048 03       		.uleb128 0x3
+ 525 0049 18010000 		.4byte	.LASF9
+ 526 004d 02       		.byte	0x2
+ 527 004e 41       		.byte	0x41
+ 528 004f 53000000 		.4byte	0x53
+ 529 0053 02       		.uleb128 0x2
+ 530 0054 04       		.byte	0x4
+ 531 0055 07       		.byte	0x7
+ 532 0056 BB000000 		.4byte	.LASF5
+ 533 005a 02       		.uleb128 0x2
+ 534 005b 08       		.byte	0x8
+ 535 005c 05       		.byte	0x5
+ 536 005d 46020000 		.4byte	.LASF6
+ 537 0061 02       		.uleb128 0x2
+ 538 0062 08       		.byte	0x8
+ 539 0063 07       		.byte	0x7
+ 540 0064 59010000 		.4byte	.LASF7
+ 541 0068 04       		.uleb128 0x4
+ 542 0069 04       		.byte	0x4
+ 543 006a 05       		.byte	0x5
+ 544 006b 696E7400 		.ascii	"int\000"
+ 545 006f 02       		.uleb128 0x2
+ 546 0070 04       		.byte	0x4
+ 547 0071 07       		.byte	0x7
+ 548 0072 44010000 		.4byte	.LASF8
+ 549 0076 03       		.uleb128 0x3
+ 550 0077 8B020000 		.4byte	.LASF10
+ 551 007b 03       		.byte	0x3
+ 552 007c 30       		.byte	0x30
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 13
+
+
+ 553 007d 48000000 		.4byte	0x48
+ 554 0081 05       		.uleb128 0x5
+ 555 0082 7C020000 		.4byte	.LASF11
+ 556 0086 04       		.byte	0x4
+ 557 0087 FB01     		.2byte	0x1fb
+ 558 0089 2C000000 		.4byte	0x2c
+ 559 008d 05       		.uleb128 0x5
+ 560 008e 36010000 		.4byte	.LASF12
+ 561 0092 04       		.byte	0x4
+ 562 0093 FC01     		.2byte	0x1fc
+ 563 0095 3A000000 		.4byte	0x3a
+ 564 0099 05       		.uleb128 0x5
+ 565 009a 3D010000 		.4byte	.LASF13
+ 566 009e 04       		.byte	0x4
+ 567 009f FD01     		.2byte	0x1fd
+ 568 00a1 53000000 		.4byte	0x53
+ 569 00a5 02       		.uleb128 0x2
+ 570 00a6 04       		.byte	0x4
+ 571 00a7 04       		.byte	0x4
+ 572 00a8 A2000000 		.4byte	.LASF14
+ 573 00ac 02       		.uleb128 0x2
+ 574 00ad 08       		.byte	0x8
+ 575 00ae 04       		.byte	0x4
+ 576 00af 11010000 		.4byte	.LASF15
+ 577 00b3 02       		.uleb128 0x2
+ 578 00b4 01       		.byte	0x1
+ 579 00b5 08       		.byte	0x8
+ 580 00b6 5D020000 		.4byte	.LASF16
+ 581 00ba 02       		.uleb128 0x2
+ 582 00bb 08       		.byte	0x8
+ 583 00bc 04       		.byte	0x4
+ 584 00bd 9D020000 		.4byte	.LASF17
+ 585 00c1 02       		.uleb128 0x2
+ 586 00c2 04       		.byte	0x4
+ 587 00c3 07       		.byte	0x7
+ 588 00c4 3D020000 		.4byte	.LASF18
+ 589 00c8 06       		.uleb128 0x6
+ 590 00c9 04       		.byte	0x4
+ 591 00ca 81000000 		.4byte	0x81
+ 592 00ce 07       		.uleb128 0x7
+ 593 00cf 83010000 		.4byte	.LASF19
+ 594 00d3 01       		.byte	0x1
+ 595 00d4 21       		.byte	0x21
+ 596 00d5 81000000 		.4byte	0x81
+ 597 00d9 00000000 		.4byte	.LFB36
+ 598 00dd 04000000 		.4byte	.LFE36-.LFB36
+ 599 00e1 01       		.uleb128 0x1
+ 600 00e2 9C       		.byte	0x9c
+ 601 00e3 F4000000 		.4byte	0xf4
+ 602 00e7 08       		.uleb128 0x8
+ 603 00e8 70010000 		.4byte	.LASF21
+ 604 00ec 01       		.byte	0x1
+ 605 00ed 22       		.byte	0x22
+ 606 00ee 68000000 		.4byte	0x68
+ 607 00f2 27       		.byte	0x27
+ 608 00f3 00       		.byte	0
+ 609 00f4 07       		.uleb128 0x7
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 14
+
+
+ 610 00f5 82000000 		.4byte	.LASF20
+ 611 00f9 01       		.byte	0x1
+ 612 00fa 29       		.byte	0x29
+ 613 00fb 81000000 		.4byte	0x81
+ 614 00ff 00000000 		.4byte	.LFB37
+ 615 0103 04000000 		.4byte	.LFE37-.LFB37
+ 616 0107 01       		.uleb128 0x1
+ 617 0108 9C       		.byte	0x9c
+ 618 0109 1A010000 		.4byte	0x11a
+ 619 010d 08       		.uleb128 0x8
+ 620 010e 70010000 		.4byte	.LASF21
+ 621 0112 01       		.byte	0x1
+ 622 0113 2A       		.byte	0x2a
+ 623 0114 68000000 		.4byte	0x68
+ 624 0118 00       		.byte	0
+ 625 0119 00       		.byte	0
+ 626 011a 09       		.uleb128 0x9
+ 627 011b 0C030000 		.4byte	.LASF23
+ 628 011f 01       		.byte	0x1
+ 629 0120 30       		.byte	0x30
+ 630 0121 81000000 		.4byte	0x81
+ 631 0125 00000000 		.4byte	.LFB38
+ 632 0129 30000000 		.4byte	.LFE38-.LFB38
+ 633 012d 01       		.uleb128 0x1
+ 634 012e 9C       		.byte	0x9c
+ 635 012f 61010000 		.4byte	0x161
+ 636 0133 0A       		.uleb128 0xa
+ 637 0134 1D000000 		.4byte	.LASF25
+ 638 0138 01       		.byte	0x1
+ 639 0139 30       		.byte	0x30
+ 640 013a 68000000 		.4byte	0x68
+ 641 013e 00000000 		.4byte	.LLST0
+ 642 0142 0B       		.uleb128 0xb
+ 643 0143 70010000 		.4byte	.LASF21
+ 644 0147 01       		.byte	0x1
+ 645 0148 31       		.byte	0x31
+ 646 0149 68000000 		.4byte	0x68
+ 647 014d 5D000000 		.4byte	.LLST1
+ 648 0151 0B       		.uleb128 0xb
+ 649 0152 51010000 		.4byte	.LASF22
+ 650 0156 01       		.byte	0x1
+ 651 0157 32       		.byte	0x32
+ 652 0158 68000000 		.4byte	0x68
+ 653 015c 7E000000 		.4byte	.LLST2
+ 654 0160 00       		.byte	0
+ 655 0161 09       		.uleb128 0x9
+ 656 0162 A9020000 		.4byte	.LASF24
+ 657 0166 01       		.byte	0x1
+ 658 0167 3F       		.byte	0x3f
+ 659 0168 81000000 		.4byte	0x81
+ 660 016c 00000000 		.4byte	.LFB39
+ 661 0170 28000000 		.4byte	.LFE39-.LFB39
+ 662 0174 01       		.uleb128 0x1
+ 663 0175 9C       		.byte	0x9c
+ 664 0176 A8010000 		.4byte	0x1a8
+ 665 017a 0A       		.uleb128 0xa
+ 666 017b 1D000000 		.4byte	.LASF25
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 15
+
+
+ 667 017f 01       		.byte	0x1
+ 668 0180 3F       		.byte	0x3f
+ 669 0181 68000000 		.4byte	0x68
+ 670 0185 B4000000 		.4byte	.LLST3
+ 671 0189 0B       		.uleb128 0xb
+ 672 018a 70010000 		.4byte	.LASF21
+ 673 018e 01       		.byte	0x1
+ 674 018f 40       		.byte	0x40
+ 675 0190 68000000 		.4byte	0x68
+ 676 0194 11010000 		.4byte	.LLST4
+ 677 0198 0B       		.uleb128 0xb
+ 678 0199 51010000 		.4byte	.LASF22
+ 679 019d 01       		.byte	0x1
+ 680 019e 41       		.byte	0x41
+ 681 019f 68000000 		.4byte	0x68
+ 682 01a3 32010000 		.4byte	.LLST5
+ 683 01a7 00       		.byte	0
+ 684 01a8 0C       		.uleb128 0xc
+ 685 01a9 3B000000 		.4byte	.LASF26
+ 686 01ad 01       		.byte	0x1
+ 687 01ae 4D       		.byte	0x4d
+ 688 01af 99000000 		.4byte	0x99
+ 689 01b3 00000000 		.4byte	.LFB40
+ 690 01b7 42000000 		.4byte	.LFE40-.LFB40
+ 691 01bb 01       		.uleb128 0x1
+ 692 01bc 9C       		.byte	0x9c
+ 693 01bd 37020000 		.4byte	0x237
+ 694 01c1 0A       		.uleb128 0xa
+ 695 01c2 0C010000 		.4byte	.LASF27
+ 696 01c6 01       		.byte	0x1
+ 697 01c7 4D       		.byte	0x4d
+ 698 01c8 C8000000 		.4byte	0xc8
+ 699 01cc 68010000 		.4byte	.LLST6
+ 700 01d0 0A       		.uleb128 0xa
+ 701 01d1 5A000000 		.4byte	.LASF28
+ 702 01d5 01       		.byte	0x1
+ 703 01d6 4D       		.byte	0x4d
+ 704 01d7 76000000 		.4byte	0x76
+ 705 01db 94010000 		.4byte	.LLST7
+ 706 01df 0B       		.uleb128 0xb
+ 707 01e0 69000000 		.4byte	.LASF29
+ 708 01e4 01       		.byte	0x1
+ 709 01e5 4E       		.byte	0x4e
+ 710 01e6 99000000 		.4byte	0x99
+ 711 01ea C0010000 		.4byte	.LLST8
+ 712 01ee 0D       		.uleb128 0xd
+ 713 01ef 0A000000 		.4byte	.LVL26
+ 714 01f3 CC040000 		.4byte	0x4cc
+ 715 01f7 0E       		.uleb128 0xe
+ 716 01f8 16000000 		.4byte	.LVL27
+ 717 01fc D8040000 		.4byte	0x4d8
+ 718 0200 1B020000 		.4byte	0x21b
+ 719 0204 0F       		.uleb128 0xf
+ 720 0205 01       		.uleb128 0x1
+ 721 0206 50       		.byte	0x50
+ 722 0207 02       		.uleb128 0x2
+ 723 0208 74       		.byte	0x74
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 16
+
+
+ 724 0209 00       		.sleb128 0
+ 725 020a 0F       		.uleb128 0xf
+ 726 020b 01       		.uleb128 0x1
+ 727 020c 51       		.byte	0x51
+ 728 020d 02       		.uleb128 0x2
+ 729 020e 75       		.byte	0x75
+ 730 020f 00       		.sleb128 0
+ 731 0210 0F       		.uleb128 0xf
+ 732 0211 01       		.uleb128 0x1
+ 733 0212 52       		.byte	0x52
+ 734 0213 01       		.uleb128 0x1
+ 735 0214 32       		.byte	0x32
+ 736 0215 0F       		.uleb128 0xf
+ 737 0216 01       		.uleb128 0x1
+ 738 0217 53       		.byte	0x53
+ 739 0218 01       		.uleb128 0x1
+ 740 0219 30       		.byte	0x30
+ 741 021a 00       		.byte	0
+ 742 021b 0D       		.uleb128 0xd
+ 743 021c 1E000000 		.4byte	.LVL28
+ 744 0220 E4040000 		.4byte	0x4e4
+ 745 0224 0D       		.uleb128 0xd
+ 746 0225 26000000 		.4byte	.LVL29
+ 747 0229 E4040000 		.4byte	0x4e4
+ 748 022d 0D       		.uleb128 0xd
+ 749 022e 2E000000 		.4byte	.LVL30
+ 750 0232 F0040000 		.4byte	0x4f0
+ 751 0236 00       		.byte	0
+ 752 0237 10       		.uleb128 0x10
+ 753 0238 54020000 		.4byte	.LASF52
+ 754 023c 01       		.byte	0x1
+ 755 023d 10       		.byte	0x10
+ 756 023e 00000000 		.4byte	.LFB34
+ 757 0242 38000000 		.4byte	.LFE34-.LFB34
+ 758 0246 01       		.uleb128 0x1
+ 759 0247 9C       		.byte	0x9c
+ 760 0248 CD020000 		.4byte	0x2cd
+ 761 024c 11       		.uleb128 0x11
+ 762 024d 7A010000 		.4byte	.LASF30
+ 763 0251 01       		.byte	0x1
+ 764 0252 13       		.byte	0x13
+ 765 0253 CD020000 		.4byte	0x2cd
+ 766 0257 02       		.uleb128 0x2
+ 767 0258 91       		.byte	0x91
+ 768 0259 74       		.sleb128 -12
+ 769 025a 11       		.uleb128 0x11
+ 770 025b 2D010000 		.4byte	.LASF31
+ 771 025f 01       		.byte	0x1
+ 772 0260 16       		.byte	0x16
+ 773 0261 CD020000 		.4byte	0x2cd
+ 774 0265 02       		.uleb128 0x2
+ 775 0266 91       		.byte	0x91
+ 776 0267 70       		.sleb128 -16
+ 777 0268 0D       		.uleb128 0xd
+ 778 0269 08000000 		.4byte	.LVL34
+ 779 026d FC040000 		.4byte	0x4fc
+ 780 0271 0D       		.uleb128 0xd
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 17
+
+
+ 781 0272 0C000000 		.4byte	.LVL35
+ 782 0276 07050000 		.4byte	0x507
+ 783 027a 0E       		.uleb128 0xe
+ 784 027b 1C000000 		.4byte	.LVL36
+ 785 027f A8010000 		.4byte	0x1a8
+ 786 0283 94020000 		.4byte	0x294
+ 787 0287 0F       		.uleb128 0xf
+ 788 0288 01       		.uleb128 0x1
+ 789 0289 50       		.byte	0x50
+ 790 028a 02       		.uleb128 0x2
+ 791 028b 91       		.byte	0x91
+ 792 028c 74       		.sleb128 -12
+ 793 028d 0F       		.uleb128 0xf
+ 794 028e 01       		.uleb128 0x1
+ 795 028f 51       		.byte	0x51
+ 796 0290 02       		.uleb128 0x2
+ 797 0291 08       		.byte	0x8
+ 798 0292 40       		.byte	0x40
+ 799 0293 00       		.byte	0
+ 800 0294 0E       		.uleb128 0xe
+ 801 0295 26000000 		.4byte	.LVL37
+ 802 0299 12050000 		.4byte	0x512
+ 803 029d B6020000 		.4byte	0x2b6
+ 804 02a1 0F       		.uleb128 0xf
+ 805 02a2 01       		.uleb128 0x1
+ 806 02a3 50       		.byte	0x50
+ 807 02a4 02       		.uleb128 0x2
+ 808 02a5 7D       		.byte	0x7d
+ 809 02a6 00       		.sleb128 0
+ 810 02a7 0F       		.uleb128 0xf
+ 811 02a8 01       		.uleb128 0x1
+ 812 02a9 51       		.byte	0x51
+ 813 02aa 05       		.uleb128 0x5
+ 814 02ab 03       		.byte	0x3
+ 815 02ac 00000000 		.4byte	.LANCHOR0
+ 816 02b0 0F       		.uleb128 0xf
+ 817 02b1 01       		.uleb128 0x1
+ 818 02b2 52       		.byte	0x52
+ 819 02b3 01       		.uleb128 0x1
+ 820 02b4 32       		.byte	0x32
+ 821 02b5 00       		.byte	0
+ 822 02b6 12       		.uleb128 0x12
+ 823 02b7 2E000000 		.4byte	.LVL38
+ 824 02bb A8010000 		.4byte	0x1a8
+ 825 02bf 0F       		.uleb128 0xf
+ 826 02c0 01       		.uleb128 0x1
+ 827 02c1 50       		.byte	0x50
+ 828 02c2 02       		.uleb128 0x2
+ 829 02c3 7D       		.byte	0x7d
+ 830 02c4 00       		.sleb128 0
+ 831 02c5 0F       		.uleb128 0xf
+ 832 02c6 01       		.uleb128 0x1
+ 833 02c7 51       		.byte	0x51
+ 834 02c8 02       		.uleb128 0x2
+ 835 02c9 08       		.byte	0x8
+ 836 02ca 40       		.byte	0x40
+ 837 02cb 00       		.byte	0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 18
+
+
+ 838 02cc 00       		.byte	0
+ 839 02cd 13       		.uleb128 0x13
+ 840 02ce 81000000 		.4byte	0x81
+ 841 02d2 DD020000 		.4byte	0x2dd
+ 842 02d6 14       		.uleb128 0x14
+ 843 02d7 C1000000 		.4byte	0xc1
+ 844 02db 01       		.byte	0x1
+ 845 02dc 00       		.byte	0
+ 846 02dd 15       		.uleb128 0x15
+ 847 02de F6000000 		.4byte	.LASF32
+ 848 02e2 01       		.byte	0x1
+ 849 02e3 1B       		.byte	0x1b
+ 850 02e4 00000000 		.4byte	.LFB35
+ 851 02e8 16000000 		.4byte	.LFE35-.LFB35
+ 852 02ec 01       		.uleb128 0x1
+ 853 02ed 9C       		.byte	0x9c
+ 854 02ee 35030000 		.4byte	0x335
+ 855 02f2 0A       		.uleb128 0xa
+ 856 02f3 27000000 		.4byte	.LASF33
+ 857 02f7 01       		.byte	0x1
+ 858 02f8 1B       		.byte	0x1b
+ 859 02f9 81000000 		.4byte	0x81
+ 860 02fd E0010000 		.4byte	.LLST9
+ 861 0301 0A       		.uleb128 0xa
+ 862 0302 35000000 		.4byte	.LASF34
+ 863 0306 01       		.byte	0x1
+ 864 0307 1B       		.byte	0x1b
+ 865 0308 81000000 		.4byte	0x81
+ 866 030c 0D020000 		.4byte	.LLST10
+ 867 0310 16       		.uleb128 0x16
+ 868 0311 62756600 		.ascii	"buf\000"
+ 869 0315 01       		.byte	0x1
+ 870 0316 1C       		.byte	0x1c
+ 871 0317 CD020000 		.4byte	0x2cd
+ 872 031b 02       		.uleb128 0x2
+ 873 031c 91       		.byte	0x91
+ 874 031d 74       		.sleb128 -12
+ 875 031e 12       		.uleb128 0x12
+ 876 031f 12000000 		.4byte	.LVL42
+ 877 0323 A8010000 		.4byte	0x1a8
+ 878 0327 0F       		.uleb128 0xf
+ 879 0328 01       		.uleb128 0x1
+ 880 0329 50       		.byte	0x50
+ 881 032a 02       		.uleb128 0x2
+ 882 032b 91       		.byte	0x91
+ 883 032c 74       		.sleb128 -12
+ 884 032d 0F       		.uleb128 0xf
+ 885 032e 01       		.uleb128 0x1
+ 886 032f 51       		.byte	0x51
+ 887 0330 02       		.uleb128 0x2
+ 888 0331 08       		.byte	0x8
+ 889 0332 40       		.byte	0x40
+ 890 0333 00       		.byte	0
+ 891 0334 00       		.byte	0
+ 892 0335 15       		.uleb128 0x15
+ 893 0336 19030000 		.4byte	.LASF35
+ 894 033a 01       		.byte	0x1
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 19
+
+
+ 895 033b 66       		.byte	0x66
+ 896 033c 00000000 		.4byte	.LFB41
+ 897 0340 38000000 		.4byte	.LFE41-.LFB41
+ 898 0344 01       		.uleb128 0x1
+ 899 0345 9C       		.byte	0x9c
+ 900 0346 03040000 		.4byte	0x403
+ 901 034a 0A       		.uleb128 0xa
+ 902 034b A8000000 		.4byte	.LASF36
+ 903 034f 01       		.byte	0x1
+ 904 0350 66       		.byte	0x66
+ 905 0351 68000000 		.4byte	0x68
+ 906 0355 3A020000 		.4byte	.LLST11
+ 907 0359 0A       		.uleb128 0xa
+ 908 035a 70000000 		.4byte	.LASF37
+ 909 035e 01       		.byte	0x1
+ 910 035f 66       		.byte	0x66
+ 911 0360 81000000 		.4byte	0x81
+ 912 0364 5B020000 		.4byte	.LLST12
+ 913 0368 0A       		.uleb128 0xa
+ 914 0369 52000000 		.4byte	.LASF38
+ 915 036d 01       		.byte	0x1
+ 916 036e 66       		.byte	0x66
+ 917 036f 81000000 		.4byte	0x81
+ 918 0373 7C020000 		.4byte	.LLST13
+ 919 0377 0A       		.uleb128 0xa
+ 920 0378 82020000 		.4byte	.LASF39
+ 921 037c 01       		.byte	0x1
+ 922 037d 66       		.byte	0x66
+ 923 037e 81000000 		.4byte	0x81
+ 924 0382 9D020000 		.4byte	.LLST14
+ 925 0386 0A       		.uleb128 0xa
+ 926 0387 69020000 		.4byte	.LASF40
+ 927 038b 01       		.byte	0x1
+ 928 038c 66       		.byte	0x66
+ 929 038d 81000000 		.4byte	0x81
+ 930 0391 BE020000 		.4byte	.LLST15
+ 931 0395 0B       		.uleb128 0xb
+ 932 0396 00010000 		.4byte	.LASF41
+ 933 039a 01       		.byte	0x1
+ 934 039b 67       		.byte	0x67
+ 935 039c 81000000 		.4byte	0x81
+ 936 03a0 EA020000 		.4byte	.LLST16
+ 937 03a4 0E       		.uleb128 0xe
+ 938 03a5 16000000 		.4byte	.LVL48
+ 939 03a9 DD020000 		.4byte	0x2dd
+ 940 03ad B8030000 		.4byte	0x3b8
+ 941 03b1 0F       		.uleb128 0xf
+ 942 03b2 01       		.uleb128 0x1
+ 943 03b3 50       		.byte	0x50
+ 944 03b4 02       		.uleb128 0x2
+ 945 03b5 74       		.byte	0x74
+ 946 03b6 06       		.sleb128 6
+ 947 03b7 00       		.byte	0
+ 948 03b8 0E       		.uleb128 0xe
+ 949 03b9 20000000 		.4byte	.LVL49
+ 950 03bd DD020000 		.4byte	0x2dd
+ 951 03c1 D2030000 		.4byte	0x3d2
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 20
+
+
+ 952 03c5 0F       		.uleb128 0xf
+ 953 03c6 01       		.uleb128 0x1
+ 954 03c7 50       		.byte	0x50
+ 955 03c8 02       		.uleb128 0x2
+ 956 03c9 74       		.byte	0x74
+ 957 03ca 07       		.sleb128 7
+ 958 03cb 0F       		.uleb128 0xf
+ 959 03cc 01       		.uleb128 0x1
+ 960 03cd 51       		.byte	0x51
+ 961 03ce 02       		.uleb128 0x2
+ 962 03cf 77       		.byte	0x77
+ 963 03d0 00       		.sleb128 0
+ 964 03d1 00       		.byte	0
+ 965 03d2 0E       		.uleb128 0xe
+ 966 03d3 2C000000 		.4byte	.LVL50
+ 967 03d7 DD020000 		.4byte	0x2dd
+ 968 03db EC030000 		.4byte	0x3ec
+ 969 03df 0F       		.uleb128 0xf
+ 970 03e0 01       		.uleb128 0x1
+ 971 03e1 50       		.byte	0x50
+ 972 03e2 02       		.uleb128 0x2
+ 973 03e3 74       		.byte	0x74
+ 974 03e4 08       		.sleb128 8
+ 975 03e5 0F       		.uleb128 0xf
+ 976 03e6 01       		.uleb128 0x1
+ 977 03e7 51       		.byte	0x51
+ 978 03e8 02       		.uleb128 0x2
+ 979 03e9 75       		.byte	0x75
+ 980 03ea 00       		.sleb128 0
+ 981 03eb 00       		.byte	0
+ 982 03ec 12       		.uleb128 0x12
+ 983 03ed 36000000 		.4byte	.LVL52
+ 984 03f1 DD020000 		.4byte	0x2dd
+ 985 03f5 0F       		.uleb128 0xf
+ 986 03f6 01       		.uleb128 0x1
+ 987 03f7 50       		.byte	0x50
+ 988 03f8 02       		.uleb128 0x2
+ 989 03f9 74       		.byte	0x74
+ 990 03fa 00       		.sleb128 0
+ 991 03fb 0F       		.uleb128 0xf
+ 992 03fc 01       		.uleb128 0x1
+ 993 03fd 51       		.byte	0x51
+ 994 03fe 02       		.uleb128 0x2
+ 995 03ff 76       		.byte	0x76
+ 996 0400 00       		.sleb128 0
+ 997 0401 00       		.byte	0
+ 998 0402 00       		.byte	0
+ 999 0403 15       		.uleb128 0x15
+ 1000 0404 29020000 		.4byte	.LASF42
+ 1001 0408 01       		.byte	0x1
+ 1002 0409 6F       		.byte	0x6f
+ 1003 040a 00000000 		.4byte	.LFB42
+ 1004 040e 4A000000 		.4byte	.LFE42-.LFB42
+ 1005 0412 01       		.uleb128 0x1
+ 1006 0413 9C       		.byte	0x9c
+ 1007 0414 CC040000 		.4byte	0x4cc
+ 1008 0418 0A       		.uleb128 0xa
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 21
+
+
+ 1009 0419 A8000000 		.4byte	.LASF36
+ 1010 041d 01       		.byte	0x1
+ 1011 041e 6F       		.byte	0x6f
+ 1012 041f 68000000 		.4byte	0x68
+ 1013 0423 38030000 		.4byte	.LLST17
+ 1014 0427 0A       		.uleb128 0xa
+ 1015 0428 1D000000 		.4byte	.LASF25
+ 1016 042c 01       		.byte	0x1
+ 1017 042d 6F       		.byte	0x6f
+ 1018 042e 68000000 		.4byte	0x68
+ 1019 0432 59030000 		.4byte	.LLST18
+ 1020 0436 0B       		.uleb128 0xb
+ 1021 0437 00010000 		.4byte	.LASF41
+ 1022 043b 01       		.byte	0x1
+ 1023 043c 70       		.byte	0x70
+ 1024 043d 81000000 		.4byte	0x81
+ 1025 0441 85030000 		.4byte	.LLST19
+ 1026 0445 0D       		.uleb128 0xd
+ 1027 0446 10000000 		.4byte	.LVL58
+ 1028 044a CE000000 		.4byte	0xce
+ 1029 044e 0E       		.uleb128 0xe
+ 1030 044f 18000000 		.4byte	.LVL59
+ 1031 0453 DD020000 		.4byte	0x2dd
+ 1032 0457 62040000 		.4byte	0x462
+ 1033 045b 0F       		.uleb128 0xf
+ 1034 045c 01       		.uleb128 0x1
+ 1035 045d 50       		.byte	0x50
+ 1036 045e 02       		.uleb128 0x2
+ 1037 045f 76       		.byte	0x76
+ 1038 0460 00       		.sleb128 0
+ 1039 0461 00       		.byte	0
+ 1040 0462 0D       		.uleb128 0xd
+ 1041 0463 1C000000 		.4byte	.LVL60
+ 1042 0467 F4000000 		.4byte	0xf4
+ 1043 046b 0E       		.uleb128 0xe
+ 1044 046c 26000000 		.4byte	.LVL61
+ 1045 0470 DD020000 		.4byte	0x2dd
+ 1046 0474 7F040000 		.4byte	0x47f
+ 1047 0478 0F       		.uleb128 0xf
+ 1048 0479 01       		.uleb128 0x1
+ 1049 047a 50       		.byte	0x50
+ 1050 047b 02       		.uleb128 0x2
+ 1051 047c 74       		.byte	0x74
+ 1052 047d 07       		.sleb128 7
+ 1053 047e 00       		.byte	0
+ 1054 047f 0E       		.uleb128 0xe
+ 1055 0480 2C000000 		.4byte	.LVL62
+ 1056 0484 1A010000 		.4byte	0x11a
+ 1057 0488 93040000 		.4byte	0x493
+ 1058 048c 0F       		.uleb128 0xf
+ 1059 048d 01       		.uleb128 0x1
+ 1060 048e 50       		.byte	0x50
+ 1061 048f 02       		.uleb128 0x2
+ 1062 0490 75       		.byte	0x75
+ 1063 0491 00       		.sleb128 0
+ 1064 0492 00       		.byte	0
+ 1065 0493 0E       		.uleb128 0xe
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 22
+
+
+ 1066 0494 38000000 		.4byte	.LVL63
+ 1067 0498 DD020000 		.4byte	0x2dd
+ 1068 049c A7040000 		.4byte	0x4a7
+ 1069 04a0 0F       		.uleb128 0xf
+ 1070 04a1 01       		.uleb128 0x1
+ 1071 04a2 50       		.byte	0x50
+ 1072 04a3 02       		.uleb128 0x2
+ 1073 04a4 74       		.byte	0x74
+ 1074 04a5 08       		.sleb128 8
+ 1075 04a6 00       		.byte	0
+ 1076 04a7 0E       		.uleb128 0xe
+ 1077 04a8 3E000000 		.4byte	.LVL64
+ 1078 04ac 61010000 		.4byte	0x161
+ 1079 04b0 BB040000 		.4byte	0x4bb
+ 1080 04b4 0F       		.uleb128 0xf
+ 1081 04b5 01       		.uleb128 0x1
+ 1082 04b6 50       		.byte	0x50
+ 1083 04b7 02       		.uleb128 0x2
+ 1084 04b8 75       		.byte	0x75
+ 1085 04b9 00       		.sleb128 0
+ 1086 04ba 00       		.byte	0
+ 1087 04bb 12       		.uleb128 0x12
+ 1088 04bc 48000000 		.4byte	.LVL65
+ 1089 04c0 DD020000 		.4byte	0x2dd
+ 1090 04c4 0F       		.uleb128 0xf
+ 1091 04c5 01       		.uleb128 0x1
+ 1092 04c6 50       		.byte	0x50
+ 1093 04c7 02       		.uleb128 0x2
+ 1094 04c8 74       		.byte	0x74
+ 1095 04c9 00       		.sleb128 0
+ 1096 04ca 00       		.byte	0
+ 1097 04cb 00       		.byte	0
+ 1098 04cc 17       		.uleb128 0x17
+ 1099 04cd 29030000 		.4byte	.LASF43
+ 1100 04d1 29030000 		.4byte	.LASF43
+ 1101 04d5 05       		.byte	0x5
+ 1102 04d6 1001     		.2byte	0x110
+ 1103 04d8 17       		.uleb128 0x17
+ 1104 04d9 CD000000 		.4byte	.LASF44
+ 1105 04dd CD000000 		.4byte	.LASF44
+ 1106 04e1 05       		.byte	0x5
+ 1107 04e2 1301     		.2byte	0x113
+ 1108 04e4 17       		.uleb128 0x17
+ 1109 04e5 8E000000 		.4byte	.LASF45
+ 1110 04e9 8E000000 		.4byte	.LASF45
+ 1111 04ed 05       		.byte	0x5
+ 1112 04ee 0F01     		.2byte	0x10f
+ 1113 04f0 17       		.uleb128 0x17
+ 1114 04f1 00000000 		.4byte	.LASF46
+ 1115 04f5 00000000 		.4byte	.LASF46
+ 1116 04f9 05       		.byte	0x5
+ 1117 04fa 1601     		.2byte	0x116
+ 1118 04fc 18       		.uleb128 0x18
+ 1119 04fd 78000000 		.4byte	.LASF47
+ 1120 0501 78000000 		.4byte	.LASF47
+ 1121 0505 06       		.byte	0x6
+ 1122 0506 72       		.byte	0x72
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 23
+
+
+ 1123 0507 18       		.uleb128 0x18
+ 1124 0508 47000000 		.4byte	.LASF48
+ 1125 050c 47000000 		.4byte	.LASF48
+ 1126 0510 06       		.byte	0x6
+ 1127 0511 71       		.byte	0x71
+ 1128 0512 19       		.uleb128 0x19
+ 1129 0513 62020000 		.4byte	.LASF53
+ 1130 0517 62020000 		.4byte	.LASF53
+ 1131 051b 00       		.byte	0
+ 1132              		.section	.debug_abbrev,"",%progbits
+ 1133              	.Ldebug_abbrev0:
+ 1134 0000 01       		.uleb128 0x1
+ 1135 0001 11       		.uleb128 0x11
+ 1136 0002 01       		.byte	0x1
+ 1137 0003 25       		.uleb128 0x25
+ 1138 0004 0E       		.uleb128 0xe
+ 1139 0005 13       		.uleb128 0x13
+ 1140 0006 0B       		.uleb128 0xb
+ 1141 0007 03       		.uleb128 0x3
+ 1142 0008 0E       		.uleb128 0xe
+ 1143 0009 1B       		.uleb128 0x1b
+ 1144 000a 0E       		.uleb128 0xe
+ 1145 000b 55       		.uleb128 0x55
+ 1146 000c 17       		.uleb128 0x17
+ 1147 000d 11       		.uleb128 0x11
+ 1148 000e 01       		.uleb128 0x1
+ 1149 000f 10       		.uleb128 0x10
+ 1150 0010 17       		.uleb128 0x17
+ 1151 0011 00       		.byte	0
+ 1152 0012 00       		.byte	0
+ 1153 0013 02       		.uleb128 0x2
+ 1154 0014 24       		.uleb128 0x24
+ 1155 0015 00       		.byte	0
+ 1156 0016 0B       		.uleb128 0xb
+ 1157 0017 0B       		.uleb128 0xb
+ 1158 0018 3E       		.uleb128 0x3e
+ 1159 0019 0B       		.uleb128 0xb
+ 1160 001a 03       		.uleb128 0x3
+ 1161 001b 0E       		.uleb128 0xe
+ 1162 001c 00       		.byte	0
+ 1163 001d 00       		.byte	0
+ 1164 001e 03       		.uleb128 0x3
+ 1165 001f 16       		.uleb128 0x16
+ 1166 0020 00       		.byte	0
+ 1167 0021 03       		.uleb128 0x3
+ 1168 0022 0E       		.uleb128 0xe
+ 1169 0023 3A       		.uleb128 0x3a
+ 1170 0024 0B       		.uleb128 0xb
+ 1171 0025 3B       		.uleb128 0x3b
+ 1172 0026 0B       		.uleb128 0xb
+ 1173 0027 49       		.uleb128 0x49
+ 1174 0028 13       		.uleb128 0x13
+ 1175 0029 00       		.byte	0
+ 1176 002a 00       		.byte	0
+ 1177 002b 04       		.uleb128 0x4
+ 1178 002c 24       		.uleb128 0x24
+ 1179 002d 00       		.byte	0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 24
+
+
+ 1180 002e 0B       		.uleb128 0xb
+ 1181 002f 0B       		.uleb128 0xb
+ 1182 0030 3E       		.uleb128 0x3e
+ 1183 0031 0B       		.uleb128 0xb
+ 1184 0032 03       		.uleb128 0x3
+ 1185 0033 08       		.uleb128 0x8
+ 1186 0034 00       		.byte	0
+ 1187 0035 00       		.byte	0
+ 1188 0036 05       		.uleb128 0x5
+ 1189 0037 16       		.uleb128 0x16
+ 1190 0038 00       		.byte	0
+ 1191 0039 03       		.uleb128 0x3
+ 1192 003a 0E       		.uleb128 0xe
+ 1193 003b 3A       		.uleb128 0x3a
+ 1194 003c 0B       		.uleb128 0xb
+ 1195 003d 3B       		.uleb128 0x3b
+ 1196 003e 05       		.uleb128 0x5
+ 1197 003f 49       		.uleb128 0x49
+ 1198 0040 13       		.uleb128 0x13
+ 1199 0041 00       		.byte	0
+ 1200 0042 00       		.byte	0
+ 1201 0043 06       		.uleb128 0x6
+ 1202 0044 0F       		.uleb128 0xf
+ 1203 0045 00       		.byte	0
+ 1204 0046 0B       		.uleb128 0xb
+ 1205 0047 0B       		.uleb128 0xb
+ 1206 0048 49       		.uleb128 0x49
+ 1207 0049 13       		.uleb128 0x13
+ 1208 004a 00       		.byte	0
+ 1209 004b 00       		.byte	0
+ 1210 004c 07       		.uleb128 0x7
+ 1211 004d 2E       		.uleb128 0x2e
+ 1212 004e 01       		.byte	0x1
+ 1213 004f 3F       		.uleb128 0x3f
+ 1214 0050 19       		.uleb128 0x19
+ 1215 0051 03       		.uleb128 0x3
+ 1216 0052 0E       		.uleb128 0xe
+ 1217 0053 3A       		.uleb128 0x3a
+ 1218 0054 0B       		.uleb128 0xb
+ 1219 0055 3B       		.uleb128 0x3b
+ 1220 0056 0B       		.uleb128 0xb
+ 1221 0057 49       		.uleb128 0x49
+ 1222 0058 13       		.uleb128 0x13
+ 1223 0059 11       		.uleb128 0x11
+ 1224 005a 01       		.uleb128 0x1
+ 1225 005b 12       		.uleb128 0x12
+ 1226 005c 06       		.uleb128 0x6
+ 1227 005d 40       		.uleb128 0x40
+ 1228 005e 18       		.uleb128 0x18
+ 1229 005f 9742     		.uleb128 0x2117
+ 1230 0061 19       		.uleb128 0x19
+ 1231 0062 01       		.uleb128 0x1
+ 1232 0063 13       		.uleb128 0x13
+ 1233 0064 00       		.byte	0
+ 1234 0065 00       		.byte	0
+ 1235 0066 08       		.uleb128 0x8
+ 1236 0067 34       		.uleb128 0x34
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 25
+
+
+ 1237 0068 00       		.byte	0
+ 1238 0069 03       		.uleb128 0x3
+ 1239 006a 0E       		.uleb128 0xe
+ 1240 006b 3A       		.uleb128 0x3a
+ 1241 006c 0B       		.uleb128 0xb
+ 1242 006d 3B       		.uleb128 0x3b
+ 1243 006e 0B       		.uleb128 0xb
+ 1244 006f 49       		.uleb128 0x49
+ 1245 0070 13       		.uleb128 0x13
+ 1246 0071 1C       		.uleb128 0x1c
+ 1247 0072 0B       		.uleb128 0xb
+ 1248 0073 00       		.byte	0
+ 1249 0074 00       		.byte	0
+ 1250 0075 09       		.uleb128 0x9
+ 1251 0076 2E       		.uleb128 0x2e
+ 1252 0077 01       		.byte	0x1
+ 1253 0078 3F       		.uleb128 0x3f
+ 1254 0079 19       		.uleb128 0x19
+ 1255 007a 03       		.uleb128 0x3
+ 1256 007b 0E       		.uleb128 0xe
+ 1257 007c 3A       		.uleb128 0x3a
+ 1258 007d 0B       		.uleb128 0xb
+ 1259 007e 3B       		.uleb128 0x3b
+ 1260 007f 0B       		.uleb128 0xb
+ 1261 0080 27       		.uleb128 0x27
+ 1262 0081 19       		.uleb128 0x19
+ 1263 0082 49       		.uleb128 0x49
+ 1264 0083 13       		.uleb128 0x13
+ 1265 0084 11       		.uleb128 0x11
+ 1266 0085 01       		.uleb128 0x1
+ 1267 0086 12       		.uleb128 0x12
+ 1268 0087 06       		.uleb128 0x6
+ 1269 0088 40       		.uleb128 0x40
+ 1270 0089 18       		.uleb128 0x18
+ 1271 008a 9642     		.uleb128 0x2116
+ 1272 008c 19       		.uleb128 0x19
+ 1273 008d 01       		.uleb128 0x1
+ 1274 008e 13       		.uleb128 0x13
+ 1275 008f 00       		.byte	0
+ 1276 0090 00       		.byte	0
+ 1277 0091 0A       		.uleb128 0xa
+ 1278 0092 05       		.uleb128 0x5
+ 1279 0093 00       		.byte	0
+ 1280 0094 03       		.uleb128 0x3
+ 1281 0095 0E       		.uleb128 0xe
+ 1282 0096 3A       		.uleb128 0x3a
+ 1283 0097 0B       		.uleb128 0xb
+ 1284 0098 3B       		.uleb128 0x3b
+ 1285 0099 0B       		.uleb128 0xb
+ 1286 009a 49       		.uleb128 0x49
+ 1287 009b 13       		.uleb128 0x13
+ 1288 009c 02       		.uleb128 0x2
+ 1289 009d 17       		.uleb128 0x17
+ 1290 009e 00       		.byte	0
+ 1291 009f 00       		.byte	0
+ 1292 00a0 0B       		.uleb128 0xb
+ 1293 00a1 34       		.uleb128 0x34
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 26
+
+
+ 1294 00a2 00       		.byte	0
+ 1295 00a3 03       		.uleb128 0x3
+ 1296 00a4 0E       		.uleb128 0xe
+ 1297 00a5 3A       		.uleb128 0x3a
+ 1298 00a6 0B       		.uleb128 0xb
+ 1299 00a7 3B       		.uleb128 0x3b
+ 1300 00a8 0B       		.uleb128 0xb
+ 1301 00a9 49       		.uleb128 0x49
+ 1302 00aa 13       		.uleb128 0x13
+ 1303 00ab 02       		.uleb128 0x2
+ 1304 00ac 17       		.uleb128 0x17
+ 1305 00ad 00       		.byte	0
+ 1306 00ae 00       		.byte	0
+ 1307 00af 0C       		.uleb128 0xc
+ 1308 00b0 2E       		.uleb128 0x2e
+ 1309 00b1 01       		.byte	0x1
+ 1310 00b2 3F       		.uleb128 0x3f
+ 1311 00b3 19       		.uleb128 0x19
+ 1312 00b4 03       		.uleb128 0x3
+ 1313 00b5 0E       		.uleb128 0xe
+ 1314 00b6 3A       		.uleb128 0x3a
+ 1315 00b7 0B       		.uleb128 0xb
+ 1316 00b8 3B       		.uleb128 0x3b
+ 1317 00b9 0B       		.uleb128 0xb
+ 1318 00ba 27       		.uleb128 0x27
+ 1319 00bb 19       		.uleb128 0x19
+ 1320 00bc 49       		.uleb128 0x49
+ 1321 00bd 13       		.uleb128 0x13
+ 1322 00be 11       		.uleb128 0x11
+ 1323 00bf 01       		.uleb128 0x1
+ 1324 00c0 12       		.uleb128 0x12
+ 1325 00c1 06       		.uleb128 0x6
+ 1326 00c2 40       		.uleb128 0x40
+ 1327 00c3 18       		.uleb128 0x18
+ 1328 00c4 9742     		.uleb128 0x2117
+ 1329 00c6 19       		.uleb128 0x19
+ 1330 00c7 01       		.uleb128 0x1
+ 1331 00c8 13       		.uleb128 0x13
+ 1332 00c9 00       		.byte	0
+ 1333 00ca 00       		.byte	0
+ 1334 00cb 0D       		.uleb128 0xd
+ 1335 00cc 898201   		.uleb128 0x4109
+ 1336 00cf 00       		.byte	0
+ 1337 00d0 11       		.uleb128 0x11
+ 1338 00d1 01       		.uleb128 0x1
+ 1339 00d2 31       		.uleb128 0x31
+ 1340 00d3 13       		.uleb128 0x13
+ 1341 00d4 00       		.byte	0
+ 1342 00d5 00       		.byte	0
+ 1343 00d6 0E       		.uleb128 0xe
+ 1344 00d7 898201   		.uleb128 0x4109
+ 1345 00da 01       		.byte	0x1
+ 1346 00db 11       		.uleb128 0x11
+ 1347 00dc 01       		.uleb128 0x1
+ 1348 00dd 31       		.uleb128 0x31
+ 1349 00de 13       		.uleb128 0x13
+ 1350 00df 01       		.uleb128 0x1
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 27
+
+
+ 1351 00e0 13       		.uleb128 0x13
+ 1352 00e1 00       		.byte	0
+ 1353 00e2 00       		.byte	0
+ 1354 00e3 0F       		.uleb128 0xf
+ 1355 00e4 8A8201   		.uleb128 0x410a
+ 1356 00e7 00       		.byte	0
+ 1357 00e8 02       		.uleb128 0x2
+ 1358 00e9 18       		.uleb128 0x18
+ 1359 00ea 9142     		.uleb128 0x2111
+ 1360 00ec 18       		.uleb128 0x18
+ 1361 00ed 00       		.byte	0
+ 1362 00ee 00       		.byte	0
+ 1363 00ef 10       		.uleb128 0x10
+ 1364 00f0 2E       		.uleb128 0x2e
+ 1365 00f1 01       		.byte	0x1
+ 1366 00f2 3F       		.uleb128 0x3f
+ 1367 00f3 19       		.uleb128 0x19
+ 1368 00f4 03       		.uleb128 0x3
+ 1369 00f5 0E       		.uleb128 0xe
+ 1370 00f6 3A       		.uleb128 0x3a
+ 1371 00f7 0B       		.uleb128 0xb
+ 1372 00f8 3B       		.uleb128 0x3b
+ 1373 00f9 0B       		.uleb128 0xb
+ 1374 00fa 11       		.uleb128 0x11
+ 1375 00fb 01       		.uleb128 0x1
+ 1376 00fc 12       		.uleb128 0x12
+ 1377 00fd 06       		.uleb128 0x6
+ 1378 00fe 40       		.uleb128 0x40
+ 1379 00ff 18       		.uleb128 0x18
+ 1380 0100 9742     		.uleb128 0x2117
+ 1381 0102 19       		.uleb128 0x19
+ 1382 0103 01       		.uleb128 0x1
+ 1383 0104 13       		.uleb128 0x13
+ 1384 0105 00       		.byte	0
+ 1385 0106 00       		.byte	0
+ 1386 0107 11       		.uleb128 0x11
+ 1387 0108 34       		.uleb128 0x34
+ 1388 0109 00       		.byte	0
+ 1389 010a 03       		.uleb128 0x3
+ 1390 010b 0E       		.uleb128 0xe
+ 1391 010c 3A       		.uleb128 0x3a
+ 1392 010d 0B       		.uleb128 0xb
+ 1393 010e 3B       		.uleb128 0x3b
+ 1394 010f 0B       		.uleb128 0xb
+ 1395 0110 49       		.uleb128 0x49
+ 1396 0111 13       		.uleb128 0x13
+ 1397 0112 02       		.uleb128 0x2
+ 1398 0113 18       		.uleb128 0x18
+ 1399 0114 00       		.byte	0
+ 1400 0115 00       		.byte	0
+ 1401 0116 12       		.uleb128 0x12
+ 1402 0117 898201   		.uleb128 0x4109
+ 1403 011a 01       		.byte	0x1
+ 1404 011b 11       		.uleb128 0x11
+ 1405 011c 01       		.uleb128 0x1
+ 1406 011d 31       		.uleb128 0x31
+ 1407 011e 13       		.uleb128 0x13
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 28
+
+
+ 1408 011f 00       		.byte	0
+ 1409 0120 00       		.byte	0
+ 1410 0121 13       		.uleb128 0x13
+ 1411 0122 01       		.uleb128 0x1
+ 1412 0123 01       		.byte	0x1
+ 1413 0124 49       		.uleb128 0x49
+ 1414 0125 13       		.uleb128 0x13
+ 1415 0126 01       		.uleb128 0x1
+ 1416 0127 13       		.uleb128 0x13
+ 1417 0128 00       		.byte	0
+ 1418 0129 00       		.byte	0
+ 1419 012a 14       		.uleb128 0x14
+ 1420 012b 21       		.uleb128 0x21
+ 1421 012c 00       		.byte	0
+ 1422 012d 49       		.uleb128 0x49
+ 1423 012e 13       		.uleb128 0x13
+ 1424 012f 2F       		.uleb128 0x2f
+ 1425 0130 0B       		.uleb128 0xb
+ 1426 0131 00       		.byte	0
+ 1427 0132 00       		.byte	0
+ 1428 0133 15       		.uleb128 0x15
+ 1429 0134 2E       		.uleb128 0x2e
+ 1430 0135 01       		.byte	0x1
+ 1431 0136 3F       		.uleb128 0x3f
+ 1432 0137 19       		.uleb128 0x19
+ 1433 0138 03       		.uleb128 0x3
+ 1434 0139 0E       		.uleb128 0xe
+ 1435 013a 3A       		.uleb128 0x3a
+ 1436 013b 0B       		.uleb128 0xb
+ 1437 013c 3B       		.uleb128 0x3b
+ 1438 013d 0B       		.uleb128 0xb
+ 1439 013e 27       		.uleb128 0x27
+ 1440 013f 19       		.uleb128 0x19
+ 1441 0140 11       		.uleb128 0x11
+ 1442 0141 01       		.uleb128 0x1
+ 1443 0142 12       		.uleb128 0x12
+ 1444 0143 06       		.uleb128 0x6
+ 1445 0144 40       		.uleb128 0x40
+ 1446 0145 18       		.uleb128 0x18
+ 1447 0146 9742     		.uleb128 0x2117
+ 1448 0148 19       		.uleb128 0x19
+ 1449 0149 01       		.uleb128 0x1
+ 1450 014a 13       		.uleb128 0x13
+ 1451 014b 00       		.byte	0
+ 1452 014c 00       		.byte	0
+ 1453 014d 16       		.uleb128 0x16
+ 1454 014e 34       		.uleb128 0x34
+ 1455 014f 00       		.byte	0
+ 1456 0150 03       		.uleb128 0x3
+ 1457 0151 08       		.uleb128 0x8
+ 1458 0152 3A       		.uleb128 0x3a
+ 1459 0153 0B       		.uleb128 0xb
+ 1460 0154 3B       		.uleb128 0x3b
+ 1461 0155 0B       		.uleb128 0xb
+ 1462 0156 49       		.uleb128 0x49
+ 1463 0157 13       		.uleb128 0x13
+ 1464 0158 02       		.uleb128 0x2
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 29
+
+
+ 1465 0159 18       		.uleb128 0x18
+ 1466 015a 00       		.byte	0
+ 1467 015b 00       		.byte	0
+ 1468 015c 17       		.uleb128 0x17
+ 1469 015d 2E       		.uleb128 0x2e
+ 1470 015e 00       		.byte	0
+ 1471 015f 3F       		.uleb128 0x3f
+ 1472 0160 19       		.uleb128 0x19
+ 1473 0161 3C       		.uleb128 0x3c
+ 1474 0162 19       		.uleb128 0x19
+ 1475 0163 6E       		.uleb128 0x6e
+ 1476 0164 0E       		.uleb128 0xe
+ 1477 0165 03       		.uleb128 0x3
+ 1478 0166 0E       		.uleb128 0xe
+ 1479 0167 3A       		.uleb128 0x3a
+ 1480 0168 0B       		.uleb128 0xb
+ 1481 0169 3B       		.uleb128 0x3b
+ 1482 016a 05       		.uleb128 0x5
+ 1483 016b 00       		.byte	0
+ 1484 016c 00       		.byte	0
+ 1485 016d 18       		.uleb128 0x18
+ 1486 016e 2E       		.uleb128 0x2e
+ 1487 016f 00       		.byte	0
+ 1488 0170 3F       		.uleb128 0x3f
+ 1489 0171 19       		.uleb128 0x19
+ 1490 0172 3C       		.uleb128 0x3c
+ 1491 0173 19       		.uleb128 0x19
+ 1492 0174 6E       		.uleb128 0x6e
+ 1493 0175 0E       		.uleb128 0xe
+ 1494 0176 03       		.uleb128 0x3
+ 1495 0177 0E       		.uleb128 0xe
+ 1496 0178 3A       		.uleb128 0x3a
+ 1497 0179 0B       		.uleb128 0xb
+ 1498 017a 3B       		.uleb128 0x3b
+ 1499 017b 0B       		.uleb128 0xb
+ 1500 017c 00       		.byte	0
+ 1501 017d 00       		.byte	0
+ 1502 017e 19       		.uleb128 0x19
+ 1503 017f 2E       		.uleb128 0x2e
+ 1504 0180 00       		.byte	0
+ 1505 0181 3F       		.uleb128 0x3f
+ 1506 0182 19       		.uleb128 0x19
+ 1507 0183 3C       		.uleb128 0x3c
+ 1508 0184 19       		.uleb128 0x19
+ 1509 0185 6E       		.uleb128 0x6e
+ 1510 0186 0E       		.uleb128 0xe
+ 1511 0187 03       		.uleb128 0x3
+ 1512 0188 0E       		.uleb128 0xe
+ 1513 0189 00       		.byte	0
+ 1514 018a 00       		.byte	0
+ 1515 018b 00       		.byte	0
+ 1516              		.section	.debug_loc,"",%progbits
+ 1517              	.Ldebug_loc0:
+ 1518              	.LLST0:
+ 1519 0000 00000000 		.4byte	.LVL2
+ 1520 0004 0C000000 		.4byte	.LVL5
+ 1521 0008 0100     		.2byte	0x1
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 30
+
+
+ 1522 000a 50       		.byte	0x50
+ 1523 000b 0C000000 		.4byte	.LVL5
+ 1524 000f 12000000 		.4byte	.LVL6
+ 1525 0013 0400     		.2byte	0x4
+ 1526 0015 F3       		.byte	0xf3
+ 1527 0016 01       		.uleb128 0x1
+ 1528 0017 50       		.byte	0x50
+ 1529 0018 9F       		.byte	0x9f
+ 1530 0019 12000000 		.4byte	.LVL6
+ 1531 001d 14000000 		.4byte	.LVL7
+ 1532 0021 0100     		.2byte	0x1
+ 1533 0023 50       		.byte	0x50
+ 1534 0024 14000000 		.4byte	.LVL7
+ 1535 0028 16000000 		.4byte	.LVL8
+ 1536 002c 0300     		.2byte	0x3
+ 1537 002e 70       		.byte	0x70
+ 1538 002f 59       		.sleb128 -39
+ 1539 0030 9F       		.byte	0x9f
+ 1540 0031 16000000 		.4byte	.LVL8
+ 1541 0035 1A000000 		.4byte	.LVL9
+ 1542 0039 0100     		.2byte	0x1
+ 1543 003b 50       		.byte	0x50
+ 1544 003c 1A000000 		.4byte	.LVL9
+ 1545 0040 20000000 		.4byte	.LVL10
+ 1546 0044 0400     		.2byte	0x4
+ 1547 0046 F3       		.byte	0xf3
+ 1548 0047 01       		.uleb128 0x1
+ 1549 0048 50       		.byte	0x50
+ 1550 0049 9F       		.byte	0x9f
+ 1551 004a 20000000 		.4byte	.LVL10
+ 1552 004e 26000000 		.4byte	.LVL11
+ 1553 0052 0100     		.2byte	0x1
+ 1554 0054 50       		.byte	0x50
+ 1555 0055 00000000 		.4byte	0
+ 1556 0059 00000000 		.4byte	0
+ 1557              	.LLST1:
+ 1558 005d 02000000 		.4byte	.LVL3
+ 1559 0061 08000000 		.4byte	.LVL4
+ 1560 0065 0200     		.2byte	0x2
+ 1561 0067 31       		.byte	0x31
+ 1562 0068 9F       		.byte	0x9f
+ 1563 0069 08000000 		.4byte	.LVL4
+ 1564 006d 30000000 		.4byte	.LFE38
+ 1565 0071 0300     		.2byte	0x3
+ 1566 0073 08       		.byte	0x8
+ 1567 0074 27       		.byte	0x27
+ 1568 0075 9F       		.byte	0x9f
+ 1569 0076 00000000 		.4byte	0
+ 1570 007a 00000000 		.4byte	0
+ 1571              	.LLST2:
+ 1572 007e 02000000 		.4byte	.LVL3
+ 1573 0082 14000000 		.4byte	.LVL7
+ 1574 0086 0200     		.2byte	0x2
+ 1575 0088 30       		.byte	0x30
+ 1576 0089 9F       		.byte	0x9f
+ 1577 008a 14000000 		.4byte	.LVL7
+ 1578 008e 16000000 		.4byte	.LVL8
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 31
+
+
+ 1579 0092 0100     		.2byte	0x1
+ 1580 0094 50       		.byte	0x50
+ 1581 0095 16000000 		.4byte	.LVL8
+ 1582 0099 26000000 		.4byte	.LVL11
+ 1583 009d 0200     		.2byte	0x2
+ 1584 009f 30       		.byte	0x30
+ 1585 00a0 9F       		.byte	0x9f
+ 1586 00a1 26000000 		.4byte	.LVL11
+ 1587 00a5 28000000 		.4byte	.LVL12
+ 1588 00a9 0100     		.2byte	0x1
+ 1589 00ab 50       		.byte	0x50
+ 1590 00ac 00000000 		.4byte	0
+ 1591 00b0 00000000 		.4byte	0
+ 1592              	.LLST3:
+ 1593 00b4 00000000 		.4byte	.LVL13
+ 1594 00b8 0C000000 		.4byte	.LVL16
+ 1595 00bc 0100     		.2byte	0x1
+ 1596 00be 50       		.byte	0x50
+ 1597 00bf 0C000000 		.4byte	.LVL16
+ 1598 00c3 12000000 		.4byte	.LVL17
+ 1599 00c7 0400     		.2byte	0x4
+ 1600 00c9 F3       		.byte	0xf3
+ 1601 00ca 01       		.uleb128 0x1
+ 1602 00cb 50       		.byte	0x50
+ 1603 00cc 9F       		.byte	0x9f
+ 1604 00cd 12000000 		.4byte	.LVL17
+ 1605 00d1 14000000 		.4byte	.LVL18
+ 1606 00d5 0100     		.2byte	0x1
+ 1607 00d7 50       		.byte	0x50
+ 1608 00d8 14000000 		.4byte	.LVL18
+ 1609 00dc 16000000 		.4byte	.LVL19
+ 1610 00e0 0300     		.2byte	0x3
+ 1611 00e2 70       		.byte	0x70
+ 1612 00e3 59       		.sleb128 -39
+ 1613 00e4 9F       		.byte	0x9f
+ 1614 00e5 16000000 		.4byte	.LVL19
+ 1615 00e9 1A000000 		.4byte	.LVL20
+ 1616 00ed 0100     		.2byte	0x1
+ 1617 00ef 50       		.byte	0x50
+ 1618 00f0 1A000000 		.4byte	.LVL20
+ 1619 00f4 20000000 		.4byte	.LVL21
+ 1620 00f8 0400     		.2byte	0x4
+ 1621 00fa F3       		.byte	0xf3
+ 1622 00fb 01       		.uleb128 0x1
+ 1623 00fc 50       		.byte	0x50
+ 1624 00fd 9F       		.byte	0x9f
+ 1625 00fe 20000000 		.4byte	.LVL21
+ 1626 0102 22000000 		.4byte	.LVL22
+ 1627 0106 0100     		.2byte	0x1
+ 1628 0108 50       		.byte	0x50
+ 1629 0109 00000000 		.4byte	0
+ 1630 010d 00000000 		.4byte	0
+ 1631              	.LLST4:
+ 1632 0111 02000000 		.4byte	.LVL14
+ 1633 0115 08000000 		.4byte	.LVL15
+ 1634 0119 0200     		.2byte	0x2
+ 1635 011b 31       		.byte	0x31
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 32
+
+
+ 1636 011c 9F       		.byte	0x9f
+ 1637 011d 08000000 		.4byte	.LVL15
+ 1638 0121 28000000 		.4byte	.LFE39
+ 1639 0125 0300     		.2byte	0x3
+ 1640 0127 08       		.byte	0x8
+ 1641 0128 27       		.byte	0x27
+ 1642 0129 9F       		.byte	0x9f
+ 1643 012a 00000000 		.4byte	0
+ 1644 012e 00000000 		.4byte	0
+ 1645              	.LLST5:
+ 1646 0132 02000000 		.4byte	.LVL14
+ 1647 0136 14000000 		.4byte	.LVL18
+ 1648 013a 0200     		.2byte	0x2
+ 1649 013c 30       		.byte	0x30
+ 1650 013d 9F       		.byte	0x9f
+ 1651 013e 14000000 		.4byte	.LVL18
+ 1652 0142 16000000 		.4byte	.LVL19
+ 1653 0146 0100     		.2byte	0x1
+ 1654 0148 50       		.byte	0x50
+ 1655 0149 16000000 		.4byte	.LVL19
+ 1656 014d 22000000 		.4byte	.LVL22
+ 1657 0151 0200     		.2byte	0x2
+ 1658 0153 30       		.byte	0x30
+ 1659 0154 9F       		.byte	0x9f
+ 1660 0155 22000000 		.4byte	.LVL22
+ 1661 0159 24000000 		.4byte	.LVL23
+ 1662 015d 0100     		.2byte	0x1
+ 1663 015f 50       		.byte	0x50
+ 1664 0160 00000000 		.4byte	0
+ 1665 0164 00000000 		.4byte	0
+ 1666              	.LLST6:
+ 1667 0168 00000000 		.4byte	.LVL24
+ 1668 016c 09000000 		.4byte	.LVL26-1
+ 1669 0170 0100     		.2byte	0x1
+ 1670 0172 50       		.byte	0x50
+ 1671 0173 09000000 		.4byte	.LVL26-1
+ 1672 0177 40000000 		.4byte	.LVL33
+ 1673 017b 0100     		.2byte	0x1
+ 1674 017d 55       		.byte	0x55
+ 1675 017e 40000000 		.4byte	.LVL33
+ 1676 0182 42000000 		.4byte	.LFE40
+ 1677 0186 0400     		.2byte	0x4
+ 1678 0188 F3       		.byte	0xf3
+ 1679 0189 01       		.uleb128 0x1
+ 1680 018a 50       		.byte	0x50
+ 1681 018b 9F       		.byte	0x9f
+ 1682 018c 00000000 		.4byte	0
+ 1683 0190 00000000 		.4byte	0
+ 1684              	.LLST7:
+ 1685 0194 00000000 		.4byte	.LVL24
+ 1686 0198 09000000 		.4byte	.LVL26-1
+ 1687 019c 0100     		.2byte	0x1
+ 1688 019e 51       		.byte	0x51
+ 1689 019f 09000000 		.4byte	.LVL26-1
+ 1690 01a3 40000000 		.4byte	.LVL32
+ 1691 01a7 0100     		.2byte	0x1
+ 1692 01a9 54       		.byte	0x54
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 33
+
+
+ 1693 01aa 40000000 		.4byte	.LVL32
+ 1694 01ae 42000000 		.4byte	.LFE40
+ 1695 01b2 0400     		.2byte	0x4
+ 1696 01b4 F3       		.byte	0xf3
+ 1697 01b5 01       		.uleb128 0x1
+ 1698 01b6 51       		.byte	0x51
+ 1699 01b7 9F       		.byte	0x9f
+ 1700 01b8 00000000 		.4byte	0
+ 1701 01bc 00000000 		.4byte	0
+ 1702              	.LLST8:
+ 1703 01c0 06000000 		.4byte	.LVL25
+ 1704 01c4 40000000 		.4byte	.LVL31
+ 1705 01c8 0300     		.2byte	0x3
+ 1706 01ca 08       		.byte	0x8
+ 1707 01cb FF       		.byte	0xff
+ 1708 01cc 9F       		.byte	0x9f
+ 1709 01cd 40000000 		.4byte	.LVL31
+ 1710 01d1 42000000 		.4byte	.LFE40
+ 1711 01d5 0100     		.2byte	0x1
+ 1712 01d7 50       		.byte	0x50
+ 1713 01d8 00000000 		.4byte	0
+ 1714 01dc 00000000 		.4byte	0
+ 1715              	.LLST9:
+ 1716 01e0 00000000 		.4byte	.LVL39
+ 1717 01e4 0E000000 		.4byte	.LVL41
+ 1718 01e8 0100     		.2byte	0x1
+ 1719 01ea 50       		.byte	0x50
+ 1720 01eb 0E000000 		.4byte	.LVL41
+ 1721 01ef 11000000 		.4byte	.LVL42-1
+ 1722 01f3 0200     		.2byte	0x2
+ 1723 01f5 73       		.byte	0x73
+ 1724 01f6 00       		.sleb128 0
+ 1725 01f7 11000000 		.4byte	.LVL42-1
+ 1726 01fb 16000000 		.4byte	.LFE35
+ 1727 01ff 0400     		.2byte	0x4
+ 1728 0201 F3       		.byte	0xf3
+ 1729 0202 01       		.uleb128 0x1
+ 1730 0203 50       		.byte	0x50
+ 1731 0204 9F       		.byte	0x9f
+ 1732 0205 00000000 		.4byte	0
+ 1733 0209 00000000 		.4byte	0
+ 1734              	.LLST10:
+ 1735 020d 00000000 		.4byte	.LVL39
+ 1736 0211 0C000000 		.4byte	.LVL40
+ 1737 0215 0100     		.2byte	0x1
+ 1738 0217 51       		.byte	0x51
+ 1739 0218 0C000000 		.4byte	.LVL40
+ 1740 021c 11000000 		.4byte	.LVL42-1
+ 1741 0220 0200     		.2byte	0x2
+ 1742 0222 73       		.byte	0x73
+ 1743 0223 01       		.sleb128 1
+ 1744 0224 11000000 		.4byte	.LVL42-1
+ 1745 0228 16000000 		.4byte	.LFE35
+ 1746 022c 0400     		.2byte	0x4
+ 1747 022e F3       		.byte	0xf3
+ 1748 022f 01       		.uleb128 0x1
+ 1749 0230 51       		.byte	0x51
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 34
+
+
+ 1750 0231 9F       		.byte	0x9f
+ 1751 0232 00000000 		.4byte	0
+ 1752 0236 00000000 		.4byte	0
+ 1753              	.LLST11:
+ 1754 023a 00000000 		.4byte	.LVL43
+ 1755 023e 0C000000 		.4byte	.LVL46
+ 1756 0242 0100     		.2byte	0x1
+ 1757 0244 50       		.byte	0x50
+ 1758 0245 0C000000 		.4byte	.LVL46
+ 1759 0249 38000000 		.4byte	.LFE41
+ 1760 024d 0400     		.2byte	0x4
+ 1761 024f F3       		.byte	0xf3
+ 1762 0250 01       		.uleb128 0x1
+ 1763 0251 50       		.byte	0x50
+ 1764 0252 9F       		.byte	0x9f
+ 1765 0253 00000000 		.4byte	0
+ 1766 0257 00000000 		.4byte	0
+ 1767              	.LLST12:
+ 1768 025b 00000000 		.4byte	.LVL43
+ 1769 025f 15000000 		.4byte	.LVL48-1
+ 1770 0263 0100     		.2byte	0x1
+ 1771 0265 51       		.byte	0x51
+ 1772 0266 15000000 		.4byte	.LVL48-1
+ 1773 026a 38000000 		.4byte	.LFE41
+ 1774 026e 0400     		.2byte	0x4
+ 1775 0270 F3       		.byte	0xf3
+ 1776 0271 01       		.uleb128 0x1
+ 1777 0272 51       		.byte	0x51
+ 1778 0273 9F       		.byte	0x9f
+ 1779 0274 00000000 		.4byte	0
+ 1780 0278 00000000 		.4byte	0
+ 1781              	.LLST13:
+ 1782 027c 00000000 		.4byte	.LVL43
+ 1783 0280 15000000 		.4byte	.LVL48-1
+ 1784 0284 0100     		.2byte	0x1
+ 1785 0286 52       		.byte	0x52
+ 1786 0287 15000000 		.4byte	.LVL48-1
+ 1787 028b 38000000 		.4byte	.LFE41
+ 1788 028f 0400     		.2byte	0x4
+ 1789 0291 F3       		.byte	0xf3
+ 1790 0292 01       		.uleb128 0x1
+ 1791 0293 52       		.byte	0x52
+ 1792 0294 9F       		.byte	0x9f
+ 1793 0295 00000000 		.4byte	0
+ 1794 0299 00000000 		.4byte	0
+ 1795              	.LLST14:
+ 1796 029d 00000000 		.4byte	.LVL43
+ 1797 02a1 08000000 		.4byte	.LVL44
+ 1798 02a5 0100     		.2byte	0x1
+ 1799 02a7 53       		.byte	0x53
+ 1800 02a8 08000000 		.4byte	.LVL44
+ 1801 02ac 38000000 		.4byte	.LFE41
+ 1802 02b0 0400     		.2byte	0x4
+ 1803 02b2 F3       		.byte	0xf3
+ 1804 02b3 01       		.uleb128 0x1
+ 1805 02b4 53       		.byte	0x53
+ 1806 02b5 9F       		.byte	0x9f
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 35
+
+
+ 1807 02b6 00000000 		.4byte	0
+ 1808 02ba 00000000 		.4byte	0
+ 1809              	.LLST15:
+ 1810 02be 00000000 		.4byte	.LVL43
+ 1811 02c2 08000000 		.4byte	.LVL44
+ 1812 02c6 0200     		.2byte	0x2
+ 1813 02c8 91       		.byte	0x91
+ 1814 02c9 00       		.sleb128 0
+ 1815 02ca 08000000 		.4byte	.LVL44
+ 1816 02ce 15000000 		.4byte	.LVL48-1
+ 1817 02d2 0200     		.2byte	0x2
+ 1818 02d4 73       		.byte	0x73
+ 1819 02d5 00       		.sleb128 0
+ 1820 02d6 15000000 		.4byte	.LVL48-1
+ 1821 02da 38000000 		.4byte	.LFE41
+ 1822 02de 0200     		.2byte	0x2
+ 1823 02e0 91       		.byte	0x91
+ 1824 02e1 00       		.sleb128 0
+ 1825 02e2 00000000 		.4byte	0
+ 1826 02e6 00000000 		.4byte	0
+ 1827              	.LLST16:
+ 1828 02ea 0A000000 		.4byte	.LVL45
+ 1829 02ee 12000000 		.4byte	.LVL47
+ 1830 02f2 0200     		.2byte	0x2
+ 1831 02f4 30       		.byte	0x30
+ 1832 02f5 9F       		.byte	0x9f
+ 1833 02f6 12000000 		.4byte	.LVL47
+ 1834 02fa 15000000 		.4byte	.LVL48-1
+ 1835 02fe 0100     		.2byte	0x1
+ 1836 0300 50       		.byte	0x50
+ 1837 0301 15000000 		.4byte	.LVL48-1
+ 1838 0305 2E000000 		.4byte	.LVL51
+ 1839 0309 0300     		.2byte	0x3
+ 1840 030b 74       		.byte	0x74
+ 1841 030c 06       		.sleb128 6
+ 1842 030d 9F       		.byte	0x9f
+ 1843 030e 2E000000 		.4byte	.LVL51
+ 1844 0312 36000000 		.4byte	.LVL53
+ 1845 0316 0300     		.2byte	0x3
+ 1846 0318 74       		.byte	0x74
+ 1847 0319 7D       		.sleb128 -3
+ 1848 031a 9F       		.byte	0x9f
+ 1849 031b 36000000 		.4byte	.LVL53
+ 1850 031f 38000000 		.4byte	.LFE41
+ 1851 0323 0B00     		.2byte	0xb
+ 1852 0325 F3       		.byte	0xf3
+ 1853 0326 01       		.uleb128 0x1
+ 1854 0327 50       		.byte	0x50
+ 1855 0328 32       		.byte	0x32
+ 1856 0329 24       		.byte	0x24
+ 1857 032a 08       		.byte	0x8
+ 1858 032b FF       		.byte	0xff
+ 1859 032c 1A       		.byte	0x1a
+ 1860 032d 23       		.byte	0x23
+ 1861 032e 06       		.uleb128 0x6
+ 1862 032f 9F       		.byte	0x9f
+ 1863 0330 00000000 		.4byte	0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 36
+
+
+ 1864 0334 00000000 		.4byte	0
+ 1865              	.LLST17:
+ 1866 0338 00000000 		.4byte	.LVL54
+ 1867 033c 06000000 		.4byte	.LVL56
+ 1868 0340 0100     		.2byte	0x1
+ 1869 0342 50       		.byte	0x50
+ 1870 0343 06000000 		.4byte	.LVL56
+ 1871 0347 4A000000 		.4byte	.LFE42
+ 1872 034b 0400     		.2byte	0x4
+ 1873 034d F3       		.byte	0xf3
+ 1874 034e 01       		.uleb128 0x1
+ 1875 034f 50       		.byte	0x50
+ 1876 0350 9F       		.byte	0x9f
+ 1877 0351 00000000 		.4byte	0
+ 1878 0355 00000000 		.4byte	0
+ 1879              	.LLST18:
+ 1880 0359 00000000 		.4byte	.LVL54
+ 1881 035d 0F000000 		.4byte	.LVL58-1
+ 1882 0361 0100     		.2byte	0x1
+ 1883 0363 51       		.byte	0x51
+ 1884 0364 0F000000 		.4byte	.LVL58-1
+ 1885 0368 48000000 		.4byte	.LVL66
+ 1886 036c 0100     		.2byte	0x1
+ 1887 036e 55       		.byte	0x55
+ 1888 036f 48000000 		.4byte	.LVL66
+ 1889 0373 4A000000 		.4byte	.LFE42
+ 1890 0377 0400     		.2byte	0x4
+ 1891 0379 F3       		.byte	0xf3
+ 1892 037a 01       		.uleb128 0x1
+ 1893 037b 51       		.byte	0x51
+ 1894 037c 9F       		.byte	0x9f
+ 1895 037d 00000000 		.4byte	0
+ 1896 0381 00000000 		.4byte	0
+ 1897              	.LLST19:
+ 1898 0385 04000000 		.4byte	.LVL55
+ 1899 0389 0C000000 		.4byte	.LVL57
+ 1900 038d 0200     		.2byte	0x2
+ 1901 038f 30       		.byte	0x30
+ 1902 0390 9F       		.byte	0x9f
+ 1903 0391 0C000000 		.4byte	.LVL57
+ 1904 0395 48000000 		.4byte	.LVL67
+ 1905 0399 0100     		.2byte	0x1
+ 1906 039b 56       		.byte	0x56
+ 1907 039c 48000000 		.4byte	.LVL67
+ 1908 03a0 4A000000 		.4byte	.LFE42
+ 1909 03a4 0B00     		.2byte	0xb
+ 1910 03a6 F3       		.byte	0xf3
+ 1911 03a7 01       		.uleb128 0x1
+ 1912 03a8 50       		.byte	0x50
+ 1913 03a9 32       		.byte	0x32
+ 1914 03aa 24       		.byte	0x24
+ 1915 03ab 08       		.byte	0x8
+ 1916 03ac FF       		.byte	0xff
+ 1917 03ad 1A       		.byte	0x1a
+ 1918 03ae 23       		.byte	0x23
+ 1919 03af 06       		.uleb128 0x6
+ 1920 03b0 9F       		.byte	0x9f
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 37
+
+
+ 1921 03b1 00000000 		.4byte	0
+ 1922 03b5 00000000 		.4byte	0
+ 1923              		.section	.debug_aranges,"",%progbits
+ 1924 0000 5C000000 		.4byte	0x5c
+ 1925 0004 0200     		.2byte	0x2
+ 1926 0006 00000000 		.4byte	.Ldebug_info0
+ 1927 000a 04       		.byte	0x4
+ 1928 000b 00       		.byte	0
+ 1929 000c 0000     		.2byte	0
+ 1930 000e 0000     		.2byte	0
+ 1931 0010 00000000 		.4byte	.LFB36
+ 1932 0014 04000000 		.4byte	.LFE36-.LFB36
+ 1933 0018 00000000 		.4byte	.LFB37
+ 1934 001c 04000000 		.4byte	.LFE37-.LFB37
+ 1935 0020 00000000 		.4byte	.LFB38
+ 1936 0024 30000000 		.4byte	.LFE38-.LFB38
+ 1937 0028 00000000 		.4byte	.LFB39
+ 1938 002c 28000000 		.4byte	.LFE39-.LFB39
+ 1939 0030 00000000 		.4byte	.LFB40
+ 1940 0034 42000000 		.4byte	.LFE40-.LFB40
+ 1941 0038 00000000 		.4byte	.LFB34
+ 1942 003c 38000000 		.4byte	.LFE34-.LFB34
+ 1943 0040 00000000 		.4byte	.LFB35
+ 1944 0044 16000000 		.4byte	.LFE35-.LFB35
+ 1945 0048 00000000 		.4byte	.LFB41
+ 1946 004c 38000000 		.4byte	.LFE41-.LFB41
+ 1947 0050 00000000 		.4byte	.LFB42
+ 1948 0054 4A000000 		.4byte	.LFE42-.LFB42
+ 1949 0058 00000000 		.4byte	0
+ 1950 005c 00000000 		.4byte	0
+ 1951              		.section	.debug_ranges,"",%progbits
+ 1952              	.Ldebug_ranges0:
+ 1953 0000 00000000 		.4byte	.LFB36
+ 1954 0004 04000000 		.4byte	.LFE36
+ 1955 0008 00000000 		.4byte	.LFB37
+ 1956 000c 04000000 		.4byte	.LFE37
+ 1957 0010 00000000 		.4byte	.LFB38
+ 1958 0014 30000000 		.4byte	.LFE38
+ 1959 0018 00000000 		.4byte	.LFB39
+ 1960 001c 28000000 		.4byte	.LFE39
+ 1961 0020 00000000 		.4byte	.LFB40
+ 1962 0024 42000000 		.4byte	.LFE40
+ 1963 0028 00000000 		.4byte	.LFB34
+ 1964 002c 38000000 		.4byte	.LFE34
+ 1965 0030 00000000 		.4byte	.LFB35
+ 1966 0034 16000000 		.4byte	.LFE35
+ 1967 0038 00000000 		.4byte	.LFB41
+ 1968 003c 38000000 		.4byte	.LFE41
+ 1969 0040 00000000 		.4byte	.LFB42
+ 1970 0044 4A000000 		.4byte	.LFE42
+ 1971 0048 00000000 		.4byte	0
+ 1972 004c 00000000 		.4byte	0
+ 1973              		.section	.debug_line,"",%progbits
+ 1974              	.Ldebug_line0:
+ 1975 0000 1B020000 		.section	.debug_str,"MS",%progbits,1
+ 1975      02005701 
+ 1975      00000201 
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 38
+
+
+ 1975      FB0E0D00 
+ 1975      01010101 
+ 1976              	.LASF46:
+ 1977 0000 4932435F 		.ascii	"I2C_I2CMasterGetWriteBufSize\000"
+ 1977      4932434D 
+ 1977      61737465 
+ 1977      72476574 
+ 1977      57726974 
+ 1978              	.LASF25:
+ 1979 001d 64757479 		.ascii	"dutyCycle\000"
+ 1979      4379636C 
+ 1979      6500
+ 1980              	.LASF33:
+ 1981 0027 63686970 		.ascii	"chip_register\000"
+ 1981      5F726567 
+ 1981      69737465 
+ 1981      7200
+ 1982              	.LASF34:
+ 1983 0035 76616C75 		.ascii	"value\000"
+ 1983      6500
+ 1984              	.LASF26:
+ 1985 003b 77726974 		.ascii	"writeBuffer\000"
+ 1985      65427566 
+ 1985      66657200 
+ 1986              	.LASF48:
+ 1987 0047 4932435F 		.ascii	"I2C_Enable\000"
+ 1987      456E6162 
+ 1987      6C6500
+ 1988              	.LASF38:
+ 1989 0052 6F6E5469 		.ascii	"onTimeH\000"
+ 1989      6D654800 
+ 1990              	.LASF28:
+ 1991 005a 50434139 		.ascii	"PCA9685Address\000"
+ 1991      36383541 
+ 1991      64647265 
+ 1991      737300
+ 1992              	.LASF29:
+ 1993 0069 73746174 		.ascii	"status\000"
+ 1993      757300
+ 1994              	.LASF37:
+ 1995 0070 6F6E5469 		.ascii	"onTimeL\000"
+ 1995      6D654C00 
+ 1996              	.LASF47:
+ 1997 0078 4932435F 		.ascii	"I2C_Start\000"
+ 1997      53746172 
+ 1997      7400
+ 1998              	.LASF20:
+ 1999 0082 5475726E 		.ascii	"TurnOnTimeH\000"
+ 1999      4F6E5469 
+ 1999      6D654800 
+ 2000              	.LASF45:
+ 2001 008e 4932435F 		.ascii	"I2C_I2CMasterStatus\000"
+ 2001      4932434D 
+ 2001      61737465 
+ 2001      72537461 
+ 2001      74757300 
+ 2002              	.LASF14:
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 39
+
+
+ 2003 00a2 666C6F61 		.ascii	"float\000"
+ 2003      7400
+ 2004              	.LASF36:
+ 2005 00a8 70696E4E 		.ascii	"pinN\000"
+ 2005      00
+ 2006              	.LASF1:
+ 2007 00ad 756E7369 		.ascii	"unsigned char\000"
+ 2007      676E6564 
+ 2007      20636861 
+ 2007      7200
+ 2008              	.LASF5:
+ 2009 00bb 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2009      20756E73 
+ 2009      69676E65 
+ 2009      6420696E 
+ 2009      7400
+ 2010              	.LASF44:
+ 2011 00cd 4932435F 		.ascii	"I2C_I2CMasterWriteBuf\000"
+ 2011      4932434D 
+ 2011      61737465 
+ 2011      72577269 
+ 2011      74654275 
+ 2012              	.LASF3:
+ 2013 00e3 73686F72 		.ascii	"short unsigned int\000"
+ 2013      7420756E 
+ 2013      7369676E 
+ 2013      65642069 
+ 2013      6E7400
+ 2014              	.LASF32:
+ 2015 00f6 77726974 		.ascii	"writeByte\000"
+ 2015      65427974 
+ 2015      6500
+ 2016              	.LASF41:
+ 2017 0100 72656769 		.ascii	"registerNum\000"
+ 2017      73746572 
+ 2017      4E756D00 
+ 2018              	.LASF27:
+ 2019 010c 62756666 		.ascii	"buff\000"
+ 2019      00
+ 2020              	.LASF15:
+ 2021 0111 646F7562 		.ascii	"double\000"
+ 2021      6C6500
+ 2022              	.LASF9:
+ 2023 0118 5F5F7569 		.ascii	"__uint32_t\000"
+ 2023      6E743332 
+ 2023      5F7400
+ 2024              	.LASF50:
+ 2025 0123 50434139 		.ascii	"PCA9685.c\000"
+ 2025      3638352E 
+ 2025      6300
+ 2026              	.LASF31:
+ 2027 012d 66726571 		.ascii	"freq_buf\000"
+ 2027      5F627566 
+ 2027      00
+ 2028              	.LASF12:
+ 2029 0136 75696E74 		.ascii	"uint16\000"
+ 2029      313600
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 40
+
+
+ 2030              	.LASF13:
+ 2031 013d 75696E74 		.ascii	"uint32\000"
+ 2031      333200
+ 2032              	.LASF8:
+ 2033 0144 756E7369 		.ascii	"unsigned int\000"
+ 2033      676E6564 
+ 2033      20696E74 
+ 2033      00
+ 2034              	.LASF22:
+ 2035 0151 6F666654 		.ascii	"offTime\000"
+ 2035      696D6500 
+ 2036              	.LASF7:
+ 2037 0159 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2037      206C6F6E 
+ 2037      6720756E 
+ 2037      7369676E 
+ 2037      65642069 
+ 2038              	.LASF21:
+ 2039 0170 64656C61 		.ascii	"delayTime\000"
+ 2039      7954696D 
+ 2039      6500
+ 2040              	.LASF30:
+ 2041 017a 6D6F6465 		.ascii	"mode_buf\000"
+ 2041      5F627566 
+ 2041      00
+ 2042              	.LASF19:
+ 2043 0183 5475726E 		.ascii	"TurnOnTimeL\000"
+ 2043      4F6E5469 
+ 2043      6D654C00 
+ 2044              	.LASF0:
+ 2045 018f 7369676E 		.ascii	"signed char\000"
+ 2045      65642063 
+ 2045      68617200 
+ 2046              	.LASF49:
+ 2047 019b 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2047      43313120 
+ 2047      352E342E 
+ 2047      31203230 
+ 2047      31363036 
+ 2048 01ce 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 2048      20726576 
+ 2048      6973696F 
+ 2048      6E203233 
+ 2048      37373135 
+ 2049 0201 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 2049      66756E63 
+ 2049      74696F6E 
+ 2049      2D736563 
+ 2049      74696F6E 
+ 2050              	.LASF42:
+ 2051 0229 73657450 		.ascii	"setPWMFromDutyCycle\000"
+ 2051      574D4672 
+ 2051      6F6D4475 
+ 2051      74794379 
+ 2051      636C6500 
+ 2052              	.LASF18:
+ 2053 023d 73697A65 		.ascii	"sizetype\000"
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 41
+
+
+ 2053      74797065 
+ 2053      00
+ 2054              	.LASF6:
+ 2055 0246 6C6F6E67 		.ascii	"long long int\000"
+ 2055      206C6F6E 
+ 2055      6720696E 
+ 2055      7400
+ 2056              	.LASF52:
+ 2057 0254 7063615F 		.ascii	"pca_init\000"
+ 2057      696E6974 
+ 2057      00
+ 2058              	.LASF16:
+ 2059 025d 63686172 		.ascii	"char\000"
+ 2059      00
+ 2060              	.LASF53:
+ 2061 0262 6D656D63 		.ascii	"memcpy\000"
+ 2061      707900
+ 2062              	.LASF40:
+ 2063 0269 6F666654 		.ascii	"offTimeH\000"
+ 2063      696D6548 
+ 2063      00
+ 2064              	.LASF2:
+ 2065 0272 73686F72 		.ascii	"short int\000"
+ 2065      7420696E 
+ 2065      7400
+ 2066              	.LASF11:
+ 2067 027c 75696E74 		.ascii	"uint8\000"
+ 2067      3800
+ 2068              	.LASF39:
+ 2069 0282 6F666654 		.ascii	"offTimeL\000"
+ 2069      696D654C 
+ 2069      00
+ 2070              	.LASF10:
+ 2071 028b 75696E74 		.ascii	"uint32_t\000"
+ 2071      33325F74 
+ 2071      00
+ 2072              	.LASF4:
+ 2073 0294 6C6F6E67 		.ascii	"long int\000"
+ 2073      20696E74 
+ 2073      00
+ 2074              	.LASF17:
+ 2075 029d 6C6F6E67 		.ascii	"long double\000"
+ 2075      20646F75 
+ 2075      626C6500 
+ 2076              	.LASF24:
+ 2077 02a9 5475726E 		.ascii	"TurnOffTimeH\000"
+ 2077      4F666654 
+ 2077      696D6548 
+ 2077      00
+ 2078              	.LASF51:
+ 2079 02b6 433A5C55 		.ascii	"C:\\Users\\kratz\\OneDrive\\Documents\\PSoC Creator"
+ 2079      73657273 
+ 2079      5C6B7261 
+ 2079      747A5C4F 
+ 2079      6E654472 
+ 2080 02e4 5C48616E 		.ascii	"\\Hand_Board_PY2023\\HandBoard_Rev1.cydsn\000"
+ 2080      645F426F 
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccdmGb0v.s 			page 42
+
+
+ 2080      6172645F 
+ 2080      50593230 
+ 2080      32335C48 
+ 2081              	.LASF23:
+ 2082 030c 5475726E 		.ascii	"TurnOffTimeL\000"
+ 2082      4F666654 
+ 2082      696D654C 
+ 2082      00
+ 2083              	.LASF35:
+ 2084 0319 73657450 		.ascii	"setPWMFromBytes\000"
+ 2084      574D4672 
+ 2084      6F6D4279 
+ 2084      74657300 
+ 2085              	.LASF43:
+ 2086 0329 4932435F 		.ascii	"I2C_I2CMasterClearStatus\000"
+ 2086      4932434D 
+ 2086      61737465 
+ 2086      72436C65 
+ 2086      61725374 
+ 2087              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

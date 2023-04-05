@@ -1,5 +1,5 @@
 # HandBoard_Rev1
-# 2023-03-31 01:45:01Z
+# 2023-04-05 01:25:19Z
 
 # IO_4@[IOP=(0)][IoId=(4)] is reserved: KhzXtalEnabled
 dont_use_io iocell 0 4
@@ -10,5 +10,6 @@ dont_use_io iocell 3 2
 # IO_3@[IOP=(3)][IoId=(3)] is reserved: SWDDebugEnabled
 dont_use_io iocell 3 3
 set_location "ClockGenBlock" m0s8clockgenblockcell -1 -1 0
-set_io "Pin_Pot(0)" iocell 2 4
+set_io "\ADC_SAR_Seq_1:Bypass(0)\" iocell 1 7
+set_io "Pin_Pot(0)" iocell 2 3
 set_location "\ADC_SAR_Seq_1:cy_psoc4_sar\" p4sarcell -1 -1 0
