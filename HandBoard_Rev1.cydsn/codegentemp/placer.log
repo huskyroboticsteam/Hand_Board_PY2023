@@ -6,7 +6,7 @@
 
 #Build Date:         Sep  9 2019 11:47:43
 
-#File Generated:     Apr 4 2023 18:25:19
+#File Generated:     Apr 13 2023 17:42:35
 
 #Purpose:            
 
@@ -80,20 +80,20 @@ Number of clocks: 17
 Clock: ADC_SAR_Seq_1_intClock | Frequency: N/A       | Target:   2.7 MHz
 Clock: ADC_SAR_Seq_1_intClock(FFB) | Frequency: N/A       | Target:   2.7 MHz
 Clock: Clock_2              | Frequency: N/A       | Target:   0.0 MHz
-Clock: Clock_PWM_1          | Frequency: N/A       | Target:  12.0 MHz
-Clock: Clock_PWM_1(FFB)     | Frequency: N/A       | Target:  12.0 MHz
-Clock: CyHFClk              | Frequency: N/A       | Target:  48.0 MHz
+Clock: Clock_PWM_1          | Frequency: N/A       | Target:  10.0 MHz
+Clock: Clock_PWM_1(FFB)     | Frequency: N/A       | Target:  10.0 MHz
+Clock: CyExtClk             | Frequency: N/A       | Target:  40.0 MHz
+Clock: CyHFClk              | Frequency: N/A       | Target:  40.0 MHz
 Clock: CyILO                | Frequency: N/A       | Target:   0.0 MHz
 Clock: CyIMO                | Frequency: N/A       | Target:  48.0 MHz
 Clock: CyLFClk              | Frequency: N/A       | Target:   0.0 MHz
-Clock: CyRouted1            | Frequency: N/A       | Target:  48.0 MHz
-Clock: CySysClk             | Frequency: N/A       | Target:  48.0 MHz
-Clock: CyWCO                | Frequency: N/A       | Target:   0.0 MHz
+Clock: CyRouted1            | Frequency: N/A       | Target:  40.0 MHz
+Clock: CySysClk             | Frequency: N/A       | Target:  40.0 MHz
 Clock: I2C_SCBCLK           | Frequency: N/A       | Target:   1.6 MHz
 Clock: I2C_SCBCLK(FFB)      | Frequency: N/A       | Target:   1.6 MHz
 Clock: UART_SCBCLK          | Frequency: N/A       | Target:   0.1 MHz
 Clock: UART_SCBCLK(FFB)     | Frequency: N/A       | Target:   0.1 MHz
-Clock: timer_clock          | Frequency:  32.6 MHz | Target:  24.0 MHz
+Clock: timer_clock          | Frequency:  32.6 MHz | Target:  20.0 MHz
 
 ======================================================================
                      End of Clock Summary
@@ -109,20 +109,20 @@ Number of clocks: 17
 Clock: ADC_SAR_Seq_1_intClock | Frequency: N/A       | Target:   2.7 MHz
 Clock: ADC_SAR_Seq_1_intClock(FFB) | Frequency: N/A       | Target:   2.7 MHz
 Clock: Clock_2              | Frequency: N/A       | Target:   0.0 MHz
-Clock: Clock_PWM_1          | Frequency: N/A       | Target:  12.0 MHz
-Clock: Clock_PWM_1(FFB)     | Frequency: N/A       | Target:  12.0 MHz
-Clock: CyHFClk              | Frequency: N/A       | Target:  48.0 MHz
+Clock: Clock_PWM_1          | Frequency: N/A       | Target:  10.0 MHz
+Clock: Clock_PWM_1(FFB)     | Frequency: N/A       | Target:  10.0 MHz
+Clock: CyExtClk             | Frequency: N/A       | Target:  40.0 MHz
+Clock: CyHFClk              | Frequency: N/A       | Target:  40.0 MHz
 Clock: CyILO                | Frequency: N/A       | Target:   0.0 MHz
 Clock: CyIMO                | Frequency: N/A       | Target:  48.0 MHz
 Clock: CyLFClk              | Frequency: N/A       | Target:   0.0 MHz
-Clock: CyRouted1            | Frequency: N/A       | Target:  48.0 MHz
-Clock: CySysClk             | Frequency: N/A       | Target:  48.0 MHz
-Clock: CyWCO                | Frequency: N/A       | Target:   0.0 MHz
+Clock: CyRouted1            | Frequency: N/A       | Target:  40.0 MHz
+Clock: CySysClk             | Frequency: N/A       | Target:  40.0 MHz
 Clock: I2C_SCBCLK           | Frequency: N/A       | Target:   1.6 MHz
 Clock: I2C_SCBCLK(FFB)      | Frequency: N/A       | Target:   1.6 MHz
 Clock: UART_SCBCLK          | Frequency: N/A       | Target:   0.1 MHz
 Clock: UART_SCBCLK(FFB)     | Frequency: N/A       | Target:   0.1 MHz
-Clock: timer_clock          | Frequency:  32.6 MHz | Target:  24.0 MHz
+Clock: timer_clock          | Frequency:  32.6 MHz | Target:  20.0 MHz
 
 ======================================================================
                      End of Clock Summary
@@ -161,20 +161,20 @@ Number of clocks: 17
 Clock: ADC_SAR_Seq_1_intClock | Frequency: N/A       | Target:   2.7 MHz
 Clock: ADC_SAR_Seq_1_intClock(FFB) | Frequency: N/A       | Target:   2.7 MHz
 Clock: Clock_2              | Frequency: N/A       | Target:   0.0 MHz
-Clock: Clock_PWM_1          | Frequency: N/A       | Target:  12.0 MHz
-Clock: Clock_PWM_1(FFB)     | Frequency: N/A       | Target:  12.0 MHz
-Clock: CyHFClk              | Frequency: N/A       | Target:  48.0 MHz
+Clock: Clock_PWM_1          | Frequency: N/A       | Target:  10.0 MHz
+Clock: Clock_PWM_1(FFB)     | Frequency: N/A       | Target:  10.0 MHz
+Clock: CyExtClk             | Frequency: N/A       | Target:  40.0 MHz
+Clock: CyHFClk              | Frequency: N/A       | Target:  40.0 MHz
 Clock: CyILO                | Frequency: N/A       | Target:   0.0 MHz
 Clock: CyIMO                | Frequency: N/A       | Target:  48.0 MHz
 Clock: CyLFClk              | Frequency: N/A       | Target:   0.0 MHz
-Clock: CyRouted1            | Frequency: N/A       | Target:  48.0 MHz
-Clock: CySysClk             | Frequency: N/A       | Target:  48.0 MHz
-Clock: CyWCO                | Frequency: N/A       | Target:   0.0 MHz
+Clock: CyRouted1            | Frequency: N/A       | Target:  40.0 MHz
+Clock: CySysClk             | Frequency: N/A       | Target:  40.0 MHz
 Clock: I2C_SCBCLK           | Frequency: N/A       | Target:   1.6 MHz
 Clock: I2C_SCBCLK(FFB)      | Frequency: N/A       | Target:   1.6 MHz
 Clock: UART_SCBCLK          | Frequency: N/A       | Target:   0.1 MHz
 Clock: UART_SCBCLK(FFB)     | Frequency: N/A       | Target:   0.1 MHz
-Clock: timer_clock          | Frequency:  32.6 MHz | Target:  26.3 MHz
+Clock: timer_clock          | Frequency:  32.6 MHz | Target:  21.7 MHz
 
 ======================================================================
                      End of Clock Summary
@@ -197,26 +197,26 @@ Number of clocks: 17
 Clock: ADC_SAR_Seq_1_intClock | Frequency: N/A       | Target:   2.7 MHz
 Clock: ADC_SAR_Seq_1_intClock(FFB) | Frequency: N/A       | Target:   2.7 MHz
 Clock: Clock_2              | Frequency: N/A       | Target:   0.0 MHz
-Clock: Clock_PWM_1          | Frequency: N/A       | Target:  12.0 MHz
-Clock: Clock_PWM_1(FFB)     | Frequency: N/A       | Target:  12.0 MHz
-Clock: CyHFClk              | Frequency: N/A       | Target:  48.0 MHz
+Clock: Clock_PWM_1          | Frequency: N/A       | Target:  10.0 MHz
+Clock: Clock_PWM_1(FFB)     | Frequency: N/A       | Target:  10.0 MHz
+Clock: CyExtClk             | Frequency: N/A       | Target:  40.0 MHz
+Clock: CyHFClk              | Frequency: N/A       | Target:  40.0 MHz
 Clock: CyILO                | Frequency: N/A       | Target:   0.0 MHz
 Clock: CyIMO                | Frequency: N/A       | Target:  48.0 MHz
 Clock: CyLFClk              | Frequency: N/A       | Target:   0.0 MHz
-Clock: CyRouted1            | Frequency: N/A       | Target:  48.0 MHz
-Clock: CySysClk             | Frequency: N/A       | Target:  48.0 MHz
-Clock: CyWCO                | Frequency: N/A       | Target:   0.0 MHz
+Clock: CyRouted1            | Frequency: N/A       | Target:  40.0 MHz
+Clock: CySysClk             | Frequency: N/A       | Target:  40.0 MHz
 Clock: I2C_SCBCLK           | Frequency: N/A       | Target:   1.6 MHz
 Clock: I2C_SCBCLK(FFB)      | Frequency: N/A       | Target:   1.6 MHz
 Clock: UART_SCBCLK          | Frequency: N/A       | Target:   0.1 MHz
 Clock: UART_SCBCLK(FFB)     | Frequency: N/A       | Target:   0.1 MHz
-Clock: timer_clock          | Frequency:  32.6 MHz | Target:  26.3 MHz
+Clock: timer_clock          | Frequency:  32.6 MHz | Target:  21.7 MHz
 
 ======================================================================
                      End of Clock Summary
 ######################################################################
 
-D2088: Phase 6, elapsed time : 0.1 (sec)
+D2088: Phase 6, elapsed time : 0.0 (sec)
 
 Phase 7
 ######################################################################
@@ -226,25 +226,25 @@ Number of clocks: 17
 Clock: ADC_SAR_Seq_1_intClock | Frequency: N/A       | Target:   2.7 MHz
 Clock: ADC_SAR_Seq_1_intClock(FFB) | Frequency: N/A       | Target:   2.7 MHz
 Clock: Clock_2              | Frequency: N/A       | Target:   0.0 MHz
-Clock: Clock_PWM_1          | Frequency: N/A       | Target:  12.0 MHz
-Clock: Clock_PWM_1(FFB)     | Frequency: N/A       | Target:  12.0 MHz
-Clock: CyHFClk              | Frequency: N/A       | Target:  48.0 MHz
+Clock: Clock_PWM_1          | Frequency: N/A       | Target:  10.0 MHz
+Clock: Clock_PWM_1(FFB)     | Frequency: N/A       | Target:  10.0 MHz
+Clock: CyExtClk             | Frequency: N/A       | Target:  40.0 MHz
+Clock: CyHFClk              | Frequency: N/A       | Target:  40.0 MHz
 Clock: CyILO                | Frequency: N/A       | Target:   0.0 MHz
 Clock: CyIMO                | Frequency: N/A       | Target:  48.0 MHz
 Clock: CyLFClk              | Frequency: N/A       | Target:   0.0 MHz
-Clock: CyRouted1            | Frequency: N/A       | Target:  48.0 MHz
-Clock: CySysClk             | Frequency: N/A       | Target:  48.0 MHz
-Clock: CyWCO                | Frequency: N/A       | Target:   0.0 MHz
+Clock: CyRouted1            | Frequency: N/A       | Target:  40.0 MHz
+Clock: CySysClk             | Frequency: N/A       | Target:  40.0 MHz
 Clock: I2C_SCBCLK           | Frequency: N/A       | Target:   1.6 MHz
 Clock: I2C_SCBCLK(FFB)      | Frequency: N/A       | Target:   1.6 MHz
 Clock: UART_SCBCLK          | Frequency: N/A       | Target:   0.1 MHz
 Clock: UART_SCBCLK(FFB)     | Frequency: N/A       | Target:   0.1 MHz
-Clock: timer_clock          | Frequency:  32.6 MHz | Target:  28.6 MHz
+Clock: timer_clock          | Frequency:  32.6 MHz | Target:  23.8 MHz
 
 ======================================================================
                      End of Clock Summary
 ######################################################################
-D2088: Phase 7, elapsed time : 0.4 (sec)
+D2088: Phase 7, elapsed time : 0.7 (sec)
 
 Final Design Statistics
     Number of Combinational MCs 	:	14
@@ -278,20 +278,20 @@ Number of clocks: 17
 Clock: ADC_SAR_Seq_1_intClock | Frequency: N/A       | Target:   2.7 MHz
 Clock: ADC_SAR_Seq_1_intClock(FFB) | Frequency: N/A       | Target:   2.7 MHz
 Clock: Clock_2              | Frequency: N/A       | Target:   0.0 MHz
-Clock: Clock_PWM_1          | Frequency: N/A       | Target:  12.0 MHz
-Clock: Clock_PWM_1(FFB)     | Frequency: N/A       | Target:  12.0 MHz
-Clock: CyHFClk              | Frequency: N/A       | Target:  48.0 MHz
+Clock: Clock_PWM_1          | Frequency: N/A       | Target:  10.0 MHz
+Clock: Clock_PWM_1(FFB)     | Frequency: N/A       | Target:  10.0 MHz
+Clock: CyExtClk             | Frequency: N/A       | Target:  40.0 MHz
+Clock: CyHFClk              | Frequency: N/A       | Target:  40.0 MHz
 Clock: CyILO                | Frequency: N/A       | Target:   0.0 MHz
 Clock: CyIMO                | Frequency: N/A       | Target:  48.0 MHz
 Clock: CyLFClk              | Frequency: N/A       | Target:   0.0 MHz
-Clock: CyRouted1            | Frequency: N/A       | Target:  48.0 MHz
-Clock: CySysClk             | Frequency: N/A       | Target:  48.0 MHz
-Clock: CyWCO                | Frequency: N/A       | Target:   0.0 MHz
+Clock: CyRouted1            | Frequency: N/A       | Target:  40.0 MHz
+Clock: CySysClk             | Frequency: N/A       | Target:  40.0 MHz
 Clock: I2C_SCBCLK           | Frequency: N/A       | Target:   1.6 MHz
 Clock: I2C_SCBCLK(FFB)      | Frequency: N/A       | Target:   1.6 MHz
 Clock: UART_SCBCLK          | Frequency: N/A       | Target:   0.1 MHz
 Clock: UART_SCBCLK(FFB)     | Frequency: N/A       | Target:   0.1 MHz
-Clock: timer_clock          | Frequency:  32.6 MHz | Target:  31.3 MHz
+Clock: timer_clock          | Frequency:  32.6 MHz | Target:  25.6 MHz
 
 ======================================================================
                      End of Clock Summary
@@ -302,5 +302,5 @@ D2088: Phase 8, elapsed time : 0.0 (sec)
 
 D2054: Placement of the design completed successfully
 
-I2076: Total run-time: 1.4 sec.
+I2076: Total run-time: 1.8 sec.
 

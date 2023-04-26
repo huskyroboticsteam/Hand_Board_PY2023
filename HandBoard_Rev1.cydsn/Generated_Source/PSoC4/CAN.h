@@ -444,8 +444,8 @@ void  CAN_ReceiveMsg(uint8 rxMailbox) ;
 ***************************************/
 
 /* General */
-#define CAN_BITRATE                   (31u)
-#define CAN_CFG_REG_TSEG1             (9u - 1u)
+#define CAN_BITRATE                   (19u)
+#define CAN_CFG_REG_TSEG1             (13u - 1u)
 #define CAN_CFG_REG_TSEG2             (2u - 1u)
 #define CAN_CFG_REG_SJW               (2u - 1u)
 #define CAN_SAMPLING_MODE             (0u)

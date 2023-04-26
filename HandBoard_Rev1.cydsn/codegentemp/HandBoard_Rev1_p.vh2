@@ -1,5 +1,5 @@
 -- Project:   HandBoard_Rev1
--- Generated: 04/04/2023 18:25:19
+-- Generated: 04/13/2023 17:42:34
 -- PSoC Creator  4.4
 
 ENTITY HandBoard_Rev1 IS
@@ -273,33 +273,45 @@ ARCHITECTURE __DEFAULT__ OF HandBoard_Rev1 IS
     ATTRIBUTE Location OF ClockGenBlock : LABEL IS "F(CLK_GEN,0)";
     ATTRIBUTE lib_model OF Pin_Direction(0) : LABEL IS "iocell1";
     ATTRIBUTE lib_model OF Pin_Limit_1(0) : LABEL IS "iocell2";
+    ATTRIBUTE Location OF Pin_Limit_1(0) : LABEL IS "P2[6]";
     ATTRIBUTE lib_model OF Pin_Limit_2(0) : LABEL IS "iocell3";
+    ATTRIBUTE Location OF Pin_Limit_2(0) : LABEL IS "P2[5]";
     ATTRIBUTE lib_model OF Pin_Encoder_A(0) : LABEL IS "iocell4";
     ATTRIBUTE lib_model OF RX_1(0) : LABEL IS "iocell5";
+    ATTRIBUTE Location OF RX_1(0) : LABEL IS "P0[0]";
     ATTRIBUTE lib_model OF TX_1(0) : LABEL IS "iocell6";
+    ATTRIBUTE Location OF TX_1(0) : LABEL IS "P0[1]";
     ATTRIBUTE lib_model OF \UART:tx(0)\ : LABEL IS "iocell7";
+    ATTRIBUTE Location OF \UART:tx(0)\ : LABEL IS "P6[1]";
     ATTRIBUTE lib_model OF \UART:rx(0)\ : LABEL IS "iocell8";
+    ATTRIBUTE Location OF \UART:rx(0)\ : LABEL IS "P6[0]";
     ATTRIBUTE lib_model OF Dip_1(0) : LABEL IS "iocell9";
     ATTRIBUTE lib_model OF Dip_2(0) : LABEL IS "iocell10";
     ATTRIBUTE lib_model OF Dip_3(0) : LABEL IS "iocell11";
     ATTRIBUTE lib_model OF Dip_4(0) : LABEL IS "iocell12";
     ATTRIBUTE lib_model OF Pin_Limit_3(0) : LABEL IS "iocell13";
+    ATTRIBUTE Location OF Pin_Limit_3(0) : LABEL IS "P2[4]";
     ATTRIBUTE lib_model OF Pin_Motor_1(0) : LABEL IS "iocell14";
     ATTRIBUTE lib_model OF \ADC_SAR_Seq_1:Bypass(0)\ : LABEL IS "iocell15";
     ATTRIBUTE Location OF \ADC_SAR_Seq_1:Bypass(0)\ : LABEL IS "P1[7]";
     ATTRIBUTE lib_model OF Pin_Pot(0) : LABEL IS "iocell16";
-    ATTRIBUTE Location OF Pin_Pot(0) : LABEL IS "P2[3]";
+    ATTRIBUTE Location OF Pin_Pot(0) : LABEL IS "P2[0]";
     ATTRIBUTE lib_model OF Pin_Encoder_A_1(0) : LABEL IS "iocell17";
     ATTRIBUTE lib_model OF Pin_Encoder_B(0) : LABEL IS "iocell18";
     ATTRIBUTE lib_model OF Pin_Encoder_Z(0) : LABEL IS "iocell19";
     ATTRIBUTE lib_model OF Pin_Direction_1(0) : LABEL IS "iocell20";
     ATTRIBUTE lib_model OF ERROR_LED(0) : LABEL IS "iocell21";
+    ATTRIBUTE Location OF ERROR_LED(0) : LABEL IS "P0[3]";
     ATTRIBUTE lib_model OF DEBUG_LED_1(0) : LABEL IS "iocell22";
+    ATTRIBUTE Location OF DEBUG_LED_1(0) : LABEL IS "P0[2]";
     ATTRIBUTE lib_model OF CAN_LED(0) : LABEL IS "iocell23";
+    ATTRIBUTE Location OF CAN_LED(0) : LABEL IS "P0[4]";
     ATTRIBUTE lib_model OF FAULT_MOTOR(0) : LABEL IS "iocell24";
     ATTRIBUTE lib_model OF DEBUG_LED_2(0) : LABEL IS "iocell25";
     ATTRIBUTE lib_model OF \I2C:sda(0)\ : LABEL IS "iocell26";
+    ATTRIBUTE Location OF \I2C:sda(0)\ : LABEL IS "P5[1]";
     ATTRIBUTE lib_model OF \I2C:scl(0)\ : LABEL IS "iocell27";
+    ATTRIBUTE Location OF \I2C:scl(0)\ : LABEL IS "P5[0]";
     ATTRIBUTE lib_model OF Net_594 : LABEL IS "macrocell2";
     ATTRIBUTE lib_model OF Net_592 : LABEL IS "macrocell3";
     ATTRIBUTE lib_model OF Net_590 : LABEL IS "macrocell4";

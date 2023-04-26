@@ -10,7 +10,7 @@
 #include "PCA9685.h"
 
 
-// TODO: add I^2C block, integrate PCA6835... driver 
+// TODO: finish assigning pins based on altium schematic, and then test out CAN functionality 
 
 #ifdef RGB_LED_ARRAY
 #include "LED_Array.h"
@@ -26,7 +26,7 @@ int32_t millidegreeTarget = 0;
 //Uart variables
 char txData[TX_DATA_SIZE];
 
-//drive varaible
+//drive variable
 int16 nextPWM = 0;
 extern uint8 invalidate;
 uint8_t ignoreLimSw = 0;

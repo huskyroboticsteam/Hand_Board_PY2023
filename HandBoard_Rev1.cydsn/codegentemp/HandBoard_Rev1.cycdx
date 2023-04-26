@@ -14,15 +14,15 @@
       <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
       <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
       <block name="CounterUDB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-      <register name="QuadDec_Cnt16_COUNTER" address="0x400F0006" bitWidth="16" desc="UDB.A0 - Current Counter Value" hidden="false" />
-      <register name="QuadDec_Cnt16_PERIOD" address="0x400F0026" bitWidth="16" desc="UDB.D0 - Assigned Period" hidden="false" />
-      <register name="QuadDec_Cnt16_COMPARE" address="0x400F0036" bitWidth="16" desc="UDB.D1 - Assigned Compare Value" hidden="false" />
-      <register name="QuadDec_Cnt16_Control_Reg" address="0x400F0076" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
+      <register name="QuadDec_Cnt16_COUNTER" address="0x400F0002" bitWidth="16" desc="UDB.A0 - Current Counter Value" hidden="false" />
+      <register name="QuadDec_Cnt16_PERIOD" address="0x400F0022" bitWidth="16" desc="UDB.D0 - Assigned Period" hidden="false" />
+      <register name="QuadDec_Cnt16_COMPARE" address="0x400F0032" bitWidth="16" desc="UDB.D1 - Assigned Compare Value" hidden="false" />
+      <register name="QuadDec_Cnt16_Control_Reg" address="0x400F0073" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
         <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable Counter" hidden="false" />
         <field name="CTRL_CAPMODE" from="4" to="3" access="RW" resetVal="" desc="Capture mode" hidden="false" />
         <field name="CTRL_CMPMODE" from="2" to="0" access="RW" resetVal="" desc="Compare mode" hidden="false" />
       </register>
-      <register name="QuadDec_Cnt16_STATUS_MASK" address="0x400F0087" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
+      <register name="QuadDec_Cnt16_STATUS_MASK" address="0x400F0083" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
         <field name="COUNTER_STS_CMP" from="0" to="0" access="RW" resetVal="" desc="Compare output status" hidden="false" />
         <field name="COUNTER_STS_A0ZERO" from="1" to="1" access="RW" resetVal="" desc="A0 Zero ouput status" hidden="false" />
         <field name="COUNTER_STS_OVERFLOW" from="2" to="2" access="RW" resetVal="" desc="Overflow status " hidden="false" />
@@ -31,7 +31,7 @@
         <field name="COUNTER_STS_FIFO_FULL" from="5" to="5" access="RW" resetVal="" desc="FIFO Full Status " hidden="false" />
         <field name="COUNTER_STS_FIFO_NEMPTY" from="6" to="6" access="RW" resetVal="" desc="FIFO Not Empty Status " hidden="false" />
       </register>
-      <register name="QuadDec_Cnt16_STATUS_AUX_CTRL" address="0x400F0097" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <register name="QuadDec_Cnt16_STATUS_AUX_CTRL" address="0x400F0093" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
         <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear" hidden="false">
           <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
           <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
@@ -60,8 +60,8 @@
     </block>
     <block name="bQuadDec" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="VirtualMux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <register name="QuadDec_Cnt16_COUNTER" address="0x400F0006" bitWidth="16" desc="Counter value" hidden="false" />
-    <register name="QuadDec_STATUS_REG" address="0x400F0064" bitWidth="8" desc="Quadrature Decoder Status Register" hidden="false">
+    <register name="QuadDec_Cnt16_COUNTER" address="0x400F0002" bitWidth="16" desc="Counter value" hidden="false" />
+    <register name="QuadDec_STATUS_REG" address="0x400F0060" bitWidth="8" desc="Quadrature Decoder Status Register" hidden="false">
       <field name="OVERFLOW" from="0" to="0" access="R" resetVal="" desc="Counter overflow" hidden="false" />
       <field name="UNDERFLOW" from="1" to="1" access="R" resetVal="" desc="Counter underflow" hidden="false" />
       <field name="RESET" from="2" to="2" access="R" resetVal="" desc="Counter Reset due index" hidden="false" />
@@ -70,22 +70,22 @@
   </block>
   <block name="Timer_PWM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
     <block name="TimerUDB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <register name="Timer_PWM_COUNTER" address="0x400F0003" bitWidth="24" desc="UDB.A0 - Current Down Counter Value" hidden="false" />
-    <register name="Timer_PWM_PERIOD" address="0x400F0023" bitWidth="24" desc="UDB.D0 - Assigned Period" hidden="false" />
-    <register name="Timer_PWM_Control_Reg" address="0x400F0072" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
+    <register name="Timer_PWM_COUNTER" address="0x400F0004" bitWidth="24" desc="UDB.A0 - Current Down Counter Value" hidden="false" />
+    <register name="Timer_PWM_PERIOD" address="0x400F0024" bitWidth="24" desc="UDB.D0 - Assigned Period" hidden="false" />
+    <register name="Timer_PWM_Control_Reg" address="0x400F0075" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
       <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable the Timer" hidden="false" />
       <field name="CTRL_CMODE" from="6" to="5" access="RW" resetVal="" desc="Capture Mode" hidden="false" />
       <field name="CTRL_TEN" from="4" to="4" access="RW" resetVal="" desc="Trigger Enable Bit" hidden="false" />
       <field name="CTRL_TMODE" from="3" to="2" access="RW" resetVal="" desc="Trigger Mode" hidden="false" />
       <field name="CTRL_IC" from="1" to="0" access="RW" resetVal="" desc="Interrupt Count" hidden="false" />
     </register>
-    <register name="Timer_PWM_STATUS_MASK" address="0x400F0082" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
+    <register name="Timer_PWM_STATUS_MASK" address="0x400F0086" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
       <field name="TIMER_STS_TC" from="0" to="0" access="R" resetVal="" desc="Enables the Interrupt on TC" hidden="false" />
       <field name="TIMER_STS_CAPT" from="1" to="1" access="R" resetVal="" desc="Enables the Interrupt on Capture" hidden="false" />
       <field name="TIMER_STS_FIFO_FULL" from="2" to="2" access="R" resetVal="" desc="FIFO Full Status " hidden="false" />
       <field name="TIMER_STS_FIFO_NEMPTY" from="3" to="3" access="R" resetVal="" desc="FIFO Empty status " hidden="false" />
     </register>
-    <register name="Timer_PWM_STATUS_AUX_CTRL" address="0x400F0092" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+    <register name="Timer_PWM_STATUS_AUX_CTRL" address="0x400F0096" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
       <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear" hidden="false">
         <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
         <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
@@ -542,7 +542,7 @@
     <block name="sda" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="or_sclk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="ZeroTerminal_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <register name="_CTRL" address="0x40250000" bitWidth="32" desc="Generic control register" hidden="false">
+    <register name="_CTRL" address="0x40260000" bitWidth="32" desc="Generic control register" hidden="false">
       <field name="OVS" from="3" to="0" access="RW" resetVal="" desc="Serial interface bit period oversampling factor expressed in lP clock cycles. Used for SPI and UART functionality. OVS + 1 IP clock cycles constitute a single serial interface clock/bit cycle." hidden="false" />
       <field name="EC_AM_MODE" from="8" to="8" access="RW" resetVal="" desc="Internally clocked mode ('0') or externally clocked mode ('1') address matching (I2C) or selection (SPI).In internally clocked mode, the serial interface protocols run off the peripheral clock. In externally clocked mode, the serial interface protocols run off the clock as provided by the serial interface." hidden="false" />
       <field name="EC_OP_MODE" from="9" to="9" access="RW" resetVal="" desc="Internally clocked mode ('0') or externally clocked mode ('1') operation. In internally clocked mode, the serial interface protocols run off the peripheral clock. In externally clocked mode, the serial interface protocols run off the clock as provided by the serial interface." hidden="false" />
@@ -553,7 +553,7 @@
       <field name="MODE" from="25" to="24" access="RW" resetVal="" desc="Mode of operation: I2C = 0, SPI = 1, UART = 2" hidden="false" />
       <field name="ENABLED" from="31" to="31" access="RW" resetVal="" desc="IP enabled ('1') or not ('0')." hidden="false" />
     </register>
-    <register name="_SPI_CTRL" address="0x40250020" bitWidth="32" desc="SPI control register" hidden="false">
+    <register name="_SPI_CTRL" address="0x40260020" bitWidth="32" desc="SPI control register" hidden="false">
       <field name="CONTINUOUS" from="0" to="0" access="RW" resetVal="" desc="Continuous SPI data transfers enabled ('1') or not ('0')." hidden="false" />
       <field name="SELECT_PRECEDE" from="1" to="1" access="RW" resetVal="" desc="Only used in SPI Texas Instruments' submode. When '1', the data frame start indication is a pulse on the SELECT line that precedes the transfer of the first data frame bit. When '0', the data frame start indication is a pulse on the SELECT line that coincides with the transfer of the first data frame bit." hidden="false" />
       <field name="CPHA" from="2" to="2" access="RW" resetVal="" desc="Only applicable in SPI Motorola submode. Indicates the clock phase." hidden="false" />
@@ -569,20 +569,20 @@
       <field name="SLAVE_SELECT" from="27" to="26" access="RW" resetVal="" desc="Selects one of the four SPI slave select signals: SS0 = 0, SS1 = 1 , SS2 = 2, SS3 = 3." hidden="false" />
       <field name="MASTER_MODE" from="31" to="31" access="RW" resetVal="" desc="Master ('1') or slave ('0') mode." hidden="false" />
     </register>
-    <register name="_SPI_STATUS" address="0x40250024" bitWidth="32" desc="SPI status register" hidden="false">
+    <register name="_SPI_STATUS" address="0x40260024" bitWidth="32" desc="SPI status register" hidden="false">
       <field name="BUS_BUSY" from="0" to="0" access="R" resetVal="" desc="SPI bus is busy. The bus is considered busy ('1') during an ongoing transaction" hidden="false" />
     </register>
-    <register name="_UART_CTRL" address="0x40250040" bitWidth="32" desc="UART control register" hidden="false">
+    <register name="_UART_CTRL" address="0x40260040" bitWidth="32" desc="UART control register" hidden="false">
       <field name="LOOPBACK" from="16" to="16" access="RW" resetVal="" desc="Local loopback control." hidden="false" />
       <field name="MODE" from="25" to="24" access="RW" resetVal="" desc="Submode of UART operation: Standard = 0, Smart Card = 1, IrDA = 2." hidden="false" />
     </register>
-    <register name="_UART_TX_CTRL" address="0x40250044" bitWidth="32" desc="UART transmitter control register" hidden="false">
+    <register name="_UART_TX_CTRL" address="0x40260044" bitWidth="32" desc="UART transmitter control register" hidden="false">
       <field name="STOP_BTIS" from="2" to="0" access="RW" resetVal="" desc="Stop bits. STOP_BITS + 1 is the duration of the stop period in terms of halve bit periods." hidden="false" />
       <field name="PARITY" from="4" to="4" access="RW" resetVal="" desc="Parity bit. When '0', the transmitter generates an even parity. When '1', the transmitter generates an odd parity" hidden="false" />
       <field name="PARITY_ENABLED" from="5" to="5" access="RW" resetVal="" desc="Parity generation enabled ('1') or not ('0'). Only applicable in standard UART submodes. In SmartCard submode, parity generation is always enabled through hardware. In IrDA submode, parity generation is always disabled through hardware." hidden="false" />
       <field name="RETRY_ON_NACK" from="8" to="8" access="RW" resetVal="" desc="When '1', a data frame is retransmitted when a negative acknowledgement is received. Only applicable to the SmartCard submode." hidden="false" />
     </register>
-    <register name="_UART_RX_CTRL" address="0x40250048" bitWidth="32" desc="UART receiver control register" hidden="false">
+    <register name="_UART_RX_CTRL" address="0x40260048" bitWidth="32" desc="UART receiver control register" hidden="false">
       <field name="STOP_BITS" from="2" to="0" access="RW" resetVal="" desc="Stop bits. STOP_BITS + 1 is the duration of the stop period in terms of halve bit periods." hidden="false" />
       <field name="PARITY" from="4" to="4" access="RW" resetVal="" desc="Parity bit. When '0', the receiver expects an even parity. When '1', the receiver expects an odd parity." hidden="false" />
       <field name="PARITY_ENABLED" from="5" to="5" access="RW" resetVal="" desc="Parity checking enabled ('1') or not ('0'). Only applicable in standard UART submode. In SmartCard submode, parity checking is always enabled through hardware. In IrDA submode, parity checking is always disabled through hardware." hidden="false" />
@@ -594,13 +594,13 @@
       <field name="SKIP_START" from="13" to="13" access="RW" resetVal="" desc="Only applicable in standard UART submode. When '1', the receiver skips start bit detection for the first received data frame. Instead, it synchronizes on the first received data frame bit, which should be a '1'." hidden="false" />
       <field name="BREAK_WIDTH" from="19" to="16" access="RW" resetVal="" desc="Break width. BREAK_WIDTH + 1 is the minimum width in bit periods of a break." hidden="false" />
     </register>
-    <register name="_UART_FLOW_CTRL" address="0x40250050" bitWidth="32" desc="UART flow control register" hidden="false">
+    <register name="_UART_FLOW_CTRL" address="0x40260050" bitWidth="32" desc="UART flow control register" hidden="false">
       <field name="TRIGGER_LEVEL" from="3" to="0" access="RW" resetVal="" desc="Trigger level. When the receiver FIFO has less entries than the amount of this field, a RTS signal is activated. Setting this field to 0 disables RTS generation." hidden="false" />
       <field name="RTS_POLARITY" from="16" to="16" access="RW" resetVal="" desc="Polarity of the RTS output signal" hidden="false" />
       <field name="CTS_POLARITY" from="24" to="24" access="RW" resetVal="" desc="Polarity of the CTS input signal" hidden="false" />
       <field name="CTS_ENABLED" from="25" to="25" access="RW" resetVal="" desc="Enable use of CTS input signal by the UART transmitter" hidden="false" />
     </register>
-    <register name="_I2C_CTRL" address="0x40250060" bitWidth="32" desc="I2C control register" hidden="false">
+    <register name="_I2C_CTRL" address="0x40260060" bitWidth="32" desc="I2C control register" hidden="false">
       <field name="HIGH_PHASE_OVS" from="3" to="0" access="RW" resetVal="" desc="Serial I2C interface high phase oversampling factor. HIGH_PHASE_OVS + 1 peripheral clock periods constitute the high phase of a bit period." hidden="false" />
       <field name="LOW_PHASE_OVS" from="7" to="4" access="RW" resetVal="" desc="Serial I2C interface low phase oversampling factor. LOW_PHASE_OVS + 1 peripheral clock periods constitute the low phase of a bit period" hidden="false" />
       <field name="M_READY_DATA_ACK" from="8" to="8" access="RW" resetVal="" desc="When '1', a received data element by the master is immediately ACK'd when the receiver FIFO is not full." hidden="false" />
@@ -614,23 +614,23 @@
       <field name="SLAVE_MODE" from="30" to="30" access="RW" resetVal="" desc="Slave mode enabled ('1') or not ('0')." hidden="false" />
       <field name="MASTER_MODE" from="31" to="31" access="RW" resetVal="" desc="Master mode enabled ('1') or not ('0'). Note that both master and slave modes can be enabled at the same time. This allows the IP to address itself." hidden="false" />
     </register>
-    <register name="_I2C_STATUS" address="0x40250064" bitWidth="32" desc="I2C status register" hidden="false">
+    <register name="_I2C_STATUS" address="0x40260064" bitWidth="32" desc="I2C status register" hidden="false">
       <field name="BUS_BUSY" from="0" to="0" access="R" resetVal="" desc="I2C bus is busy. The bus is considered busy ('1')." hidden="false" />
       <field name="S_READ" from="4" to="4" access="R" resetVal="" desc="I2C slave read transfer ('1') or I2C slave write transfer ('0'). When the I2C slave is inactive/idle or receiving START, REPEATED START, STOP or an address, this field is '0'." hidden="false" />
       <field name="M_READ" from="5" to="5" access="R" resetVal="" desc="I2C master read transfer ('1') or I2C master write transfer ('0'). When the I2C master is inactive/idle or transmitting START, REPEATED START, STOP or an address, this field is '0''." hidden="false" />
     </register>
-    <register name="_I2C_M_CMD" address="0x40250068" bitWidth="32" desc="I2C master command register" hidden="false">
+    <register name="_I2C_M_CMD" address="0x40260068" bitWidth="32" desc="I2C master command register" hidden="false">
       <field name="M_START" from="0" to="0" access="RW" resetVal="" desc="When '1', transmit a START or REPEATED START. Whether a START or REPEATED START is transmitted depends on the state of the master state machine. When this action is performed, the hardware sets this field to '0'." hidden="false" />
       <field name="M_IDLE_START" from="1" to="1" access="RW" resetVal="" desc="When '1', transmit a START as soon as the bus is idle (I2C_STATUS.BUS_BUSY is '0', note that BUSY has a default value of '0'). When this action is performed, the hardware sets this field to '0'." hidden="false" />
       <field name="M_ACK" from="2" to="2" access="RW" resetVal="" desc="When '1', attempt to transmit an acknowledgement (ACK). When this action is performed, the hardware sets this field to '0'." hidden="false" />
       <field name="M_NACK" from="3" to="3" access="RW" resetVal="" desc="When '1', attempt to transmit a negative acknowledgement (NACK). When this action is performed, the hardware sets this field to '0'." hidden="false" />
       <field name="M_STOP" from="4" to="4" access="RW" resetVal="" desc="When '1', attempt to transmit a STOP. When this action is performed, the hardware sets this field to '0'. This command has a higher priority than I2C_M_CMD.M_START: in situations where both a STOP and a REPEATED START could be transmitted, M_STOP takes precedence over M_START." hidden="false" />
     </register>
-    <register name="_I2C_S_CMD" address="0x4025006C" bitWidth="32" desc="I2C slave command register" hidden="false">
+    <register name="_I2C_S_CMD" address="0x4026006C" bitWidth="32" desc="I2C slave command register" hidden="false">
       <field name="S_ACK" from="0" to="0" access="RW" resetVal="" desc="When '1', attempt to transmit an acknowledgement (ACK). When this action is performed, the hardware sets this field to '0'." hidden="false" />
       <field name="S_NACK" from="1" to="1" access="RW" resetVal="" desc="When '1', attempt to transmit a negative acknowledgement (NACK). When this action is performed, the hardware sets this field to '0'" hidden="false" />
     </register>
-    <register name="_I2C_CFG" address="0x40250070" bitWidth="32" desc="I2C fitler trimm register" hidden="false">
+    <register name="_I2C_CFG" address="0x40260070" bitWidth="32" desc="I2C fitler trimm register" hidden="false">
       <field name="SDA_IN_FILT_TRIM" from="1" to="0" access="RW" resetVal="" desc="" hidden="false" />
       <field name="SDA_IN_FILT_SEL" from="4" to="4" access="RW" resetVal="" desc="" hidden="false" />
       <field name="SCL_IN_FILT_TRIM" from="9" to="8" access="RW" resetVal="" desc="" hidden="false" />
@@ -640,48 +640,48 @@
       <field name="SDA_OUT_FILT2_TRIM" from="21" to="20" access="RW" resetVal="" desc="" hidden="false" />
       <field name="SDA_OUT_FILT_SEL" from="29" to="28" access="RW" resetVal="" desc="" hidden="false" />
     </register>
-    <register name="_TX_CTRL" address="0x40250200" bitWidth="32" desc="Transmitter control register" hidden="false">
+    <register name="_TX_CTRL" address="0x40260200" bitWidth="32" desc="Transmitter control register" hidden="false">
       <field name="DATA_WIDTH" from="3" to="0" access="RW" resetVal="" desc="Data frame width. DATA_WIDTH + 1 is the amount of bits in a transmitted data frame." hidden="false" />
       <field name="MSB_FIRST" from="8" to="8" access="RW" resetVal="" desc="Least significant bit first ('0') or most significant bit first ('1'). For I2C, this field should be '1'." hidden="false" />
     </register>
-    <register name="_TX_FIFO_CTRL" address="0x40250204" bitWidth="32" desc="Transmitter FIFO control register" hidden="false">
+    <register name="_TX_FIFO_CTRL" address="0x40260204" bitWidth="32" desc="Transmitter FIFO control register" hidden="false">
       <field name="TRIGGER_LEVEL" from="3" to="0" access="RW" resetVal="" desc="Trigger level. When the transmitter FIFO has less entries than the amount of this field, a transmitter trigger event is generated." hidden="false" />
       <field name="CLEAR" from="16" to="16" access="RW" resetVal="" desc="When '1', the transmitter FIFO and transmitter shift register are cleared/invalidated. Invalidation will last for as long as this field is '1'. If a quick clear/invalidation is required, the field should be set to '1' and be followed by a set to '0'. If a clear/invalidation is required for an extended time period, the field should be set to '1' during the complete time period." hidden="false" />
       <field name="FREEZE" from="17" to="17" access="RW" resetVal="" desc="When '1', hardware reads from the transmitter FIFO do not remove FIFO entries. Freeze will not advance the TX FIFO read pointer." hidden="false" />
     </register>
-    <register name="_TX_FIFO_STATUS" address="0x40250208" bitWidth="32" desc="Transmitter FIFO status register" hidden="false">
+    <register name="_TX_FIFO_STATUS" address="0x40260208" bitWidth="32" desc="Transmitter FIFO status register" hidden="false">
       <field name="USED" from="4" to="0" access="R" resetVal="" desc="Amount of entries in the transmitter FIFO. The value of this field ranges from 0 to 8." hidden="false" />
       <field name="SR_VALID" from="15" to="15" access="R" resetVal="" desc="Indicates whether the TX shift registers holds a valid data frame ('1') or not ('0')" hidden="false" />
       <field name="RD_PTR" from="20" to="16" access="R" resetVal="" desc="FIFO read pointer: FIFO location from which a data frame is read by the hardware." hidden="false" />
       <field name="WR_PTR" from="28" to="24" access="R" resetVal="" desc="FIFO write pointer: FIFO location at which a new data frame is written." hidden="false" />
     </register>
-    <register name="_TX_FIFO_WR" address="0x40250240" bitWidth="32" desc="Transmitter FIFO write register" hidden="false">
+    <register name="_TX_FIFO_WR" address="0x40260240" bitWidth="32" desc="Transmitter FIFO write register" hidden="false">
       <field name="DATA" from="15" to="0" access="W" resetVal="" desc="Data frame written into the transmitter FIFO. Behavior is similar to that of a PUSH operation." hidden="false" />
     </register>
-    <register name="_RX_CTRL" address="0x40250300" bitWidth="32" desc="Receiver control register" hidden="false">
+    <register name="_RX_CTRL" address="0x40260300" bitWidth="32" desc="Receiver control register" hidden="false">
       <field name="DATA_WIDTH" from="3" to="0" access="RW" resetVal="" desc="Data frame width. DATA_WIDTH + 1 is the expected amount of bits in received data frame." hidden="false" />
       <field name="MSB_FIRST" from="8" to="8" access="RW" resetVal="" desc="Least significant bit first ('0') or most significant bit first ('1')." hidden="false" />
       <field name="MEDIAN" from="9" to="9" access="RW" resetVal="" desc="Median filter. When '1', a digital 3 taps median filter is performed on input interface lines." hidden="false" />
     </register>
-    <register name="_RX_FIFO_CTRL" address="0x40250304" bitWidth="32" desc="Receiver FIFO control register" hidden="false">
+    <register name="_RX_FIFO_CTRL" address="0x40260304" bitWidth="32" desc="Receiver FIFO control register" hidden="false">
       <field name="TRIGGER_LEVEL" from="3" to="0" access="RW" resetVal="" desc="Trigger level. When the receiver FIFO has more entries than the amount of this field, a receiver trigger event is generated." hidden="false" />
       <field name="CLEAR" from="16" to="16" access="RW" resetVal="" desc="When '1', the receiver FIFO and receiver shift register are cleared/invalidated. Invalidation will last for as long as this field is '1'. If a quick clear/invalidation is required, the field should be set to '1' and be followed by a set to '0'. If a clear/invalidation is required for an extended time period, the field should be set to '1' during the complete time period." hidden="false" />
       <field name="FREEZE" from="17" to="17" access="RW" resetVal="" desc="When '1', hardware writes to the receiver FIFO have no effect. Freeze will not advance the RX FIFO write pointer." hidden="false" />
     </register>
-    <register name="_RX_FIFO_STATUS" address="0x40250308" bitWidth="32" desc="Receiver FIFO status registerS" hidden="false">
+    <register name="_RX_FIFO_STATUS" address="0x40260308" bitWidth="32" desc="Receiver FIFO status registerS" hidden="false">
       <field name="USED" from="4" to="0" access="R" resetVal="" desc="Amount of entries in the receiver FIFO. The value of this field ranges from 0 to 8." hidden="false" />
       <field name="SR_VALID" from="15" to="15" access="R" resetVal="" desc="Indicates whether the RX shift registers holds a (partial) valid data frame ('1') or not ('0')." hidden="false" />
       <field name="RD_PTR" from="20" to="16" access="R" resetVal="" desc="FIFO read pointer: FIFO location from which a data frame is read." hidden="false" />
       <field name="WR_PTR" from="28" to="24" access="R" resetVal="" desc="FIFO write pointer: FIFO location at which a new data frame is written by the hardware." hidden="false" />
     </register>
-    <register name="_RX_MATCH" address="0x40250310" bitWidth="32" desc="Slave address and mask register" hidden="false">
+    <register name="_RX_MATCH" address="0x40260310" bitWidth="32" desc="Slave address and mask register" hidden="false">
       <field name="ADDR" from="7" to="0" access="RW" resetVal="" desc="Slave device address. For UART multi-processor mode all eight bits a reused. For I2C, bit 0 of the register is not used." hidden="false" />
       <field name="MASK" from="23" to="16" access="RW" resetVal="" desc="Slave device address mask. This field is a 8 bit mask that specifies which of the ADDR field bits in the SCB_RX_MATCH_ADDR register take part in the matching of the slave address." hidden="false" />
     </register>
-    <register name="_RX_FIFO_RD" address="0x40250340" bitWidth="32" desc="Receiver FIFO read register" hidden="false">
+    <register name="_RX_FIFO_RD" address="0x40260340" bitWidth="32" desc="Receiver FIFO read register" hidden="false">
       <field name="DATA" from="15" to="0" access="R" resetVal="" desc="Data read from the receiver FIFO. Reading a data frame will remove the data frame from the FIFO." hidden="false" />
     </register>
-    <register name="_INTR_CAUSE" address="0x40250E00" bitWidth="32" desc="Interrupt cause register" hidden="false">
+    <register name="_INTR_CAUSE" address="0x40260E00" bitWidth="32" desc="Interrupt cause register" hidden="false">
       <field name="MASTER" from="0" to="0" access="R" resetVal="" desc="Master interrupt active." hidden="false" />
       <field name="SLAVE" from="1" to="1" access="R" resetVal="" desc="Slave interrupt active." hidden="false" />
       <field name="TX" from="2" to="2" access="R" resetVal="" desc="Transmitter interrupt active." hidden="false" />
@@ -689,25 +689,25 @@
       <field name="I2C_EC" from="4" to="4" access="R" resetVal="" desc="Externally clock I2C interrupt active." hidden="false" />
       <field name="SPI_EC" from="5" to="5" access="R" resetVal="" desc="Externally clocked SPI interrupt active." hidden="false" />
     </register>
-    <register name="_INTR_I2C_EC" address="0x40250E80" bitWidth="32" desc="Externally clocked I2C interrupt request register" hidden="false">
+    <register name="_INTR_I2C_EC" address="0x40260E80" bitWidth="32" desc="Externally clocked I2C interrupt request register" hidden="false">
       <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="Wake up request. Active on incoming slave request (with address match). Only used when EC_AM is '1'." hidden="false" />
     </register>
-    <register name="_INTR_I2C_EC_MASK" address="0x40250E88" bitWidth="32" desc="Externally clocked I2C interrupt mask register" hidden="false">
+    <register name="_INTR_I2C_EC_MASK" address="0x40260E88" bitWidth="32" desc="Externally clocked I2C interrupt mask register" hidden="false">
       <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_I2C_EC_MASKED" address="0x40250E8C" bitWidth="32" desc="Externally clocked SPI interrupt masked register" hidden="false">
+    <register name="_INTR_I2C_EC_MASKED" address="0x40260E8C" bitWidth="32" desc="Externally clocked SPI interrupt masked register" hidden="false">
       <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
     </register>
-    <register name="_INTR_INTR_SPI_EC" address="0x40250EC0" bitWidth="32" desc="Externally clocked SPI interrupt request register" hidden="false">
+    <register name="_INTR_INTR_SPI_EC" address="0x40260EC0" bitWidth="32" desc="Externally clocked SPI interrupt request register" hidden="false">
       <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="Wake up request. Active on incoming slave request when externally clocked selection is '1'." hidden="false" />
     </register>
-    <register name="_INTR_INTR_SPI_EC_MASK" address="0x40250EC8" bitWidth="32" desc="Externally clocked SPI interrupt mask register" hidden="false">
+    <register name="_INTR_INTR_SPI_EC_MASK" address="0x40260EC8" bitWidth="32" desc="Externally clocked SPI interrupt mask register" hidden="false">
       <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_INTR_SPI_EC_MASKED" address="0x40250ECC" bitWidth="32" desc="Externally clocked SPI interrupt masked register" hidden="false">
+    <register name="_INTR_INTR_SPI_EC_MASKED" address="0x40260ECC" bitWidth="32" desc="Externally clocked SPI interrupt masked register" hidden="false">
       <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
     </register>
-    <register name="_INTR_M" address="0x40250F00" bitWidth="32" desc="Master interrupt request register." hidden="false">
+    <register name="_INTR_M" address="0x40260F00" bitWidth="32" desc="Master interrupt request register." hidden="false">
       <field name="I2C_LOST_ARB" from="0" to="0" access="RW" resetVal="" desc="I2C master lost arbitration: the value driven by the master on the SDA line is not the same as the value observed on the SDA line." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="I2C master negative acknowledgement. Set to '1', when the master receives a NACK (typically after the master transmitted the slave address or TX data)." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="I2C master acknowledgement. Set to '1', when the master receives a ACK (typically after the master transmitted the slave address or TX data)." hidden="false" />
@@ -715,7 +715,7 @@
       <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="I2C master bus error (unexpected detection of START or STOP condition)." hidden="false" />
       <field name="SPI_DONE" from="9" to="9" access="RW" resetVal="" desc="SPI master transfer done event: all data frames in the transmit FIFO are sent and the transmit FIFO is empty." hidden="false" />
     </register>
-    <register name="_INTR_M_SET" address="0x40250F04" bitWidth="32" desc="Master interrupt set request register" hidden="false">
+    <register name="_INTR_M_SET" address="0x40260F04" bitWidth="32" desc="Master interrupt set request register" hidden="false">
       <field name="I2C_LOST_ARB" from="0" to="0" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
@@ -723,7 +723,7 @@
       <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="SPI_DONE" from="9" to="9" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_M_MASK" address="0x40250F08" bitWidth="32" desc="Master interrupt mask register" hidden="false">
+    <register name="_INTR_M_MASK" address="0x40260F08" bitWidth="32" desc="Master interrupt mask register" hidden="false">
       <field name="I2C_LOST_ARB" from="0" to="0" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
@@ -731,7 +731,7 @@
       <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="SPI_DONE" from="9" to="9" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_M_MASKED" address="0x40250F0C" bitWidth="32" desc="Master interrupt masked request register" hidden="false">
+    <register name="_INTR_M_MASKED" address="0x40260F0C" bitWidth="32" desc="Master interrupt masked request register" hidden="false">
       <field name="I2C_LOST_ARB" from="0" to="0" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
@@ -739,7 +739,7 @@
       <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="SPI_DONE" from="9" to="9" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
     </register>
-    <register name="_INTR_S" address="0x40250F40" bitWidth="32" desc="Slave interrupt request register" hidden="false">
+    <register name="_INTR_S" address="0x40260F40" bitWidth="32" desc="Slave interrupt request register" hidden="false">
       <field name="I2C_ARB_LOST" from="0" to="0" access="RW" resetVal="" desc="I2C slave lost arbitration: the value driven on the SDA line is not the same as the value observed on the SDA line (while the SCL line is '1')." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="I2C slave negative acknowledgement received. Set to '1', when the slave receives a NACK (typically after the slave transmitted TX data)." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="I2C slave acknowledgement received. Set to '1', when the slave receives a ACK (typically after the slave transmitted TX data)." hidden="false" />
@@ -751,7 +751,7 @@
       <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="I2C slave bus error (unexpected detection of START or STOP condition)." hidden="false" />
       <field name="SPI_BUS_ERR" from="11" to="11" access="RW" resetVal="" desc="SPI slave deselected at an unexpected time in the SPI transfer. The Firmware may decide to clear the TX and RX FIFOs in case of this error." hidden="false" />
     </register>
-    <register name="_INTR_S_SET" address="0x40250F44" bitWidth="32" desc="Slave interrupt set request register" hidden="false">
+    <register name="_INTR_S_SET" address="0x40260F44" bitWidth="32" desc="Slave interrupt set request register" hidden="false">
       <field name="I2C_ARB_LOST" from="0" to="0" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
@@ -763,7 +763,7 @@
       <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="SPI_BUS_ERR" from="11" to="11" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_S_MASK" address="0x40250F48" bitWidth="32" desc="Slave interrupt mask register" hidden="false">
+    <register name="_INTR_S_MASK" address="0x40260F48" bitWidth="32" desc="Slave interrupt mask register" hidden="false">
       <field name="I2C_ARB_LOST" from="0" to="0" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
@@ -775,7 +775,7 @@
       <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="SPI_BUS_ERR" from="11" to="11" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_S_MASKED" address="0x40250F4C" bitWidth="32" desc="Slave interrupt masked register" hidden="false">
+    <register name="_INTR_S_MASKED" address="0x40260F4C" bitWidth="32" desc="Slave interrupt masked register" hidden="false">
       <field name="I2C_ARB_LOST" from="0" to="0" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
@@ -786,7 +786,7 @@
       <field name="I2C_GENERAL" from="7" to="7" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="SPI_BUS_ERR" from="11" to="11" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
     </register>
-    <register name="_INTR_TX" address="0x40250F80" bitWidth="32" desc="Transmitter interrupt request register" hidden="false">
+    <register name="_INTR_TX" address="0x40260F80" bitWidth="32" desc="Transmitter interrupt request register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="Less entries in the TX FIFO than the value specified by TRIGGER_LEVEL in SCB_TX_FIFO_CTL." hidden="false" />
       <field name="NOT_FULL" from="1" to="1" access="RW" resetVal="" desc="TX FIFO is not full." hidden="false" />
       <field name="EMPTY" from="4" to="4" access="RW" resetVal="" desc="TX FIFO is empty; i.e. it has 0 entries." hidden="false" />
@@ -796,7 +796,7 @@
       <field name="UART_DONE" from="9" to="9" access="RW" resetVal="" desc="UART transmitter done event. This happens when the IP is done transferring all data in the TX FIFO; i.e. EMPTY is '1'. Set to '1', when event is detected." hidden="false" />
       <field name="UART_ARB_LOST" from="10" to="10" access="RW" resetVal="" desc="UART lost arbitration: the value driven on the TX line is not the same as the value observed on the RX line. " hidden="false" />
     </register>
-    <register name="_INTR_TX_SET" address="0x40250F84" bitWidth="32" desc="Transmitter interrupt set request register" hidden="false">
+    <register name="_INTR_TX_SET" address="0x40260F84" bitWidth="32" desc="Transmitter interrupt set request register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="NOT_FULL" from="1" to="1" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="EMPTY" from="4" to="4" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
@@ -806,7 +806,7 @@
       <field name="UART_DONE" from="9" to="9" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="UART_ARB_LOST" from="10" to="10" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_TX_MASK" address="0x40250F88" bitWidth="32" desc="Transmitter interrupt mask request register" hidden="false">
+    <register name="_INTR_TX_MASK" address="0x40260F88" bitWidth="32" desc="Transmitter interrupt mask request register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="NOT_FULL" from="1" to="1" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="EMPTY" from="4" to="4" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
@@ -816,7 +816,7 @@
       <field name="UART_DONE" from="9" to="9" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="UART_ARB_LOST" from="10" to="10" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_TX_MASKED" address="0x40250F8C" bitWidth="32" desc="Transmitter interrupt masked request register" hidden="false">
+    <register name="_INTR_TX_MASKED" address="0x40260F8C" bitWidth="32" desc="Transmitter interrupt masked request register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="NOT_FULL" from="1" to="1" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="EMPTY" from="4" to="4" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
@@ -826,7 +826,7 @@
       <field name="UART_DONE" from="9" to="9" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="UART_ARB_LOST" from="10" to="10" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
     </register>
-    <register name="_INTR_RX" address="0x40250FC0" bitWidth="32" desc="Receiver interrupt request register" hidden="false">
+    <register name="_INTR_RX" address="0x40260FC0" bitWidth="32" desc="Receiver interrupt request register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="More entries in the RX FIFO than the value specified by TRIGGER_LEVEL in SCB_RX_FIFO_CTL." hidden="false" />
       <field name="NOT_EMPTY" from="2" to="2" access="RW" resetVal="" desc="RX FIFO is not empty." hidden="false" />
       <field name="FULL" from="3" to="3" access="RW" resetVal="" desc="RX FIFO is full. Note that received data frames are lost when the RX FIFO is full." hidden="false" />
@@ -837,7 +837,7 @@
       <field name="BAUD_DETECT" from="10" to="10" access="RW" resetVal="" desc="LIN baud rate detection is completed." hidden="false" />
       <field name="BREAK_DETECT" from="11" to="11" access="RW" resetVal="" desc="Break detection is successful: the line is '0' for UART_RX_CTRL.BREAK_WIDTH + 1 bit period." hidden="false" />
     </register>
-    <register name="_INTR_RX_SET" address="0x40250FC4" bitWidth="32" desc="Receiver interrupt set request register" hidden="false">
+    <register name="_INTR_RX_SET" address="0x40260FC4" bitWidth="32" desc="Receiver interrupt set request register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="NOT_EMPTY" from="2" to="2" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="FULL" from="3" to="3" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
@@ -848,7 +848,7 @@
       <field name="BAUD_DETECT" from="10" to="10" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="BREAK_DETECT" from="11" to="11" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_RX_MASK" address="0x40250FC8" bitWidth="32" desc="Receiver interrupt mask register" hidden="false">
+    <register name="_INTR_RX_MASK" address="0x40260FC8" bitWidth="32" desc="Receiver interrupt mask register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="NOT_EMPTY" from="2" to="2" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="FULL" from="3" to="3" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
@@ -859,7 +859,7 @@
       <field name="BAUD_DETECT" from="10" to="10" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="BREAK_DETECT" from="11" to="11" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_RX_MASKED" address="0x40250FCC" bitWidth="32" desc="Receiver interrupt masked register" hidden="false">
+    <register name="_INTR_RX_MASKED" address="0x40260FCC" bitWidth="32" desc="Receiver interrupt masked register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="NOT_EMPTY" from="2" to="2" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="FULL" from="3" to="3" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
@@ -5195,9 +5195,9 @@
   <block name="Clock_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="not_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Status_Reg_Switches" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
-    <register name="Status_Reg_Switches_STATUS_REG" address="0x400F0060" bitWidth="8" desc="" hidden="false" />
-    <register name="Status_Reg_Switches_MASK_REG" address="0x400F0080" bitWidth="8" desc="" hidden="false" />
-    <register name="Status_Reg_Switches_STATUS_AUX_CTL_REG" address="0x400F0090" bitWidth="8" desc="" hidden="false">
+    <register name="Status_Reg_Switches_STATUS_REG" address="0x400F0065" bitWidth="8" desc="" hidden="false" />
+    <register name="Status_Reg_Switches_MASK_REG" address="0x400F0085" bitWidth="8" desc="" hidden="false" />
+    <register name="Status_Reg_Switches_STATUS_AUX_CTL_REG" address="0x400F0095" bitWidth="8" desc="" hidden="false">
       <field name="FIFO0" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear" hidden="false">
         <value name="ENABLED" value="1" desc="Enable counter" />
         <value name="DISABLED" value="0" desc="Disable counter" />
@@ -5245,7 +5245,7 @@
     <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="CanIP" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="HFCLK" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <register name="CAN_CAN_INT_SR" address="0x402E0000" bitWidth="32" desc="The interrupt status register stores internal interrupt events.  &#xA; Once a bit is set it remains set until it is cleared by writing a '1' to it.  &#xA; The interrupt enable register has no effect on the interrupt status register.  &#xA; A pending interrupt occurs when the flag is set to '1'. To acknowledge an interrupt, set the flag to '1'" hidden="false">
+    <register name="CAN_CAN_INT_SR" address="0x402F0000" bitWidth="32" desc="The interrupt status register stores internal interrupt events.  &#xA; Once a bit is set it remains set until it is cleared by writing a '1' to it.  &#xA; The interrupt enable register has no effect on the interrupt status register.  &#xA; A pending interrupt occurs when the flag is set to '1'. To acknowledge an interrupt, set the flag to '1'" hidden="false">
       <field name="ARB_LOSS" from="2" to="2" access="RW" resetVal="" desc="Arbitration Loss" hidden="false" />
       <field name="OVR_LOAD" from="3" to="3" access="RW" resetVal="" desc="Overload Interrupt" hidden="false" />
       <field name="BIT_ERR" from="4" to="4" access="RW" resetVal="" desc="Bit Error Interrupt" hidden="false" />
@@ -5261,7 +5261,7 @@
       <field name="STUCK_AT_ZERO" from="14" to="14" access="RW" resetVal="" desc="Stuck at dominant error" hidden="false" />
       <field name="SST_FAILURE" from="15" to="15" access="RW" resetVal="" desc="Single shot transmission failure" hidden="false" />
     </register>
-    <register name="CAN_CAN_BUF_SR" address="0x402E0008" bitWidth="32" desc="These status indicators bundle the respective flags from all RxMessage and TxMessage buffers.  &#xA; Note All flags are read only. To acknowledge a MsgAv flag, the CPU must write to the respective RxMessage buffer" hidden="false">
+    <register name="CAN_CAN_BUF_SR" address="0x402F0008" bitWidth="32" desc="These status indicators bundle the respective flags from all RxMessage and TxMessage buffers.  &#xA; Note All flags are read only. To acknowledge a MsgAv flag, the CPU must write to the respective RxMessage buffer" hidden="false">
       <field name="RX_MSG0" from="0" to="0" access="RW" resetVal="" desc="Rx Msg0 Available" hidden="false" />
       <field name="RX_MSG1" from="1" to="1" access="RW" resetVal="" desc="Rx Msg1 Available" hidden="false" />
       <field name="RX_MSG2" from="2" to="2" access="RW" resetVal="" desc="Rx Msg2 Available" hidden="false" />
@@ -5287,14 +5287,14 @@
       <field name="TX_MSG6" from="22" to="22" access="RW" resetVal="" desc="Tx req Pending for Tx Msg6" hidden="false" />
       <field name="TX_MSG7" from="23" to="23" access="RW" resetVal="" desc="Tx req Pending for Tx Msg7" hidden="false" />
     </register>
-    <register name="CAN_CAN_ERR_SR" address="0x402E000C" bitWidth="32" desc="Status indicators are provided to report the CAN controller error state, receive error count, and transmit error count. &#xA; Special flags report error counter values equal to or in excess of 96 errors are available to indicate heavily disturbed bus situations.  &#xA; The transmitter error counter according to the CAN standard. When it is greater than 255 Decimal, it is fixed at 255 Decimal." hidden="false">
+    <register name="CAN_CAN_ERR_SR" address="0x402F000C" bitWidth="32" desc="Status indicators are provided to report the CAN controller error state, receive error count, and transmit error count. &#xA; Special flags report error counter values equal to or in excess of 96 errors are available to indicate heavily disturbed bus situations.  &#xA; The transmitter error counter according to the CAN standard. When it is greater than 255 Decimal, it is fixed at 255 Decimal." hidden="false">
       <field name="TX_ERR_CNT" from="7" to="0" access="RW" resetVal="" desc="Tx error Count" hidden="false" />
       <field name="RX_ERR_CNT" from="15" to="8" access="RW" resetVal="" desc="Rx error Count. When in bus-off state,this counter is used to count 128 groups of 11 recessive bits" hidden="false" />
       <field name="ERR_STATE" from="17" to="16" access="RW" resetVal="" desc="Error State of CAN node, 00 error active, 01 error passive, 1x bus off" hidden="false" />
       <field name="TXGTE96" from="18" to="18" access="RW" resetVal="" desc="Tx Error Count is greater or equal to 96 Decimal" hidden="false" />
       <field name="RXGTE96" from="19" to="19" access="RW" resetVal="" desc="Rx Error Count is greater or equal to 96 Decimal" hidden="false" />
     </register>
-    <register name="CAN_CAN_ECR" address="0x402E0018" bitWidth="32" desc="The Error Capture register operates in two different modes: &#xA; Free running mode - ECR displays the fiels and bit positions within the current CAN frame &#xA; Error Capture mode - ECR samples the field and bit position when a CAN error is detected &#xA; In order to sample such an event, the ECR needs to be armed by performing a write access to it. &#xA; When armed, the ECR only captures one error event.  &#xA; For successive error captures, the ECR needs to be armed again." hidden="false">
+    <register name="CAN_CAN_ECR" address="0x402F0018" bitWidth="32" desc="The Error Capture register operates in two different modes: &#xA; Free running mode - ECR displays the fiels and bit positions within the current CAN frame &#xA; Error Capture mode - ECR samples the field and bit position when a CAN error is detected &#xA; In order to sample such an event, the ECR needs to be armed by performing a write access to it. &#xA; When armed, the ECR only captures one error event.  &#xA; For successive error captures, the ECR needs to be armed again." hidden="false">
       <field name="ECR_STATUS" from="0" to="0" access="RW" resetVal="" desc="ECR STATUS: &#xA;         0: ECR register captured an error, or it is in free running mode &#xA;         1: ECR register is armed" hidden="false" />
       <field name="ERROR_TYPE" from="3" to="1" access="R" resetVal="" desc="Error type: &#xA;         000 : Arbitration loss &#xA;         001 : Bit Error &#xA;         010 : Bit Stuffing Error &#xA;         011 : Acknowledge Error &#xA;         100 : Form Error &#xA;         101 : CRC Error &#xA;         Others : N/A" hidden="false" />
       <field name="RX_MODE" from="4" to="4" access="R" resetVal="" desc="RX Mode: &#xA;         0: No status &#xA;         1: CAN Controller is receiver" hidden="false" />
@@ -5302,236 +5302,236 @@
       <field name="BIT" from="11" to="6" access="R" resetVal="" desc="Bit number inside of Field" hidden="false" />
       <field name="Field" from="16" to="12" access="R" resetVal="" desc="Field: &#xA;         0x00 : Stopped &#xA;         0x01 : Synchronize &#xA;         0x05 : Interframe &#xA;         0x06 : Bus Idle &#xA;         0x07 : Start of Frame &#xA;         0x08 : Arbitration &#xA;         0x09 : Control &#xA;         0x0A : Data &#xA;         0x0B : CRC &#xA;         0x0C : ACK &#xA;         0x0D : End of frame &#xA;         0x10 : Error flag &#xA;         0x11 : Error echo &#xA;         0x12 : Error delimiter &#xA;         0x18 : Overload flag &#xA;         0x19 : Overload echo &#xA;         0x1A : Overload delimiter &#xA;         Others : N/A" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX0_ID" address="0x402E0024" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_TX0_ID" address="0x402F0024" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Tx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX0_DH" address="0x402E0028" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX0_DH" address="0x402F0028" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX0_DL" address="0x402E002C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX0_DL" address="0x402F002C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX1_ID" address="0x402E0034" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_TX1_ID" address="0x402F0034" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Tx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX1_DH" address="0x402E0038" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX1_DH" address="0x402F0038" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX1_DL" address="0x402E003C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX1_DL" address="0x402F003C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX2_ID" address="0x402E0044" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_TX2_ID" address="0x402F0044" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Tx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX2_DH" address="0x402E0048" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX2_DH" address="0x402F0048" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX2_DL" address="0x402E004C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX2_DL" address="0x402F004C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX3_ID" address="0x402E0054" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_TX3_ID" address="0x402F0054" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Tx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX3_DH" address="0x402E0058" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX3_DH" address="0x402F0058" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX3_DL" address="0x402E005C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX3_DL" address="0x402F005C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX4_ID" address="0x402E0064" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_TX4_ID" address="0x402F0064" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Tx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX4_DH" address="0x402E0068" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX4_DH" address="0x402F0068" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX4_DL" address="0x402E006C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX4_DL" address="0x402F006C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX5_ID" address="0x402E0074" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_TX5_ID" address="0x402F0074" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Tx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX5_DH" address="0x402E0078" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX5_DH" address="0x402F0078" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX5_DL" address="0x402E007C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX5_DL" address="0x402F007C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX6_ID" address="0x402E0084" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_TX6_ID" address="0x402F0084" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Tx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX6_DH" address="0x402E0088" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX6_DH" address="0x402F0088" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX6_DL" address="0x402E008C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX6_DL" address="0x402F008C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX7_ID" address="0x402E0094" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_TX7_ID" address="0x402F0094" bitWidth="32" desc="CAN Tx Msg Identifier" hidden="false">
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Tx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX7_DH" address="0x402E0098" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX7_DH" address="0x402F0098" bitWidth="32" desc="CAN Tx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_TX7_DL" address="0x402E009C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
+    <register name="CAN_CAN_TX7_DL" address="0x402F009C" bitWidth="32" desc="CAN Tx Msg Lower Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX0_ID" address="0x402E00A4" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX0_ID" address="0x402F00A4" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX0_DH" address="0x402E00A8" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX0_DH" address="0x402F00A8" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX0_DL" address="0x402E00AC" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX0_DL" address="0x402F00AC" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX1_ID" address="0x402E00C4" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX1_ID" address="0x402F00C4" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX1_DH" address="0x402E00C8" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX1_DH" address="0x402F00C8" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX1_DL" address="0x402E00CC" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX1_DL" address="0x402F00CC" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX2_ID" address="0x402E00E4" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX2_ID" address="0x402F00E4" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX2_DH" address="0x402E00E8" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX2_DH" address="0x402F00E8" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX2_DL" address="0x402E00EC" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX2_DL" address="0x402F00EC" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX3_ID" address="0x402E0104" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX3_ID" address="0x402F0104" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX3_DH" address="0x402E0108" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX3_DH" address="0x402F0108" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX3_DL" address="0x402E010C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX3_DL" address="0x402F010C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX4_ID" address="0x402E0124" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX4_ID" address="0x402F0124" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX4_DH" address="0x402E0128" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX4_DH" address="0x402F0128" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX4_DL" address="0x402E012C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX4_DL" address="0x402F012C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX5_ID" address="0x402E0144" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX5_ID" address="0x402F0144" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX5_DH" address="0x402E0148" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX5_DH" address="0x402F0148" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX5_DL" address="0x402E014C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX5_DL" address="0x402F014C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX6_ID" address="0x402E0164" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX6_ID" address="0x402F0164" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX6_DH" address="0x402E0168" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX6_DH" address="0x402F0168" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX6_DL" address="0x402E016C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX6_DL" address="0x402F016C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX7_ID" address="0x402E0184" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX7_ID" address="0x402F0184" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX7_DH" address="0x402E0188" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX7_DH" address="0x402F0188" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX7_DL" address="0x402E018C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX7_DL" address="0x402F018C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX8_ID" address="0x402E01A4" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX8_ID" address="0x402F01A4" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX8_DH" address="0x402E01A8" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX8_DH" address="0x402F01A8" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX8_DL" address="0x402E01AC" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX8_DL" address="0x402F01AC" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX9_ID" address="0x402E01C4" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX9_ID" address="0x402F01C4" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX9_DH" address="0x402E01C8" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX9_DH" address="0x402F01C8" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX9_DL" address="0x402E01CC" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX9_DL" address="0x402F01CC" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX10_ID" address="0x402E01E4" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX10_ID" address="0x402F01E4" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX10_DH" address="0x402E01E8" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX10_DH" address="0x402F01E8" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX10_DL" address="0x402E01EC" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX10_DL" address="0x402F01EC" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX11_ID" address="0x402E0204" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX11_ID" address="0x402F0204" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX11_DH" address="0x402E0208" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX11_DH" address="0x402F0208" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX11_DL" address="0x402E020C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX11_DL" address="0x402F020C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX12_ID" address="0x402E0224" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX12_ID" address="0x402F0224" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX12_DH" address="0x402E0228" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX12_DH" address="0x402F0228" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX12_DL" address="0x402E022C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX12_DL" address="0x402F022C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX13_ID" address="0x402E0244" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX13_ID" address="0x402F0244" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX13_DH" address="0x402E0248" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX13_DH" address="0x402F0248" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX13_DL" address="0x402E024C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX13_DL" address="0x402F024C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX14_ID" address="0x402E0264" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX14_ID" address="0x402F0264" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX14_DH" address="0x402E0268" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX14_DH" address="0x402F0268" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX14_DL" address="0x402E026C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX14_DL" address="0x402F026C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX15_ID" address="0x402E0284" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
+    <register name="CAN_CAN_RX15_ID" address="0x402F0284" bitWidth="32" desc="The register contains Rx Msg Identifier" hidden="false">
       <field name="ZEROES" from="2" to="0" access="RW" resetVal="" desc="zeros" hidden="false" />
       <field name="ID" from="31" to="3" access="RW" resetVal="" desc="Rx Msg Indentifier" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX15_DH" address="0x402E0288" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX15_DH" address="0x402F0288" bitWidth="32" desc="The register contains the Rx Msg Upper Data Bytes" hidden="false">
       <field name="DATA_HIGH" from="31" to="0" access="RW" resetVal="" desc="Upper Data Bytes" hidden="false" />
     </register>
-    <register name="CAN_CAN_RX15_DL" address="0x402E028C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
+    <register name="CAN_CAN_RX15_DL" address="0x402F028C" bitWidth="32" desc="The register contains the Rx Msg Lover Data Bytes" hidden="false">
       <field name="DATA_LOW" from="31" to="0" access="RW" resetVal="" desc="Lower Data Bytes" hidden="false" />
     </register>
   </block>
@@ -5539,9 +5539,9 @@
   <block name="RX_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Dip_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Can_addr" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
-    <register name="Can_addr_STATUS_REG" address="0x400F0061" bitWidth="8" desc="" hidden="false" />
-    <register name="Can_addr_MASK_REG" address="0x400F0081" bitWidth="8" desc="" hidden="false" />
-    <register name="Can_addr_STATUS_AUX_CTL_REG" address="0x400F0091" bitWidth="8" desc="" hidden="false">
+    <register name="Can_addr_STATUS_REG" address="0x400F0067" bitWidth="8" desc="" hidden="false" />
+    <register name="Can_addr_MASK_REG" address="0x400F0087" bitWidth="8" desc="" hidden="false" />
+    <register name="Can_addr_STATUS_AUX_CTL_REG" address="0x400F0097" bitWidth="8" desc="" hidden="false">
       <field name="FIFO0" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear" hidden="false">
         <value name="ENABLED" value="1" desc="Enable counter" />
         <value name="DISABLED" value="0" desc="Disable counter" />
@@ -5585,7 +5585,7 @@
     <block name="tx" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="SCB_IRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="or_sclk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <register name="_CTRL" address="0x40240000" bitWidth="32" desc="Generic control register" hidden="false">
+    <register name="_CTRL" address="0x40270000" bitWidth="32" desc="Generic control register" hidden="false">
       <field name="OVS" from="3" to="0" access="RW" resetVal="" desc="Serial interface bit period oversampling factor expressed in lP clock cycles. Used for SPI and UART functionality. OVS + 1 IP clock cycles constitute a single serial interface clock/bit cycle." hidden="false" />
       <field name="EC_AM_MODE" from="8" to="8" access="RW" resetVal="" desc="Internally clocked mode ('0') or externally clocked mode ('1') address matching (I2C) or selection (SPI).In internally clocked mode, the serial interface protocols run off the peripheral clock. In externally clocked mode, the serial interface protocols run off the clock as provided by the serial interface." hidden="false" />
       <field name="EC_OP_MODE" from="9" to="9" access="RW" resetVal="" desc="Internally clocked mode ('0') or externally clocked mode ('1') operation. In internally clocked mode, the serial interface protocols run off the peripheral clock. In externally clocked mode, the serial interface protocols run off the clock as provided by the serial interface." hidden="false" />
@@ -5596,7 +5596,7 @@
       <field name="MODE" from="25" to="24" access="RW" resetVal="" desc="Mode of operation: I2C = 0, SPI = 1, UART = 2" hidden="false" />
       <field name="ENABLED" from="31" to="31" access="RW" resetVal="" desc="IP enabled ('1') or not ('0')." hidden="false" />
     </register>
-    <register name="_SPI_CTRL" address="0x40240020" bitWidth="32" desc="SPI control register" hidden="false">
+    <register name="_SPI_CTRL" address="0x40270020" bitWidth="32" desc="SPI control register" hidden="false">
       <field name="CONTINUOUS" from="0" to="0" access="RW" resetVal="" desc="Continuous SPI data transfers enabled ('1') or not ('0')." hidden="false" />
       <field name="SELECT_PRECEDE" from="1" to="1" access="RW" resetVal="" desc="Only used in SPI Texas Instruments' submode. When '1', the data frame start indication is a pulse on the SELECT line that precedes the transfer of the first data frame bit. When '0', the data frame start indication is a pulse on the SELECT line that coincides with the transfer of the first data frame bit." hidden="false" />
       <field name="CPHA" from="2" to="2" access="RW" resetVal="" desc="Only applicable in SPI Motorola submode. Indicates the clock phase." hidden="false" />
@@ -5612,20 +5612,20 @@
       <field name="SLAVE_SELECT" from="27" to="26" access="RW" resetVal="" desc="Selects one of the four SPI slave select signals: SS0 = 0, SS1 = 1 , SS2 = 2, SS3 = 3." hidden="false" />
       <field name="MASTER_MODE" from="31" to="31" access="RW" resetVal="" desc="Master ('1') or slave ('0') mode." hidden="false" />
     </register>
-    <register name="_SPI_STATUS" address="0x40240024" bitWidth="32" desc="SPI status register" hidden="false">
+    <register name="_SPI_STATUS" address="0x40270024" bitWidth="32" desc="SPI status register" hidden="false">
       <field name="BUS_BUSY" from="0" to="0" access="R" resetVal="" desc="SPI bus is busy. The bus is considered busy ('1') during an ongoing transaction" hidden="false" />
     </register>
-    <register name="_UART_CTRL" address="0x40240040" bitWidth="32" desc="UART control register" hidden="false">
+    <register name="_UART_CTRL" address="0x40270040" bitWidth="32" desc="UART control register" hidden="false">
       <field name="LOOPBACK" from="16" to="16" access="RW" resetVal="" desc="Local loopback control." hidden="false" />
       <field name="MODE" from="25" to="24" access="RW" resetVal="" desc="Submode of UART operation: Standard = 0, Smart Card = 1, IrDA = 2." hidden="false" />
     </register>
-    <register name="_UART_TX_CTRL" address="0x40240044" bitWidth="32" desc="UART transmitter control register" hidden="false">
+    <register name="_UART_TX_CTRL" address="0x40270044" bitWidth="32" desc="UART transmitter control register" hidden="false">
       <field name="STOP_BTIS" from="2" to="0" access="RW" resetVal="" desc="Stop bits. STOP_BITS + 1 is the duration of the stop period in terms of halve bit periods." hidden="false" />
       <field name="PARITY" from="4" to="4" access="RW" resetVal="" desc="Parity bit. When '0', the transmitter generates an even parity. When '1', the transmitter generates an odd parity" hidden="false" />
       <field name="PARITY_ENABLED" from="5" to="5" access="RW" resetVal="" desc="Parity generation enabled ('1') or not ('0'). Only applicable in standard UART submodes. In SmartCard submode, parity generation is always enabled through hardware. In IrDA submode, parity generation is always disabled through hardware." hidden="false" />
       <field name="RETRY_ON_NACK" from="8" to="8" access="RW" resetVal="" desc="When '1', a data frame is retransmitted when a negative acknowledgement is received. Only applicable to the SmartCard submode." hidden="false" />
     </register>
-    <register name="_UART_RX_CTRL" address="0x40240048" bitWidth="32" desc="UART receiver control register" hidden="false">
+    <register name="_UART_RX_CTRL" address="0x40270048" bitWidth="32" desc="UART receiver control register" hidden="false">
       <field name="STOP_BITS" from="2" to="0" access="RW" resetVal="" desc="Stop bits. STOP_BITS + 1 is the duration of the stop period in terms of halve bit periods." hidden="false" />
       <field name="PARITY" from="4" to="4" access="RW" resetVal="" desc="Parity bit. When '0', the receiver expects an even parity. When '1', the receiver expects an odd parity." hidden="false" />
       <field name="PARITY_ENABLED" from="5" to="5" access="RW" resetVal="" desc="Parity checking enabled ('1') or not ('0'). Only applicable in standard UART submode. In SmartCard submode, parity checking is always enabled through hardware. In IrDA submode, parity checking is always disabled through hardware." hidden="false" />
@@ -5637,13 +5637,13 @@
       <field name="SKIP_START" from="13" to="13" access="RW" resetVal="" desc="Only applicable in standard UART submode. When '1', the receiver skips start bit detection for the first received data frame. Instead, it synchronizes on the first received data frame bit, which should be a '1'." hidden="false" />
       <field name="BREAK_WIDTH" from="19" to="16" access="RW" resetVal="" desc="Break width. BREAK_WIDTH + 1 is the minimum width in bit periods of a break." hidden="false" />
     </register>
-    <register name="_UART_FLOW_CTRL" address="0x40240050" bitWidth="32" desc="UART flow control register" hidden="false">
+    <register name="_UART_FLOW_CTRL" address="0x40270050" bitWidth="32" desc="UART flow control register" hidden="false">
       <field name="TRIGGER_LEVEL" from="3" to="0" access="RW" resetVal="" desc="Trigger level. When the receiver FIFO has less entries than the amount of this field, a RTS signal is activated. Setting this field to 0 disables RTS generation." hidden="false" />
       <field name="RTS_POLARITY" from="16" to="16" access="RW" resetVal="" desc="Polarity of the RTS output signal" hidden="false" />
       <field name="CTS_POLARITY" from="24" to="24" access="RW" resetVal="" desc="Polarity of the CTS input signal" hidden="false" />
       <field name="CTS_ENABLED" from="25" to="25" access="RW" resetVal="" desc="Enable use of CTS input signal by the UART transmitter" hidden="false" />
     </register>
-    <register name="_I2C_CTRL" address="0x40240060" bitWidth="32" desc="I2C control register" hidden="false">
+    <register name="_I2C_CTRL" address="0x40270060" bitWidth="32" desc="I2C control register" hidden="false">
       <field name="HIGH_PHASE_OVS" from="3" to="0" access="RW" resetVal="" desc="Serial I2C interface high phase oversampling factor. HIGH_PHASE_OVS + 1 peripheral clock periods constitute the high phase of a bit period." hidden="false" />
       <field name="LOW_PHASE_OVS" from="7" to="4" access="RW" resetVal="" desc="Serial I2C interface low phase oversampling factor. LOW_PHASE_OVS + 1 peripheral clock periods constitute the low phase of a bit period" hidden="false" />
       <field name="M_READY_DATA_ACK" from="8" to="8" access="RW" resetVal="" desc="When '1', a received data element by the master is immediately ACK'd when the receiver FIFO is not full." hidden="false" />
@@ -5657,23 +5657,23 @@
       <field name="SLAVE_MODE" from="30" to="30" access="RW" resetVal="" desc="Slave mode enabled ('1') or not ('0')." hidden="false" />
       <field name="MASTER_MODE" from="31" to="31" access="RW" resetVal="" desc="Master mode enabled ('1') or not ('0'). Note that both master and slave modes can be enabled at the same time. This allows the IP to address itself." hidden="false" />
     </register>
-    <register name="_I2C_STATUS" address="0x40240064" bitWidth="32" desc="I2C status register" hidden="false">
+    <register name="_I2C_STATUS" address="0x40270064" bitWidth="32" desc="I2C status register" hidden="false">
       <field name="BUS_BUSY" from="0" to="0" access="R" resetVal="" desc="I2C bus is busy. The bus is considered busy ('1')." hidden="false" />
       <field name="S_READ" from="4" to="4" access="R" resetVal="" desc="I2C slave read transfer ('1') or I2C slave write transfer ('0'). When the I2C slave is inactive/idle or receiving START, REPEATED START, STOP or an address, this field is '0'." hidden="false" />
       <field name="M_READ" from="5" to="5" access="R" resetVal="" desc="I2C master read transfer ('1') or I2C master write transfer ('0'). When the I2C master is inactive/idle or transmitting START, REPEATED START, STOP or an address, this field is '0''." hidden="false" />
     </register>
-    <register name="_I2C_M_CMD" address="0x40240068" bitWidth="32" desc="I2C master command register" hidden="false">
+    <register name="_I2C_M_CMD" address="0x40270068" bitWidth="32" desc="I2C master command register" hidden="false">
       <field name="M_START" from="0" to="0" access="RW" resetVal="" desc="When '1', transmit a START or REPEATED START. Whether a START or REPEATED START is transmitted depends on the state of the master state machine. When this action is performed, the hardware sets this field to '0'." hidden="false" />
       <field name="M_IDLE_START" from="1" to="1" access="RW" resetVal="" desc="When '1', transmit a START as soon as the bus is idle (I2C_STATUS.BUS_BUSY is '0', note that BUSY has a default value of '0'). When this action is performed, the hardware sets this field to '0'." hidden="false" />
       <field name="M_ACK" from="2" to="2" access="RW" resetVal="" desc="When '1', attempt to transmit an acknowledgement (ACK). When this action is performed, the hardware sets this field to '0'." hidden="false" />
       <field name="M_NACK" from="3" to="3" access="RW" resetVal="" desc="When '1', attempt to transmit a negative acknowledgement (NACK). When this action is performed, the hardware sets this field to '0'." hidden="false" />
       <field name="M_STOP" from="4" to="4" access="RW" resetVal="" desc="When '1', attempt to transmit a STOP. When this action is performed, the hardware sets this field to '0'. This command has a higher priority than I2C_M_CMD.M_START: in situations where both a STOP and a REPEATED START could be transmitted, M_STOP takes precedence over M_START." hidden="false" />
     </register>
-    <register name="_I2C_S_CMD" address="0x4024006C" bitWidth="32" desc="I2C slave command register" hidden="false">
+    <register name="_I2C_S_CMD" address="0x4027006C" bitWidth="32" desc="I2C slave command register" hidden="false">
       <field name="S_ACK" from="0" to="0" access="RW" resetVal="" desc="When '1', attempt to transmit an acknowledgement (ACK). When this action is performed, the hardware sets this field to '0'." hidden="false" />
       <field name="S_NACK" from="1" to="1" access="RW" resetVal="" desc="When '1', attempt to transmit a negative acknowledgement (NACK). When this action is performed, the hardware sets this field to '0'" hidden="false" />
     </register>
-    <register name="_I2C_CFG" address="0x40240070" bitWidth="32" desc="I2C fitler trimm register" hidden="false">
+    <register name="_I2C_CFG" address="0x40270070" bitWidth="32" desc="I2C fitler trimm register" hidden="false">
       <field name="SDA_IN_FILT_TRIM" from="1" to="0" access="RW" resetVal="" desc="" hidden="false" />
       <field name="SDA_IN_FILT_SEL" from="4" to="4" access="RW" resetVal="" desc="" hidden="false" />
       <field name="SCL_IN_FILT_TRIM" from="9" to="8" access="RW" resetVal="" desc="" hidden="false" />
@@ -5683,48 +5683,48 @@
       <field name="SDA_OUT_FILT2_TRIM" from="21" to="20" access="RW" resetVal="" desc="" hidden="false" />
       <field name="SDA_OUT_FILT_SEL" from="29" to="28" access="RW" resetVal="" desc="" hidden="false" />
     </register>
-    <register name="_TX_CTRL" address="0x40240200" bitWidth="32" desc="Transmitter control register" hidden="false">
+    <register name="_TX_CTRL" address="0x40270200" bitWidth="32" desc="Transmitter control register" hidden="false">
       <field name="DATA_WIDTH" from="3" to="0" access="RW" resetVal="" desc="Data frame width. DATA_WIDTH + 1 is the amount of bits in a transmitted data frame." hidden="false" />
       <field name="MSB_FIRST" from="8" to="8" access="RW" resetVal="" desc="Least significant bit first ('0') or most significant bit first ('1'). For I2C, this field should be '1'." hidden="false" />
     </register>
-    <register name="_TX_FIFO_CTRL" address="0x40240204" bitWidth="32" desc="Transmitter FIFO control register" hidden="false">
+    <register name="_TX_FIFO_CTRL" address="0x40270204" bitWidth="32" desc="Transmitter FIFO control register" hidden="false">
       <field name="TRIGGER_LEVEL" from="3" to="0" access="RW" resetVal="" desc="Trigger level. When the transmitter FIFO has less entries than the amount of this field, a transmitter trigger event is generated." hidden="false" />
       <field name="CLEAR" from="16" to="16" access="RW" resetVal="" desc="When '1', the transmitter FIFO and transmitter shift register are cleared/invalidated. Invalidation will last for as long as this field is '1'. If a quick clear/invalidation is required, the field should be set to '1' and be followed by a set to '0'. If a clear/invalidation is required for an extended time period, the field should be set to '1' during the complete time period." hidden="false" />
       <field name="FREEZE" from="17" to="17" access="RW" resetVal="" desc="When '1', hardware reads from the transmitter FIFO do not remove FIFO entries. Freeze will not advance the TX FIFO read pointer." hidden="false" />
     </register>
-    <register name="_TX_FIFO_STATUS" address="0x40240208" bitWidth="32" desc="Transmitter FIFO status register" hidden="false">
+    <register name="_TX_FIFO_STATUS" address="0x40270208" bitWidth="32" desc="Transmitter FIFO status register" hidden="false">
       <field name="USED" from="4" to="0" access="R" resetVal="" desc="Amount of entries in the transmitter FIFO. The value of this field ranges from 0 to 8." hidden="false" />
       <field name="SR_VALID" from="15" to="15" access="R" resetVal="" desc="Indicates whether the TX shift registers holds a valid data frame ('1') or not ('0')" hidden="false" />
       <field name="RD_PTR" from="20" to="16" access="R" resetVal="" desc="FIFO read pointer: FIFO location from which a data frame is read by the hardware." hidden="false" />
       <field name="WR_PTR" from="28" to="24" access="R" resetVal="" desc="FIFO write pointer: FIFO location at which a new data frame is written." hidden="false" />
     </register>
-    <register name="_TX_FIFO_WR" address="0x40240240" bitWidth="32" desc="Transmitter FIFO write register" hidden="false">
+    <register name="_TX_FIFO_WR" address="0x40270240" bitWidth="32" desc="Transmitter FIFO write register" hidden="false">
       <field name="DATA" from="15" to="0" access="W" resetVal="" desc="Data frame written into the transmitter FIFO. Behavior is similar to that of a PUSH operation." hidden="false" />
     </register>
-    <register name="_RX_CTRL" address="0x40240300" bitWidth="32" desc="Receiver control register" hidden="false">
+    <register name="_RX_CTRL" address="0x40270300" bitWidth="32" desc="Receiver control register" hidden="false">
       <field name="DATA_WIDTH" from="3" to="0" access="RW" resetVal="" desc="Data frame width. DATA_WIDTH + 1 is the expected amount of bits in received data frame." hidden="false" />
       <field name="MSB_FIRST" from="8" to="8" access="RW" resetVal="" desc="Least significant bit first ('0') or most significant bit first ('1')." hidden="false" />
       <field name="MEDIAN" from="9" to="9" access="RW" resetVal="" desc="Median filter. When '1', a digital 3 taps median filter is performed on input interface lines." hidden="false" />
     </register>
-    <register name="_RX_FIFO_CTRL" address="0x40240304" bitWidth="32" desc="Receiver FIFO control register" hidden="false">
+    <register name="_RX_FIFO_CTRL" address="0x40270304" bitWidth="32" desc="Receiver FIFO control register" hidden="false">
       <field name="TRIGGER_LEVEL" from="3" to="0" access="RW" resetVal="" desc="Trigger level. When the receiver FIFO has more entries than the amount of this field, a receiver trigger event is generated." hidden="false" />
       <field name="CLEAR" from="16" to="16" access="RW" resetVal="" desc="When '1', the receiver FIFO and receiver shift register are cleared/invalidated. Invalidation will last for as long as this field is '1'. If a quick clear/invalidation is required, the field should be set to '1' and be followed by a set to '0'. If a clear/invalidation is required for an extended time period, the field should be set to '1' during the complete time period." hidden="false" />
       <field name="FREEZE" from="17" to="17" access="RW" resetVal="" desc="When '1', hardware writes to the receiver FIFO have no effect. Freeze will not advance the RX FIFO write pointer." hidden="false" />
     </register>
-    <register name="_RX_FIFO_STATUS" address="0x40240308" bitWidth="32" desc="Receiver FIFO status registerS" hidden="false">
+    <register name="_RX_FIFO_STATUS" address="0x40270308" bitWidth="32" desc="Receiver FIFO status registerS" hidden="false">
       <field name="USED" from="4" to="0" access="R" resetVal="" desc="Amount of entries in the receiver FIFO. The value of this field ranges from 0 to 8." hidden="false" />
       <field name="SR_VALID" from="15" to="15" access="R" resetVal="" desc="Indicates whether the RX shift registers holds a (partial) valid data frame ('1') or not ('0')." hidden="false" />
       <field name="RD_PTR" from="20" to="16" access="R" resetVal="" desc="FIFO read pointer: FIFO location from which a data frame is read." hidden="false" />
       <field name="WR_PTR" from="28" to="24" access="R" resetVal="" desc="FIFO write pointer: FIFO location at which a new data frame is written by the hardware." hidden="false" />
     </register>
-    <register name="_RX_MATCH" address="0x40240310" bitWidth="32" desc="Slave address and mask register" hidden="false">
+    <register name="_RX_MATCH" address="0x40270310" bitWidth="32" desc="Slave address and mask register" hidden="false">
       <field name="ADDR" from="7" to="0" access="RW" resetVal="" desc="Slave device address. For UART multi-processor mode all eight bits a reused. For I2C, bit 0 of the register is not used." hidden="false" />
       <field name="MASK" from="23" to="16" access="RW" resetVal="" desc="Slave device address mask. This field is a 8 bit mask that specifies which of the ADDR field bits in the SCB_RX_MATCH_ADDR register take part in the matching of the slave address." hidden="false" />
     </register>
-    <register name="_RX_FIFO_RD" address="0x40240340" bitWidth="32" desc="Receiver FIFO read register" hidden="false">
+    <register name="_RX_FIFO_RD" address="0x40270340" bitWidth="32" desc="Receiver FIFO read register" hidden="false">
       <field name="DATA" from="15" to="0" access="R" resetVal="" desc="Data read from the receiver FIFO. Reading a data frame will remove the data frame from the FIFO." hidden="false" />
     </register>
-    <register name="_INTR_CAUSE" address="0x40240E00" bitWidth="32" desc="Interrupt cause register" hidden="false">
+    <register name="_INTR_CAUSE" address="0x40270E00" bitWidth="32" desc="Interrupt cause register" hidden="false">
       <field name="MASTER" from="0" to="0" access="R" resetVal="" desc="Master interrupt active." hidden="false" />
       <field name="SLAVE" from="1" to="1" access="R" resetVal="" desc="Slave interrupt active." hidden="false" />
       <field name="TX" from="2" to="2" access="R" resetVal="" desc="Transmitter interrupt active." hidden="false" />
@@ -5732,25 +5732,25 @@
       <field name="I2C_EC" from="4" to="4" access="R" resetVal="" desc="Externally clock I2C interrupt active." hidden="false" />
       <field name="SPI_EC" from="5" to="5" access="R" resetVal="" desc="Externally clocked SPI interrupt active." hidden="false" />
     </register>
-    <register name="_INTR_I2C_EC" address="0x40240E80" bitWidth="32" desc="Externally clocked I2C interrupt request register" hidden="false">
+    <register name="_INTR_I2C_EC" address="0x40270E80" bitWidth="32" desc="Externally clocked I2C interrupt request register" hidden="false">
       <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="Wake up request. Active on incoming slave request (with address match). Only used when EC_AM is '1'." hidden="false" />
     </register>
-    <register name="_INTR_I2C_EC_MASK" address="0x40240E88" bitWidth="32" desc="Externally clocked I2C interrupt mask register" hidden="false">
+    <register name="_INTR_I2C_EC_MASK" address="0x40270E88" bitWidth="32" desc="Externally clocked I2C interrupt mask register" hidden="false">
       <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_I2C_EC_MASKED" address="0x40240E8C" bitWidth="32" desc="Externally clocked SPI interrupt masked register" hidden="false">
+    <register name="_INTR_I2C_EC_MASKED" address="0x40270E8C" bitWidth="32" desc="Externally clocked SPI interrupt masked register" hidden="false">
       <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
     </register>
-    <register name="_INTR_INTR_SPI_EC" address="0x40240EC0" bitWidth="32" desc="Externally clocked SPI interrupt request register" hidden="false">
+    <register name="_INTR_INTR_SPI_EC" address="0x40270EC0" bitWidth="32" desc="Externally clocked SPI interrupt request register" hidden="false">
       <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="Wake up request. Active on incoming slave request when externally clocked selection is '1'." hidden="false" />
     </register>
-    <register name="_INTR_INTR_SPI_EC_MASK" address="0x40240EC8" bitWidth="32" desc="Externally clocked SPI interrupt mask register" hidden="false">
+    <register name="_INTR_INTR_SPI_EC_MASK" address="0x40270EC8" bitWidth="32" desc="Externally clocked SPI interrupt mask register" hidden="false">
       <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_INTR_SPI_EC_MASKED" address="0x40240ECC" bitWidth="32" desc="Externally clocked SPI interrupt masked register" hidden="false">
+    <register name="_INTR_INTR_SPI_EC_MASKED" address="0x40270ECC" bitWidth="32" desc="Externally clocked SPI interrupt masked register" hidden="false">
       <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
     </register>
-    <register name="_INTR_M" address="0x40240F00" bitWidth="32" desc="Master interrupt request register." hidden="false">
+    <register name="_INTR_M" address="0x40270F00" bitWidth="32" desc="Master interrupt request register." hidden="false">
       <field name="I2C_LOST_ARB" from="0" to="0" access="RW" resetVal="" desc="I2C master lost arbitration: the value driven by the master on the SDA line is not the same as the value observed on the SDA line." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="I2C master negative acknowledgement. Set to '1', when the master receives a NACK (typically after the master transmitted the slave address or TX data)." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="I2C master acknowledgement. Set to '1', when the master receives a ACK (typically after the master transmitted the slave address or TX data)." hidden="false" />
@@ -5758,7 +5758,7 @@
       <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="I2C master bus error (unexpected detection of START or STOP condition)." hidden="false" />
       <field name="SPI_DONE" from="9" to="9" access="RW" resetVal="" desc="SPI master transfer done event: all data frames in the transmit FIFO are sent and the transmit FIFO is empty." hidden="false" />
     </register>
-    <register name="_INTR_M_SET" address="0x40240F04" bitWidth="32" desc="Master interrupt set request register" hidden="false">
+    <register name="_INTR_M_SET" address="0x40270F04" bitWidth="32" desc="Master interrupt set request register" hidden="false">
       <field name="I2C_LOST_ARB" from="0" to="0" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
@@ -5766,7 +5766,7 @@
       <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="SPI_DONE" from="9" to="9" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_M_MASK" address="0x40240F08" bitWidth="32" desc="Master interrupt mask register" hidden="false">
+    <register name="_INTR_M_MASK" address="0x40270F08" bitWidth="32" desc="Master interrupt mask register" hidden="false">
       <field name="I2C_LOST_ARB" from="0" to="0" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
@@ -5774,7 +5774,7 @@
       <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="SPI_DONE" from="9" to="9" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_M_MASKED" address="0x40240F0C" bitWidth="32" desc="Master interrupt masked request register" hidden="false">
+    <register name="_INTR_M_MASKED" address="0x40270F0C" bitWidth="32" desc="Master interrupt masked request register" hidden="false">
       <field name="I2C_LOST_ARB" from="0" to="0" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
@@ -5782,7 +5782,7 @@
       <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="SPI_DONE" from="9" to="9" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
     </register>
-    <register name="_INTR_S" address="0x40240F40" bitWidth="32" desc="Slave interrupt request register" hidden="false">
+    <register name="_INTR_S" address="0x40270F40" bitWidth="32" desc="Slave interrupt request register" hidden="false">
       <field name="I2C_ARB_LOST" from="0" to="0" access="RW" resetVal="" desc="I2C slave lost arbitration: the value driven on the SDA line is not the same as the value observed on the SDA line (while the SCL line is '1')." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="I2C slave negative acknowledgement received. Set to '1', when the slave receives a NACK (typically after the slave transmitted TX data)." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="I2C slave acknowledgement received. Set to '1', when the slave receives a ACK (typically after the slave transmitted TX data)." hidden="false" />
@@ -5794,7 +5794,7 @@
       <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="I2C slave bus error (unexpected detection of START or STOP condition)." hidden="false" />
       <field name="SPI_BUS_ERR" from="11" to="11" access="RW" resetVal="" desc="SPI slave deselected at an unexpected time in the SPI transfer. The Firmware may decide to clear the TX and RX FIFOs in case of this error." hidden="false" />
     </register>
-    <register name="_INTR_S_SET" address="0x40240F44" bitWidth="32" desc="Slave interrupt set request register" hidden="false">
+    <register name="_INTR_S_SET" address="0x40270F44" bitWidth="32" desc="Slave interrupt set request register" hidden="false">
       <field name="I2C_ARB_LOST" from="0" to="0" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
@@ -5806,7 +5806,7 @@
       <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="SPI_BUS_ERR" from="11" to="11" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_S_MASK" address="0x40240F48" bitWidth="32" desc="Slave interrupt mask register" hidden="false">
+    <register name="_INTR_S_MASK" address="0x40270F48" bitWidth="32" desc="Slave interrupt mask register" hidden="false">
       <field name="I2C_ARB_LOST" from="0" to="0" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
@@ -5818,7 +5818,7 @@
       <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="SPI_BUS_ERR" from="11" to="11" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_S_MASKED" address="0x40240F4C" bitWidth="32" desc="Slave interrupt masked register" hidden="false">
+    <register name="_INTR_S_MASKED" address="0x40270F4C" bitWidth="32" desc="Slave interrupt masked register" hidden="false">
       <field name="I2C_ARB_LOST" from="0" to="0" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
@@ -5829,7 +5829,7 @@
       <field name="I2C_GENERAL" from="7" to="7" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="SPI_BUS_ERR" from="11" to="11" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
     </register>
-    <register name="_INTR_TX" address="0x40240F80" bitWidth="32" desc="Transmitter interrupt request register" hidden="false">
+    <register name="_INTR_TX" address="0x40270F80" bitWidth="32" desc="Transmitter interrupt request register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="Less entries in the TX FIFO than the value specified by TRIGGER_LEVEL in SCB_TX_FIFO_CTL." hidden="false" />
       <field name="NOT_FULL" from="1" to="1" access="RW" resetVal="" desc="TX FIFO is not full." hidden="false" />
       <field name="EMPTY" from="4" to="4" access="RW" resetVal="" desc="TX FIFO is empty; i.e. it has 0 entries." hidden="false" />
@@ -5839,7 +5839,7 @@
       <field name="UART_DONE" from="9" to="9" access="RW" resetVal="" desc="UART transmitter done event. This happens when the IP is done transferring all data in the TX FIFO; i.e. EMPTY is '1'. Set to '1', when event is detected." hidden="false" />
       <field name="UART_ARB_LOST" from="10" to="10" access="RW" resetVal="" desc="UART lost arbitration: the value driven on the TX line is not the same as the value observed on the RX line. " hidden="false" />
     </register>
-    <register name="_INTR_TX_SET" address="0x40240F84" bitWidth="32" desc="Transmitter interrupt set request register" hidden="false">
+    <register name="_INTR_TX_SET" address="0x40270F84" bitWidth="32" desc="Transmitter interrupt set request register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="NOT_FULL" from="1" to="1" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="EMPTY" from="4" to="4" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
@@ -5849,7 +5849,7 @@
       <field name="UART_DONE" from="9" to="9" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="UART_ARB_LOST" from="10" to="10" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_TX_MASK" address="0x40240F88" bitWidth="32" desc="Transmitter interrupt mask request register" hidden="false">
+    <register name="_INTR_TX_MASK" address="0x40270F88" bitWidth="32" desc="Transmitter interrupt mask request register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="NOT_FULL" from="1" to="1" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="EMPTY" from="4" to="4" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
@@ -5859,7 +5859,7 @@
       <field name="UART_DONE" from="9" to="9" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="UART_ARB_LOST" from="10" to="10" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_TX_MASKED" address="0x40240F8C" bitWidth="32" desc="Transmitter interrupt masked request register" hidden="false">
+    <register name="_INTR_TX_MASKED" address="0x40270F8C" bitWidth="32" desc="Transmitter interrupt masked request register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="NOT_FULL" from="1" to="1" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="EMPTY" from="4" to="4" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
@@ -5869,7 +5869,7 @@
       <field name="UART_DONE" from="9" to="9" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="UART_ARB_LOST" from="10" to="10" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
     </register>
-    <register name="_INTR_RX" address="0x40240FC0" bitWidth="32" desc="Receiver interrupt request register" hidden="false">
+    <register name="_INTR_RX" address="0x40270FC0" bitWidth="32" desc="Receiver interrupt request register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="More entries in the RX FIFO than the value specified by TRIGGER_LEVEL in SCB_RX_FIFO_CTL." hidden="false" />
       <field name="NOT_EMPTY" from="2" to="2" access="RW" resetVal="" desc="RX FIFO is not empty." hidden="false" />
       <field name="FULL" from="3" to="3" access="RW" resetVal="" desc="RX FIFO is full. Note that received data frames are lost when the RX FIFO is full." hidden="false" />
@@ -5880,7 +5880,7 @@
       <field name="BAUD_DETECT" from="10" to="10" access="RW" resetVal="" desc="LIN baud rate detection is completed." hidden="false" />
       <field name="BREAK_DETECT" from="11" to="11" access="RW" resetVal="" desc="Break detection is successful: the line is '0' for UART_RX_CTRL.BREAK_WIDTH + 1 bit period." hidden="false" />
     </register>
-    <register name="_INTR_RX_SET" address="0x40240FC4" bitWidth="32" desc="Receiver interrupt set request register" hidden="false">
+    <register name="_INTR_RX_SET" address="0x40270FC4" bitWidth="32" desc="Receiver interrupt set request register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="NOT_EMPTY" from="2" to="2" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="FULL" from="3" to="3" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
@@ -5891,7 +5891,7 @@
       <field name="BAUD_DETECT" from="10" to="10" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
       <field name="BREAK_DETECT" from="11" to="11" access="RW" resetVal="" desc="Write with '1' to set corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_RX_MASK" address="0x40240FC8" bitWidth="32" desc="Receiver interrupt mask register" hidden="false">
+    <register name="_INTR_RX_MASK" address="0x40270FC8" bitWidth="32" desc="Receiver interrupt mask register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="NOT_EMPTY" from="2" to="2" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="FULL" from="3" to="3" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
@@ -5902,7 +5902,7 @@
       <field name="BAUD_DETECT" from="10" to="10" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
       <field name="BREAK_DETECT" from="11" to="11" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." hidden="false" />
     </register>
-    <register name="_INTR_RX_MASKED" address="0x40240FCC" bitWidth="32" desc="Receiver interrupt masked register" hidden="false">
+    <register name="_INTR_RX_MASKED" address="0x40270FCC" bitWidth="32" desc="Receiver interrupt masked register" hidden="false">
       <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="NOT_EMPTY" from="2" to="2" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />
       <field name="FULL" from="3" to="3" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." hidden="false" />

@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 1
 
 
    1              		.syntax unified
@@ -40,7 +40,7 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
   10:main.c        **** #include "PCA9685.h"
   11:main.c        **** 
   12:main.c        **** 
-  13:main.c        **** // TODO: add I^2C block, integrate PCA6835... driver 
+  13:main.c        **** // TODO: finish assigning pins based on altium schematic, and then test out CAN functionality 
   14:main.c        **** 
   15:main.c        **** #ifdef RGB_LED_ARRAY
   16:main.c        **** #include "LED_Array.h"
@@ -56,9 +56,9 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
   26:main.c        **** //Uart variables
   27:main.c        **** char txData[TX_DATA_SIZE];
   28:main.c        **** 
-  29:main.c        **** //drive varaible
+  29:main.c        **** //drive variable
   30:main.c        **** int16 nextPWM = 0;
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 2
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 2
 
 
   31:main.c        **** extern uint8 invalidate;
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
   62              		.loc 1 50 0
   63 002a 012A     		cmp	r2, #1
   64 002c 04D9     		bls	.L2
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 3
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 3
 
 
   51:main.c        ****         encoderTimeOut = 0;
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
   96              		.size	Period_Reset_Handler, .-Period_Reset_Handler
   97              		.section	.text.Pin_Limit_Handler,"ax",%progbits
   98              		.align	2
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 4
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 4
 
 
   99              		.global	Pin_Limit_Handler
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
   86:main.c        ****     SendCANPacket(&can_send);
  140              		.loc 1 86 0
  141 002e 2000     		movs	r0, r4
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 5
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 5
 
 
  142 0030 FFF7FEFF 		bl	SendCANPacket
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  120:main.c        ****                 //TODO: ERROR
  121:main.c        ****                 GotoUninitState();
  122:main.c        ****                 break;
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 6
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 6
 
 
  123:main.c        **** 
@@ -317,14 +317,10 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  136:main.c        ****         UART_UartPutString(txData);
  137:main.c        ****         #endif
  138:main.c        ****     }
- 139:main.c        **** 
+ 139:main.c        **** }
  140:main.c        **** 
- 141:main.c        ****     
- 142:main.c        ****   
- 143:main.c        **** }
- 144:main.c        **** 
- 145:main.c        **** void Initialize(void) {
- 163              		.loc 1 145 0
+ 141:main.c        **** void Initialize(void) {
+ 163              		.loc 1 141 0
  164              		.cfi_startproc
  165              		@ args = 0, pretend = 0, frame = 0
  166              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -334,97 +330,97 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  170              		.cfi_offset 5, -12
  171              		.cfi_offset 6, -8
  172              		.cfi_offset 14, -4
- 146:main.c        ****      // Enable global interrupts. LED arrays need this first
- 147:main.c        ****     CyGlobalIntEnable;
- 173              		.loc 1 147 0
+ 142:main.c        ****      // Enable global interrupts. LED arrays need this first
+ 143:main.c        ****     CyGlobalIntEnable;
+ 173              		.loc 1 143 0
  174              		.syntax divided
- 175              	@ 147 "main.c" 1
+ 175              	@ 143 "main.c" 1
  176 0002 62B6     		CPSIE   i
  177              	@ 0 "" 2
- 148:main.c        ****     
- 149:main.c        ****     Status_Reg_Switches_InterruptEnable();
- 178              		.loc 1 149 0
+ 144:main.c        ****     
+ 145:main.c        ****     Status_Reg_Switches_InterruptEnable();
+ 178              		.loc 1 145 0
  179              		.thumb
  180              		.syntax unified
  181 0004 FFF7FEFF 		bl	Status_Reg_Switches_InterruptEnable
  182              	.LVL9:
- 150:main.c        ****     
- 151:main.c        ****     address = Can_addr_Read();
- 183              		.loc 1 151 0
+ 146:main.c        ****     
+ 147:main.c        ****     address = Can_addr_Read();
+ 183              		.loc 1 147 0
  184 0008 FFF7FEFF 		bl	Can_addr_Read
  185              	.LVL10:
  186 000c 0E4C     		ldr	r4, .L10
  187 000e 6071     		strb	r0, [r4, #5]
- 152:main.c        ****     
- 153:main.c        ****     #ifdef ENABLE_DEBUG_UART
- 154:main.c        ****     UART_Start();
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 7
-
-
- 188              		.loc 1 154 0
+ 148:main.c        ****     
+ 149:main.c        ****     #ifdef ENABLE_DEBUG_UART
+ 150:main.c        ****     UART_Start();
+ 188              		.loc 1 150 0
  189 0010 FFF7FEFF 		bl	UART_Start
  190              	.LVL11:
- 155:main.c        ****     sprintf(txData, "Dip Addr: %x \r\n", address);
- 191              		.loc 1 155 0
+ 151:main.c        ****     sprintf(txData, "Dip Addr: %x \r\n", address);
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 7
+
+
+ 191              		.loc 1 151 0
  192 0014 6279     		ldrb	r2, [r4, #5]
  193 0016 0D4D     		ldr	r5, .L10+4
  194 0018 0D49     		ldr	r1, .L10+8
  195 001a 2800     		movs	r0, r5
  196 001c FFF7FEFF 		bl	sprintf
  197              	.LVL12:
- 156:main.c        ****     UART_UartPutString(txData);
- 198              		.loc 1 156 0
+ 152:main.c        ****     UART_UartPutString(txData);
+ 198              		.loc 1 152 0
  199 0020 2800     		movs	r0, r5
  200 0022 FFF7FEFF 		bl	UART_UartPutString
  201              	.LVL13:
- 157:main.c        ****     #endif
+ 153:main.c        ****     #endif
+ 154:main.c        ****     
+ 155:main.c        ****    // #ifdef ERROR_LED
+ 156:main.c        ****     //ERROR_LED_Write(~(address >> 3 & 1));
+ 157:main.c        ****     //#endif
  158:main.c        ****     
- 159:main.c        ****    // #ifdef ERROR_LED
- 160:main.c        ****     //ERROR_LED_Write(~(address >> 3 & 1));
- 161:main.c        ****     //#endif
- 162:main.c        ****     
- 163:main.c        ****     // FIXME: is this necessary?
- 164:main.c        ****     #ifdef CAN_LED 
- 165:main.c        ****     CAN_LED_Write(~address & 1);
- 166:main.c        ****     #endif
- 167:main.c        ****     
- 168:main.c        ****     InitCAN(0x4, (int)address);
- 202              		.loc 1 168 0
+ 159:main.c        ****     // FIXME: is this necessary?
+ 160:main.c        ****     #ifdef CAN_LED 
+ 161:main.c        ****     CAN_LED_Write(~address & 1);
+ 162:main.c        ****     #endif
+ 163:main.c        ****     
+ 164:main.c        ****     InitCAN(0x4, (int)address);
+ 202              		.loc 1 164 0
  203 0026 6179     		ldrb	r1, [r4, #5]
  204 0028 0420     		movs	r0, #4
  205 002a FFF7FEFF 		bl	InitCAN
  206              	.LVL14:
- 169:main.c        ****     Timer_PWM_Start();
- 207              		.loc 1 169 0
+ 165:main.c        ****     Timer_PWM_Start();
+ 207              		.loc 1 165 0
  208 002e FFF7FEFF 		bl	Timer_PWM_Start
  209              	.LVL15:
- 170:main.c        ****     QuadDec_Start();
- 210              		.loc 1 170 0
+ 166:main.c        ****     QuadDec_Start();
+ 210              		.loc 1 166 0
  211 0032 FFF7FEFF 		bl	QuadDec_Start
  212              	.LVL16:
- 171:main.c        ****     PWM_Motor_Start();  
- 213              		.loc 1 171 0
+ 167:main.c        ****     PWM_Motor_Start();  
+ 213              		.loc 1 167 0
  214 0036 FFF7FEFF 		bl	PWM_Motor_Start
  215              	.LVL17:
- 172:main.c        **** 
- 173:main.c        ****     isr_Limit_1_StartEx(Pin_Limit_Handler);
- 216              		.loc 1 173 0
+ 168:main.c        **** 
+ 169:main.c        ****     isr_Limit_1_StartEx(Pin_Limit_Handler);
+ 216              		.loc 1 169 0
  217 003a 0648     		ldr	r0, .L10+12
  218 003c FFF7FEFF 		bl	isr_Limit_1_StartEx
  219              	.LVL18:
- 174:main.c        ****     isr_period_PWM_StartEx(Period_Reset_Handler);
- 220              		.loc 1 174 0
+ 170:main.c        ****     isr_period_PWM_StartEx(Period_Reset_Handler);
+ 220              		.loc 1 170 0
  221 0040 0548     		ldr	r0, .L10+16
  222 0042 FFF7FEFF 		bl	isr_period_PWM_StartEx
  223              	.LVL19:
- 175:main.c        **** } 
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 8
-
-
- 224              		.loc 1 175 0
+ 171:main.c        **** } 
+ 224              		.loc 1 171 0
  225              		@ sp needed
  226 0046 70BD     		pop	{r4, r5, r6, pc}
  227              	.L11:
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 8
+
+
  228              		.align	2
  229              	.L10:
  230 0048 00000000 		.word	.LANCHOR0
@@ -478,13 +474,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  275 001e FF28     		cmp	r0, #255
  276 0020 23D1     		bne	.L14
   99:main.c        ****                 break;
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 9
-
-
  277              		.loc 1 99 0
  278 0022 FD38     		subs	r0, r0, #253
  279 0024 FFF7FEFF 		bl	SetStateTo
  280              	.LVL22:
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 9
+
+
  100:main.c        ****             case(SET_PWM):
  281              		.loc 1 100 0
  282 0028 EDE7     		b	.L13
@@ -538,13 +534,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  113:main.c        ****                 #ifdef PRINT_CAN_PACKET
  322              		.loc 1 113 0
  323 0060 0449     		ldr	r1, .L22+4
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 10
-
-
  324 0062 0548     		ldr	r0, .L22+8
  325 0064 FFF7FEFF 		bl	NextStateFromCAN
  326              	.LVL29:
  117:main.c        ****             default:
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 10
+
+
  327              		.loc 1 117 0
  328 0068 CDE7     		b	.L13
  329              	.L14:
@@ -572,12 +568,12 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  349              		.type	PrintCanPacket, %function
  350              	PrintCanPacket:
  351              	.LFB39:
- 176:main.c        **** 
- 177:main.c        **** 
- 178:main.c        **** 
- 179:main.c        **** // FIXME: receivedPacket should really be a refernce to the can packet to avoid the copy
- 180:main.c        **** void PrintCanPacket(CANPacket receivedPacket){
- 352              		.loc 1 180 0
+ 172:main.c        **** 
+ 173:main.c        **** 
+ 174:main.c        **** 
+ 175:main.c        **** // FIXME: receivedPacket should really be a refernce to the can packet to avoid the copy
+ 176:main.c        **** void PrintCanPacket(CANPacket receivedPacket){
+ 352              		.loc 1 176 0
  353              		.cfi_startproc
  354              		@ args = 0, pretend = 0, frame = 16
  355              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -593,18 +589,18 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  365 0008 0592     		str	r2, [sp, #20]
  366              	.LVL31:
  367              	.LBB2:
- 181:main.c        ****     for(int i = 0; i < receivedPacket.dlc; i++) {
- 368              		.loc 1 181 0
+ 177:main.c        ****     for(int i = 0; i < receivedPacket.dlc; i++) {
+ 368              		.loc 1 177 0
  369 000a 0023     		movs	r3, #0
  370 000c 0EE0     		b	.L25
  371              	.LVL32:
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 11
-
-
  372              	.L26:
- 182:main.c        ****         sprintf(txData, "Byte%d %x   ", i+1, receivedPacket.data[i]);
- 373              		.loc 1 182 0 discriminator 3
+ 178:main.c        ****         sprintf(txData, "Byte%d %x   ", i+1, receivedPacket.data[i]);
+ 373              		.loc 1 178 0 discriminator 3
  374 000e 5C1C     		adds	r4, r3, #1
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 11
+
+
  375 0010 03AA     		add	r2, sp, #12
  376 0012 9446     		mov	ip, r2
  377 0014 6344     		add	r3, r3, ip
@@ -616,27 +612,27 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  383 001e 2800     		movs	r0, r5
  384 0020 FFF7FEFF 		bl	sprintf
  385              	.LVL34:
- 183:main.c        ****         UART_UartPutString(txData);
- 386              		.loc 1 183 0 discriminator 3
+ 179:main.c        ****         UART_UartPutString(txData);
+ 386              		.loc 1 179 0 discriminator 3
  387 0024 2800     		movs	r0, r5
  388 0026 FFF7FEFF 		bl	UART_UartPutString
  389              	.LVL35:
- 181:main.c        ****     for(int i = 0; i < receivedPacket.dlc; i++) {
- 390              		.loc 1 181 0 discriminator 3
+ 177:main.c        ****     for(int i = 0; i < receivedPacket.dlc; i++) {
+ 390              		.loc 1 177 0 discriminator 3
  391 002a 2300     		movs	r3, r4
  392              	.LVL36:
  393              	.L25:
- 181:main.c        ****     for(int i = 0; i < receivedPacket.dlc; i++) {
- 394              		.loc 1 181 0 is_stmt 0 discriminator 1
+ 177:main.c        ****     for(int i = 0; i < receivedPacket.dlc; i++) {
+ 394              		.loc 1 177 0 is_stmt 0 discriminator 1
  395 002c 03AA     		add	r2, sp, #12
  396 002e 9278     		ldrb	r2, [r2, #2]
  397 0030 9342     		cmp	r3, r2
  398 0032 ECDB     		blt	.L26
  399              	.LBE2:
- 184:main.c        ****     }
- 185:main.c        **** 
- 186:main.c        ****     sprintf(txData,"ID:%x %x %x\r\n",receivedPacket.id >> 10, 
- 400              		.loc 1 186 0 is_stmt 1
+ 180:main.c        ****     }
+ 181:main.c        **** 
+ 182:main.c        ****     sprintf(txData,"ID:%x %x %x\r\n",receivedPacket.id >> 10, 
+ 400              		.loc 1 182 0 is_stmt 1
  401 0034 03AB     		add	r3, sp, #12
  402              	.LVL37:
  403 0036 1988     		ldrh	r1, [r3]
@@ -652,19 +648,19 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  413 004a 2000     		movs	r0, r4
  414 004c FFF7FEFF 		bl	sprintf
  415              	.LVL38:
- 187:main.c        ****         (receivedPacket.id >> 6) & 0xF , receivedPacket.id & 0x3F);
- 188:main.c        ****     UART_UartPutString(txData);
- 416              		.loc 1 188 0
+ 183:main.c        ****         (receivedPacket.id >> 6) & 0xF , receivedPacket.id & 0x3F);
+ 184:main.c        ****     UART_UartPutString(txData);
+ 416              		.loc 1 184 0
  417 0050 2000     		movs	r0, r4
  418 0052 FFF7FEFF 		bl	UART_UartPutString
  419              	.LVL39:
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 12
-
-
- 189:main.c        **** }
- 420              		.loc 1 189 0
+ 185:main.c        **** }
+ 420              		.loc 1 185 0
  421 0056 07B0     		add	sp, sp, #28
  422              		@ sp needed
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 12
+
+
  423 0058 30BD     		pop	{r4, r5, pc}
  424              	.L28:
  425 005a C046     		.align	2
@@ -683,9 +679,9 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  438              		.type	ReadCAN, %function
  439              	ReadCAN:
  440              	.LFB40:
- 190:main.c        **** 
- 191:main.c        **** uint16_t ReadCAN(CANPacket *receivedPacket){
- 441              		.loc 1 191 0
+ 186:main.c        **** 
+ 187:main.c        **** uint16_t ReadCAN(CANPacket *receivedPacket){
+ 441              		.loc 1 187 0
  442              		.cfi_startproc
  443              		@ args = 0, pretend = 0, frame = 8
  444              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -697,39 +693,39 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  450 0002 82B0     		sub	sp, sp, #8
  451              		.cfi_def_cfa_offset 16
  452 0004 0400     		movs	r4, r0
- 192:main.c        ****     volatile int error = PollAndReceiveCANPacket(receivedPacket);
- 453              		.loc 1 192 0
+ 188:main.c        ****     volatile int error = PollAndReceiveCANPacket(receivedPacket);
+ 453              		.loc 1 188 0
  454 0006 FFF7FEFF 		bl	PollAndReceiveCANPacket
  455              	.LVL41:
  456 000a 0190     		str	r0, [sp, #4]
- 193:main.c        ****     if(!error){
- 457              		.loc 1 193 0
+ 189:main.c        ****     if(!error){
+ 457              		.loc 1 189 0
  458 000c 019B     		ldr	r3, [sp, #4]
  459 000e 002B     		cmp	r3, #0
  460 0010 04D1     		bne	.L31
- 194:main.c        ****         #ifdef CAN_LED
- 195:main.c        ****         CAN_LED_Write(LED_ON);
- 196:main.c        ****         #endif
- 197:main.c        ****         CAN_time_LED = 0;
- 461              		.loc 1 197 0
+ 190:main.c        ****         #ifdef CAN_LED
+ 191:main.c        ****         CAN_LED_Write(LED_ON);
+ 192:main.c        ****         #endif
+ 193:main.c        ****         CAN_time_LED = 0;
+ 461              		.loc 1 193 0
  462 0012 0022     		movs	r2, #0
  463 0014 034B     		ldr	r3, .L32
  464 0016 1A70     		strb	r2, [r3]
- 198:main.c        ****         return receivedPacket->data[0];
- 465              		.loc 1 198 0
+ 194:main.c        ****         return receivedPacket->data[0];
+ 465              		.loc 1 194 0
  466 0018 E078     		ldrb	r0, [r4, #3]
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 13
-
-
  467 001a 00E0     		b	.L30
  468              	.L31:
- 199:main.c        ****     }
- 200:main.c        ****     return NO_NEW_CAN_PACKET; //Means no Packet
- 469              		.loc 1 200 0
+ 195:main.c        ****     }
+ 196:main.c        ****     return NO_NEW_CAN_PACKET; //Means no Packet
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 13
+
+
+ 469              		.loc 1 196 0
  470 001c 0248     		ldr	r0, .L32+4
  471              	.L30:
- 201:main.c        **** }
- 472              		.loc 1 201 0
+ 197:main.c        **** }
+ 472              		.loc 1 197 0
  473 001e 02B0     		add	sp, sp, #8
  474              		@ sp needed
  475              	.LVL42:
@@ -750,10 +746,10 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  490              		.type	DisplayErrorCode, %function
  491              	DisplayErrorCode:
  492              	.LFB41:
- 202:main.c        **** 
- 203:main.c        **** void DisplayErrorCode(uint8_t code) 
- 204:main.c        **** {    
- 493              		.loc 1 204 0
+ 198:main.c        **** 
+ 199:main.c        **** void DisplayErrorCode(uint8_t code) 
+ 200:main.c        **** {    
+ 493              		.loc 1 200 0
  494              		.cfi_startproc
  495              		@ args = 0, pretend = 0, frame = 0
  496              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -762,63 +758,63 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  499              		.cfi_def_cfa_offset 8
  500              		.cfi_offset 4, -8
  501              		.cfi_offset 14, -4
- 205:main.c        ****     #ifdef ERROR_LED
- 206:main.c        ****     ERROR_LED_Write(LED_OFF);
- 207:main.c        ****     #endif
- 208:main.c        ****     #ifdef DEBUG_LED1   
- 209:main.c        ****     DEBUG_LED_1_Write(LED_OFF);
- 210:main.c        ****     #endif
- 211:main.c        ****     #ifdef DEBUG_LED2
- 212:main.c        ****     DEBUG_LED_2_Write(LED_OFF);
- 213:main.c        ****     #endif
- 214:main.c        ****     
- 215:main.c        ****     ERRORTimeLED = 0;
- 502              		.loc 1 215 0
+ 201:main.c        ****     #ifdef ERROR_LED
+ 202:main.c        ****     ERROR_LED_Write(LED_OFF);
+ 203:main.c        ****     #endif
+ 204:main.c        ****     #ifdef DEBUG_LED1   
+ 205:main.c        ****     DEBUG_LED_1_Write(LED_OFF);
+ 206:main.c        ****     #endif
+ 207:main.c        ****     #ifdef DEBUG_LED2
+ 208:main.c        ****     DEBUG_LED_2_Write(LED_OFF);
+ 209:main.c        ****     #endif
+ 210:main.c        ****     
+ 211:main.c        ****     ERRORTimeLED = 0;
+ 502              		.loc 1 211 0
  503 0002 0022     		movs	r2, #0
  504 0004 024B     		ldr	r3, .L35
  505 0006 9A70     		strb	r2, [r3, #2]
- 216:main.c        ****     ERROR_LED_Write(LED_ON);
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 14
-
-
- 506              		.loc 1 216 0
+ 212:main.c        ****     ERROR_LED_Write(LED_ON);
+ 506              		.loc 1 212 0
  507 0008 0020     		movs	r0, #0
  508              	.LVL44:
  509 000a FFF7FEFF 		bl	ERROR_LED_Write
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 14
+
+
  510              	.LVL45:
- 217:main.c        ****     
- 218:main.c        ****     #ifdef PRINT_MOTOR_ERROR
- 219:main.c        ****         //TODO: PRINT ERROR
- 220:main.c        ****     #endif
- 221:main.c        **** 
- 222:main.c        ****     switch(code)
- 223:main.c        ****     {   
- 224:main.c        ****         //case0: CAN Packet ERROR
- 225:main.c        ****         case 1://Mode Error
- 226:main.c        ****             #ifdef DEBUG_LED1
- 227:main.c        ****             DEBUG_LED_1_Write(LED_ON);
- 228:main.c        ****             #endif
- 229:main.c        ****             break;
- 230:main.c        ****         case 2:
- 231:main.c        ****             #ifdef DEBUG_LED2
- 232:main.c        ****             DEBUG_LED_2_Write(LED_ON);
- 233:main.c        ****             #endif
- 234:main.c        ****             break;
- 235:main.c        ****         case 3:
- 236:main.c        ****             #ifdef DEBUG_LED1
- 237:main.c        ****             DEBUG_LED_1_Write(LED_ON);
- 238:main.c        ****             #endif
- 239:main.c        ****             #ifdef DEBUG_LED2
- 240:main.c        ****             DEBUG_LED_2_Write(LED_ON);
- 241:main.c        ****             #endif
- 242:main.c        ****             break;
- 243:main.c        ****         default:
- 244:main.c        ****             //some error
- 245:main.c        ****             break;
- 246:main.c        ****     }
- 247:main.c        **** 
- 248:main.c        **** }
- 511              		.loc 1 248 0
+ 213:main.c        ****     
+ 214:main.c        ****     #ifdef PRINT_MOTOR_ERROR
+ 215:main.c        ****         //TODO: PRINT ERROR
+ 216:main.c        ****     #endif
+ 217:main.c        **** 
+ 218:main.c        ****     switch(code)
+ 219:main.c        ****     {   
+ 220:main.c        ****         //case0: CAN Packet ERROR
+ 221:main.c        ****         case 1://Mode Error
+ 222:main.c        ****             #ifdef DEBUG_LED1
+ 223:main.c        ****             DEBUG_LED_1_Write(LED_ON);
+ 224:main.c        ****             #endif
+ 225:main.c        ****             break;
+ 226:main.c        ****         case 2:
+ 227:main.c        ****             #ifdef DEBUG_LED2
+ 228:main.c        ****             DEBUG_LED_2_Write(LED_ON);
+ 229:main.c        ****             #endif
+ 230:main.c        ****             break;
+ 231:main.c        ****         case 3:
+ 232:main.c        ****             #ifdef DEBUG_LED1
+ 233:main.c        ****             DEBUG_LED_1_Write(LED_ON);
+ 234:main.c        ****             #endif
+ 235:main.c        ****             #ifdef DEBUG_LED2
+ 236:main.c        ****             DEBUG_LED_2_Write(LED_ON);
+ 237:main.c        ****             #endif
+ 238:main.c        ****             break;
+ 239:main.c        ****         default:
+ 240:main.c        ****             //some error
+ 241:main.c        ****             break;
+ 242:main.c        ****     }
+ 243:main.c        **** 
+ 244:main.c        **** }
+ 511              		.loc 1 244 0
  512              		@ sp needed
  513 000e 10BD     		pop	{r4, pc}
  514              	.L36:
@@ -838,13 +834,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  528              		.global	nextPWM
  529              		.comm	txData,100,4
  530              		.global	millidegreeTarget
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 15
-
-
  531              		.global	ERRORTimeLED
  532              		.global	CAN_time_LED
  533              		.section	.rodata.str1.4,"aMS",%progbits,1
  534              		.align	2
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 15
+
+
  535              	.LC6:
  536 0000 44697020 		.ascii	"Dip Addr: %x \015\012\000"
  536      41646472 
@@ -898,13 +894,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  576 0008 00000000 		.space	4
  577              		.type	drive, %object
  578              		.size	drive, 1
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 16
-
-
  579              	drive:
  580 000c 00       		.space	1
  581              		.text
  582              	.Letext0:
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 16
+
+
  583              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
  584              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
  585              		.file 4 "..\\HindsightCAN/CANPacket.h"
@@ -958,13 +954,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  633 0040 05       		.byte	0x5
  634 0041 56000000 		.4byte	.LASF2
  635 0045 03       		.uleb128 0x3
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 17
-
-
  636 0046 F5000000 		.4byte	.LASF4
  637 004a 02       		.byte	0x2
  638 004b 2B       		.byte	0x2b
  639 004c 50000000 		.4byte	0x50
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 17
+
+
  640 0050 02       		.uleb128 0x2
  641 0051 02       		.byte	0x2
  642 0052 07       		.byte	0x7
@@ -1018,13 +1014,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  690 00af 04       		.byte	0x4
  691 00b0 0F       		.byte	0xf
  692 00b1 D9000000 		.4byte	0xd9
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 18
-
-
  693 00b5 06       		.uleb128 0x6
  694 00b6 696400   		.ascii	"id\000"
  695 00b9 04       		.byte	0x4
  696 00ba 11       		.byte	0x11
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 18
+
+
  697 00bb 97000000 		.4byte	0x97
  698 00bf 00       		.byte	0
  699 00c0 06       		.uleb128 0x6
@@ -1078,13 +1074,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  747 0122 04       		.byte	0x4
  748 0123 04       		.byte	0x4
  749 0124 BD010000 		.4byte	.LASF22
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 19
-
-
  750 0128 02       		.uleb128 0x2
  751 0129 08       		.byte	0x8
  752 012a 04       		.byte	0x4
  753 012b 84040000 		.4byte	.LASF23
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 19
+
+
  754 012f 0B       		.uleb128 0xb
  755 0130 09010000 		.4byte	0x109
  756 0134 0C       		.uleb128 0xc
@@ -1138,13 +1134,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  804 018e 0C       		.uleb128 0xc
  805 018f 8B040000 		.4byte	.LASF25
  806 0193 01       		.byte	0x1
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 20
-
-
  807 0194 4B       		.byte	0x4b
  808 0195 00000000 		.4byte	.LFB36
  809 0199 40000000 		.4byte	.LFE36-.LFB36
  810 019d 01       		.uleb128 0x1
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 20
+
+
  811 019e 9C       		.byte	0x9c
  812 019f 07020000 		.4byte	0x207
  813 01a3 0E       		.uleb128 0xe
@@ -1198,20 +1194,20 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  861 01f7 34000000 		.4byte	.LVL8
  862 01fb 10060000 		.4byte	0x610
  863 01ff 10       		.uleb128 0x10
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 21
-
-
  864 0200 01       		.uleb128 0x1
  865 0201 50       		.byte	0x50
  866 0202 02       		.uleb128 0x2
  867 0203 74       		.byte	0x74
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 21
+
+
  868 0204 00       		.sleb128 0
  869 0205 00       		.byte	0
  870 0206 00       		.byte	0
  871 0207 0C       		.uleb128 0xc
  872 0208 CE000000 		.4byte	.LASF26
  873 020c 01       		.byte	0x1
- 874 020d 91       		.byte	0x91
+ 874 020d 8D       		.byte	0x8d
  875 020e 00000000 		.4byte	.LFB38
  876 0212 5C000000 		.4byte	.LFE38-.LFB38
  877 0216 01       		.uleb128 0x1
@@ -1258,13 +1254,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  918 0269 2E000000 		.4byte	.LVL14
  919 026d 53060000 		.4byte	0x653
  920 0271 7B020000 		.4byte	0x27b
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 22
-
-
  921 0275 10       		.uleb128 0x10
  922 0276 01       		.uleb128 0x1
  923 0277 50       		.byte	0x50
  924 0278 01       		.uleb128 0x1
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 22
+
+
  925 0279 34       		.byte	0x34
  926 027a 00       		.byte	0
  927 027b 0E       		.uleb128 0xe
@@ -1318,13 +1314,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  975 02ed 28000000 		.4byte	.LVL22
  976 02f1 A1060000 		.4byte	0x6a1
  977 02f5 0E       		.uleb128 0xe
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 23
-
-
  978 02f6 36000000 		.4byte	.LVL23
  979 02fa FA050000 		.4byte	0x5fa
  980 02fe 0F       		.uleb128 0xf
  981 02ff 40000000 		.4byte	.LVL24
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 23
+
+
  982 0303 E4050000 		.4byte	0x5e4
  983 0307 18030000 		.4byte	0x318
  984 030b 10       		.uleb128 0x10
@@ -1378,13 +1374,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1032 035f B7060000 		.4byte	0x6b7
  1033 0363 7A030000 		.4byte	0x37a
  1034 0367 10       		.uleb128 0x10
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 24
-
-
  1035 0368 01       		.uleb128 0x1
  1036 0369 50       		.byte	0x50
  1037 036a 05       		.uleb128 0x5
  1038 036b 03       		.byte	0x3
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 24
+
+
  1039 036c 00000000 		.4byte	can_recieve
  1040 0370 10       		.uleb128 0x10
  1041 0371 01       		.uleb128 0x1
@@ -1400,7 +1396,7 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1051 0384 0C       		.uleb128 0xc
  1052 0385 00000000 		.4byte	.LASF27
  1053 0389 01       		.byte	0x1
- 1054 038a B4       		.byte	0xb4
+ 1054 038a B0       		.byte	0xb0
  1055 038b 00000000 		.4byte	.LFB39
  1056 038f 68000000 		.4byte	.LFE39-.LFB39
  1057 0393 01       		.uleb128 0x1
@@ -1409,7 +1405,7 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1060 0399 13       		.uleb128 0x13
  1061 039a BF000000 		.4byte	.LASF28
  1062 039e 01       		.byte	0x1
- 1063 039f B4       		.byte	0xb4
+ 1063 039f B0       		.byte	0xb0
  1064 03a0 F0000000 		.4byte	0xf0
  1065 03a4 02       		.uleb128 0x2
  1066 03a5 91       		.byte	0x91
@@ -1421,7 +1417,7 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1072 03b4 15       		.uleb128 0x15
  1073 03b5 6900     		.ascii	"i\000"
  1074 03b7 01       		.byte	0x1
- 1075 03b8 B5       		.byte	0xb5
+ 1075 03b8 B1       		.byte	0xb1
  1076 03b9 7E000000 		.4byte	0x7e
  1077 03bd 00000000 		.4byte	.LLST0
  1078 03c1 0F       		.uleb128 0xf
@@ -1438,13 +1434,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1089 03d5 01       		.uleb128 0x1
  1090 03d6 51       		.byte	0x51
  1091 03d7 05       		.uleb128 0x5
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 25
-
-
  1092 03d8 03       		.byte	0x3
  1093 03d9 10000000 		.4byte	.LC14
  1094 03dd 10       		.uleb128 0x10
  1095 03de 01       		.uleb128 0x1
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 25
+
+
  1096 03df 52       		.byte	0x52
  1097 03e0 02       		.uleb128 0x2
  1098 03e1 74       		.byte	0x74
@@ -1498,13 +1494,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1146 0423 52       		.byte	0x52
  1147 0424 0A       		.uleb128 0xa
  1148 0425 91       		.byte	0x91
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 26
-
-
  1149 0426 64       		.sleb128 -28
  1150 0427 94       		.byte	0x94
  1151 0428 02       		.byte	0x2
  1152 0429 0A       		.byte	0xa
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 26
+
+
  1153 042a FFFF     		.2byte	0xffff
  1154 042c 1A       		.byte	0x1a
  1155 042d 3A       		.byte	0x3a
@@ -1554,26 +1550,26 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1199 0461 16       		.uleb128 0x16
  1200 0462 98030000 		.4byte	.LASF75
  1201 0466 01       		.byte	0x1
- 1202 0467 BF       		.byte	0xbf
+ 1202 0467 BB       		.byte	0xbb
  1203 0468 97000000 		.4byte	0x97
  1204 046c 00000000 		.4byte	.LFB40
  1205 0470 2C000000 		.4byte	.LFE40-.LFB40
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 27
-
-
  1206 0474 01       		.uleb128 0x1
  1207 0475 9C       		.byte	0x9c
  1208 0476 A8040000 		.4byte	0x4a8
  1209 047a 17       		.uleb128 0x17
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 27
+
+
  1210 047b BF000000 		.4byte	.LASF28
  1211 047f 01       		.byte	0x1
- 1212 0480 BF       		.byte	0xbf
+ 1212 0480 BB       		.byte	0xbb
  1213 0481 A8040000 		.4byte	0x4a8
  1214 0485 42000000 		.4byte	.LLST1
  1215 0489 18       		.uleb128 0x18
  1216 048a 6D040000 		.4byte	.LASF29
  1217 048e 01       		.byte	0x1
- 1218 048f C0       		.byte	0xc0
+ 1218 048f BC       		.byte	0xbc
  1219 0490 AE040000 		.4byte	0x4ae
  1220 0494 02       		.uleb128 0x2
  1221 0495 91       		.byte	0x91
@@ -1597,7 +1593,7 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1239 04b3 0C       		.uleb128 0xc
  1240 04b4 73040000 		.4byte	.LASF30
  1241 04b8 01       		.byte	0x1
- 1242 04b9 CB       		.byte	0xcb
+ 1242 04b9 C7       		.byte	0xc7
  1243 04ba 00000000 		.4byte	.LFB41
  1244 04be 14000000 		.4byte	.LFE41-.LFB41
  1245 04c2 01       		.uleb128 0x1
@@ -1606,7 +1602,7 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1248 04c8 17       		.uleb128 0x17
  1249 04c9 AA010000 		.4byte	.LASF31
  1250 04cd 01       		.byte	0x1
- 1251 04ce CB       		.byte	0xcb
+ 1251 04ce C7       		.byte	0xc7
  1252 04cf 8C000000 		.4byte	0x8c
  1253 04d3 6E000000 		.4byte	.LLST2
  1254 04d7 11       		.uleb128 0x11
@@ -1618,13 +1614,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1260 04e3 01       		.uleb128 0x1
  1261 04e4 30       		.byte	0x30
  1262 04e5 00       		.byte	0
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 28
-
-
  1263 04e6 00       		.byte	0
  1264 04e7 1A       		.uleb128 0x1a
  1265 04e8 4E030000 		.4byte	.LASF32
  1266 04ec 01       		.byte	0x1
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 28
+
+
  1267 04ed 15       		.byte	0x15
  1268 04ee 8C000000 		.4byte	0x8c
  1269 04f2 05       		.uleb128 0x5
@@ -1678,13 +1674,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1317 0558 0F000000 		.4byte	.LASF38
  1318 055c 01       		.byte	0x1
  1319 055d 20       		.byte	0x20
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 29
-
-
  1320 055e 8C000000 		.4byte	0x8c
  1321 0562 05       		.uleb128 0x5
  1322 0563 03       		.byte	0x3
  1323 0564 00000000 		.4byte	ignoreLimSw
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 29
+
+
  1324 0568 1A       		.uleb128 0x1a
  1325 0569 E6000000 		.4byte	.LASF39
  1326 056d 01       		.byte	0x1
@@ -1738,13 +1734,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1374 05d3 7F020000 		.4byte	.LASF45
  1375 05d7 06       		.byte	0x6
  1376 05d8 5E       		.byte	0x5e
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 30
-
-
  1377 05d9 1C       		.uleb128 0x1c
  1378 05da B4020000 		.4byte	.LASF46
  1379 05de B4020000 		.4byte	.LASF46
  1380 05e2 07       		.byte	0x7
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 30
+
+
  1381 05e3 14       		.byte	0x14
  1382 05e4 1C       		.uleb128 0x1c
  1383 05e5 B5010000 		.4byte	.LASF47
@@ -1798,13 +1794,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1431 0651 2A03     		.2byte	0x32a
  1432 0653 1C       		.uleb128 0x1c
  1433 0654 D9000000 		.4byte	.LASF57
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 31
-
-
  1434 0658 D9000000 		.4byte	.LASF57
  1435 065c 0B       		.byte	0xb
  1436 065d 15       		.byte	0x15
  1437 065e 1C       		.uleb128 0x1c
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 31
+
+
  1438 065f C3010000 		.4byte	.LASF58
  1439 0663 C3010000 		.4byte	.LASF58
  1440 0667 06       		.byte	0x6
@@ -1858,13 +1854,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1488 06ce FB010000 		.4byte	.LASF68
  1489 06d2 FB010000 		.4byte	.LASF68
  1490 06d6 0B       		.byte	0xb
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 32
-
-
  1491 06d7 22       		.byte	0x22
  1492 06d8 1C       		.uleb128 0x1c
  1493 06d9 C3030000 		.4byte	.LASF69
  1494 06dd C3030000 		.4byte	.LASF69
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 32
+
+
  1495 06e1 16       		.byte	0x16
  1496 06e2 33       		.byte	0x33
  1497 06e3 00       		.byte	0
@@ -1918,13 +1914,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1545 002d 00       		.byte	0
  1546 002e 0B       		.uleb128 0xb
  1547 002f 0B       		.uleb128 0xb
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 33
-
-
  1548 0030 3E       		.uleb128 0x3e
  1549 0031 0B       		.uleb128 0xb
  1550 0032 03       		.uleb128 0x3
  1551 0033 08       		.uleb128 0x8
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 33
+
+
  1552 0034 00       		.byte	0
  1553 0035 00       		.byte	0
  1554 0036 05       		.uleb128 0x5
@@ -1978,13 +1974,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1602 0066 01       		.uleb128 0x1
  1603 0067 13       		.uleb128 0x13
  1604 0068 00       		.byte	0
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 34
-
-
  1605 0069 00       		.byte	0
  1606 006a 09       		.uleb128 0x9
  1607 006b 21       		.uleb128 0x21
  1608 006c 00       		.byte	0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 34
+
+
  1609 006d 49       		.uleb128 0x49
  1610 006e 13       		.uleb128 0x13
  1611 006f 2F       		.uleb128 0x2f
@@ -2038,13 +2034,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1659 00a0 00       		.byte	0
  1660 00a1 0D       		.uleb128 0xd
  1661 00a2 34       		.uleb128 0x34
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 35
-
-
  1662 00a3 00       		.byte	0
  1663 00a4 03       		.uleb128 0x3
  1664 00a5 0E       		.uleb128 0xe
  1665 00a6 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 35
+
+
  1666 00a7 0B       		.uleb128 0xb
  1667 00a8 3B       		.uleb128 0x3b
  1668 00a9 0B       		.uleb128 0xb
@@ -2098,13 +2094,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1716 00e2 03       		.uleb128 0x3
  1717 00e3 0E       		.uleb128 0xe
  1718 00e4 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 36
-
-
  1719 00e5 0B       		.uleb128 0xb
  1720 00e6 3B       		.uleb128 0x3b
  1721 00e7 0B       		.uleb128 0xb
  1722 00e8 27       		.uleb128 0x27
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 36
+
+
  1723 00e9 19       		.uleb128 0x19
  1724 00ea 49       		.uleb128 0x49
  1725 00eb 13       		.uleb128 0x13
@@ -2158,13 +2154,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1773 011d 3B       		.uleb128 0x3b
  1774 011e 0B       		.uleb128 0xb
  1775 011f 49       		.uleb128 0x49
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 37
-
-
  1776 0120 13       		.uleb128 0x13
  1777 0121 02       		.uleb128 0x2
  1778 0122 17       		.uleb128 0x17
  1779 0123 00       		.byte	0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 37
+
+
  1780 0124 00       		.byte	0
  1781 0125 16       		.uleb128 0x16
  1782 0126 2E       		.uleb128 0x2e
@@ -2218,13 +2214,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1830 0157 3B       		.uleb128 0x3b
  1831 0158 0B       		.uleb128 0xb
  1832 0159 49       		.uleb128 0x49
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 38
-
-
  1833 015a 13       		.uleb128 0x13
  1834 015b 02       		.uleb128 0x2
  1835 015c 18       		.uleb128 0x18
  1836 015d 00       		.byte	0
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 38
+
+
  1837 015e 00       		.byte	0
  1838 015f 19       		.uleb128 0x19
  1839 0160 0F       		.uleb128 0xf
@@ -2278,13 +2274,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1887 0190 19       		.uleb128 0x19
  1888 0191 6E       		.uleb128 0x6e
  1889 0192 0E       		.uleb128 0xe
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 39
-
-
  1890 0193 03       		.uleb128 0x3
  1891 0194 0E       		.uleb128 0xe
  1892 0195 3A       		.uleb128 0x3a
  1893 0196 0B       		.uleb128 0xb
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 39
+
+
  1894 0197 3B       		.uleb128 0x3b
  1895 0198 0B       		.uleb128 0xb
  1896 0199 00       		.byte	0
@@ -2338,13 +2334,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  1944              	.LLST1:
  1945 0042 00000000 		.4byte	.LVL40
  1946 0046 09000000 		.4byte	.LVL41-1
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 40
-
-
  1947 004a 0100     		.2byte	0x1
  1948 004c 50       		.byte	0x50
  1949 004d 09000000 		.4byte	.LVL41-1
  1950 0051 20000000 		.4byte	.LVL42
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 40
+
+
  1951 0055 0100     		.2byte	0x1
  1952 0057 54       		.byte	0x54
  1953 0058 20000000 		.4byte	.LVL42
@@ -2398,13 +2394,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  2001              	.Ldebug_ranges0:
  2002 0000 00000000 		.4byte	.LFB35
  2003 0004 58000000 		.4byte	.LFE35
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 41
-
-
  2004 0008 00000000 		.4byte	.LFB36
  2005 000c 40000000 		.4byte	.LFE36
  2006 0010 00000000 		.4byte	.LFB38
  2007 0014 5C000000 		.4byte	.LFE38
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 41
+
+
  2008 0018 00000000 		.4byte	.LFB37
  2009 001c 7C000000 		.4byte	.LFE37
  2010 0020 00000000 		.4byte	.LFB39
@@ -2458,13 +2454,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  2035 008e 5C48616E 		.ascii	"\\Hand_Board_PY2023\\HandBoard_Rev1.cydsn\000"
  2035      645F426F 
  2035      6172645F 
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 42
-
-
  2035      50593230 
  2035      32335C48 
  2036              	.LASF16:
  2037 00b6 73697A65 		.ascii	"sizetype\000"
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 42
+
+
  2037      74797065 
  2037      00
  2038              	.LASF28:
@@ -2518,13 +2514,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  2058              	.LASF21:
  2059 01a4 696E7431 		.ascii	"int16\000"
  2059      3600
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 43
-
-
  2060              	.LASF31:
  2061 01aa 636F6465 		.ascii	"code\000"
  2061      00
  2062              	.LASF20:
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 43
+
+
  2063 01af 75696E74 		.ascii	"uint8\000"
  2063      3800
  2064              	.LASF47:
@@ -2578,13 +2574,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  2087      7200
  2088              	.LASF34:
  2089 0240 6D696C6C 		.ascii	"millidegreeTarget\000"
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 44
-
-
  2089      69646567 
  2089      72656554 
  2089      61726765 
  2089      7400
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 44
+
+
  2090              	.LASF24:
  2091 0252 50657269 		.ascii	"Period_Reset_Handler\000"
  2091      6F645F52 
@@ -2638,13 +2634,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  2111 02fa 53656E64 		.ascii	"SendCANPacket\000"
  2111      43414E50 
  2111      61636B65 
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 45
-
-
  2111      7400
  2112              	.LASF11:
  2113 0308 756E7369 		.ascii	"unsigned int\000"
  2113      676E6564 
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 45
+
+
  2113      20696E74 
  2113      00
  2114              	.LASF13:
@@ -2698,13 +2694,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  2135 03a0 55415254 		.ascii	"UART_Start\000"
  2135      5F537461 
  2135      727400
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 46
-
-
  2136              	.LASF14:
  2137 03ab 696E7433 		.ascii	"int32_t\000"
  2137      325F7400 
  2138              	.LASF37:
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 46
+
+
  2139 03b3 696E7661 		.ascii	"invalidate\000"
  2139      6C696461 
  2139      746500
@@ -2758,13 +2754,13 @@ ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 1
  2160              	.LASF35:
  2161 044f 74784461 		.ascii	"txData\000"
  2161      746100
-ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccHmhsFf.s 			page 47
-
-
  2162              	.LASF53:
  2163 0456 43616E5F 		.ascii	"Can_addr_Read\000"
  2163      61646472 
  2163      5F526561 
+ARM GAS  C:\Users\kratz\AppData\Local\Temp\ccwsdgHG.s 			page 47
+
+
  2163      6400
  2164              	.LASF63:
  2165 0464 47657453 		.ascii	"GetState\000"
